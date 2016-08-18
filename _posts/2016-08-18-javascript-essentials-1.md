@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Javascript 1
-categories: Javascript
+categories: javascript
 ---
 ## Basic
 Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것.

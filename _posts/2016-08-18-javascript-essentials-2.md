@@ -1,10 +1,11 @@
 ---
 layout: post
 title: Javascript 2
-categories: [Javascript, language]
+categories: javascript
 ---
 ## Object, Array, Function
 Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것.
+
 
 ### Object 특징
 1. properties : describe the object (like Nouns)
@@ -16,27 +17,27 @@ Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blan
 // properties
 width: 1400,
 height: 600,
-color: "space gray"
-keyboardSize: "13inch"
+color: "space gray",
+keyboardSize: "13inch",
 
 // functions
 typeText: function(){ ... },
-smash: function(){ ... }
+smash: function(){ ... },
 
 // hierarchy
 camera: {
           quality: "HD",
-          record: function(){ ... }    
+          record: function(){ ... },  
         }
 screen: {
           type: "retina",
           size: "13inch",
-          backlight: "LED"   
+          backlight: "LED",
         }
 keyboard: {
           quality: "en-UK",
           functional: true,
-          typeIn: function(){ ... }    
+          typeIn: function(){ ... },   
         }
 }
 {% endhighlight %}

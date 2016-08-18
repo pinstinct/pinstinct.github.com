@@ -1,14 +1,23 @@
-# Site settings
-title: Your awesome title
-email: your-email@domain.com
-description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://yourdomain.com" # the base hostname & protocol for your site
-twitter_username: jekyllrb
-github_username:  jekyll
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+relative_permalinks: true
 
-# Build settings
-markdown: kramdown
+
+# Setup
+title:               Pinstinct
+tagline:             'Code'
+description:         'code: <a href="https://github.com/pinstinct" target="_blank">Github</a></br> idea: <a href="https://twitter.com/pinstinct" target="_blank">@pinstinct</a>.'
+url:                 https://pinstinct.github.io
+baseurl:             ''
+paginate:            3
+
+# About/contact
+author:
+  name:              LIM
+  url:               https://twitter.com/pinstinct
+  email:             gusals3407@gmail.com
+
+# Custom vars
+version:             1.0.0

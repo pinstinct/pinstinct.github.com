@@ -1,18 +1,17 @@
 ---
 layout: post
-title: Javascript 2
+title: Object, Array, Function
 categories: javascript
 ---
-## Object, Array, Function
-Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것.
+<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
 
-
-### Object 특징
+## Object 특징
 1. properties : describe the object (like Nouns)
 2. functions : performing action (like Verbs)
 3. hierarchy : grouping data, objects within objects (like Encapsulation)
 
 {% highlight js %}
+myMac : 
 {
 // properties
 width : 1400,
@@ -42,7 +41,7 @@ keyboard : {
 }
 {% endhighlight %}
 
-### array
+## array
 {% highlight js %}
 // create
 var myArray = [
@@ -56,7 +55,7 @@ var myArray = [
 myArray[0];
 {% endhighlight %}
 
-### object
+## object
 {% highlight js %}
 // create
 var myObject = {
@@ -71,7 +70,7 @@ myObject.key1;
 myObject[key2];
 {% endhighlight %}
 
-### function
+## function
 {% highlight js %}
 // argument : temporary storage
 // function myFunction (argument) {

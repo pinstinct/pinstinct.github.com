@@ -1,12 +1,11 @@
 ---
 layout: post
-title: Javascript 1
+title: Basic
 categories: javascript
 ---
-## Basic
-Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것.
+<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
 
-### How Javascript works?
+## How Javascript works?
 <table>
   <thead>
     <tr>
@@ -30,19 +29,19 @@ Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blan
   </tbody>
 </table>
 
-### API 
+## API 
 API는 Application Programming **Interface**의 약자로, javascript에서 **Native API**(pre defined functions or properties)를 제공한다. 
 
 jQuery는 Native API에 jQuery에서 만든 api를 추가하여 제공하는 것이다.
 
-### Primitive, Basic value
+## Primitive, Basic value
 * String
 * Number : int, float
 * Boolean : true, false
 * Null/Undefined : empty box
 * **NaN** : not a number
 
-### BODMAS (연산자 우선순위)
+## BODMAS (연산자 우선순위)
 1. Brackets
 2. pOwer
 3. Divisions /

@@ -1,0 +1,46 @@
+---
+layout: post
+title: CSS 2
+categories: css
+---
+<div class="message">Udemy에서 <a href="https://www.udemy.com/build-your-first-website-in-1-week/" target="_blank">Build Your First Website in 1 Week with HTML5 and CSS3</a> 강의를 듣고 정리한 것이다.</div>
+
+## Box Model
+- margin : outside of the border
+- border
+- padding : within the border
+- (html element)
+
+## Selectors
+
+### 1. element selector
+{% highlight css %}
+p {
+	text-align: center;
+	color: red;
+}
+{% endhighlight %}
+
+### 2. id selector
+{% highlight css %}
+#uniquemyid {
+	text-align: center;
+	color: red;
+}
+{% endhighlight %}
+
+### 3. class selector
+{% highlight css %}
+.jumbotron {
+	text-align: center;
+	color: red;
+}
+{% endhighlight %}
+
+## ID vs Class
+- ID : **unique**, link to take a user to that section.
+- IDs are more specific than classes so they will take priority.
+
+## Grid System (<a href="http://getbootstrap.com/css/#grid-options" target="_blank">@bootstrap</a>)
+> reference : <a href="http://lim-web-staging.getforge.io/grid.html" target="_blank">http://lim-web-staging.getforge.io/grid.html</a>
+ 

@@ -15,36 +15,36 @@ Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blan
 {% highlight js %}
 {
 // properties
-width: 1400,
-height: 600,
-color: "space gray",
+width : 1400,
+height : 600,
+color : "space gray",
 keyboardSize: "13inch",
 
 // functions
-typeText: function(){ ... },
-smash: function(){ ... },
+typeText : function(){ ... },
+smash : function(){ ... },
 
 // hierarchy
-camera: {
-          quality: "HD",
-          record: function(){ ... },  
+camera : {
+          quality : "HD",
+          record : function(){ ... },  
         }
-screen: {
-          type: "retina",
-          size: "13inch",
-          backlight: "LED",
+screen : {
+          type : "retina",
+          size : "13inch",
+          backlight : "LED",
         }
-keyboard: {
-          quality: "en-UK",
-          functional: true,
-          typeIn: function(){ ... },   
+keyboard : {
+          quality : "en-UK",
+          functional : true,
+          typeIn : function(){ ... },   
         }
 }
 {% endhighlight %}
 
 ### array
 {% highlight js %}
-// Create
+// create
 var myArray = [
   value1,
   value2,
@@ -52,21 +52,21 @@ var myArray = [
   ...
 ];
 
-// Access
+// access
 myArray[0];
 {% endhighlight %}
 
 ### object
 {% highlight js %}
-// Create
+// create
 var myObject = {
-  key1:value1,
-  key2:value2,
-  key3:value3,
+  key1 : value1,
+  key2 : value2,
+  key3 : value3,
   ...
 };
 
-// Access
+// access
 myObject.key1;
 myObject[key2];
 {% endhighlight %}
@@ -78,7 +78,7 @@ myObject[key2];
 //   execution context
 // }
 
-// Create
+// create
 function sayHello () {
   return "Hello"
 }
@@ -86,13 +86,13 @@ function verb (a, b) {
   return a + b;
 } 
 var obj = {
-  // object안에 있는 fuction은 method라고 함
-  myMethod:function (a, b) {
+  // object 안에 있는 fuction은 method라고 함
+  myMethod : function (a, b) {
     return a + b;
   }
 };
 
-// Access
+// access
 sayHello();
 verb(5, 10);  //argument에 넣은값은 parameter라고 함
 obj.myMethod(10, 15);

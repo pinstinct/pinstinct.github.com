@@ -44,7 +44,7 @@ jQuery는 Native API에 jQuery에서 만든 api를 추가하여 제공하는 것
 
 ### BODMAS (연산자 우선순위)
 1. Brackets
-2. Orders (power)
+2. pOwer
 3. Divisions /
 4. Multiplication *
 5. Addition +

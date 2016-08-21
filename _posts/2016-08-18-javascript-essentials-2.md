@@ -4,7 +4,7 @@ title: Object, Array, Function
 categories: javascript
 tags: [udemy, js, object, function, array, method]
 ---
-<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
+<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
 
 ## Object 특징
 1. properties : describe the object (like Nouns)

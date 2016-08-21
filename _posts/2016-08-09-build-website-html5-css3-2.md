@@ -4,7 +4,7 @@ title: CSS 1
 categories: css
 tags: [udemy, css]
 ---
-<div class="message">Udemy에서 <a href="https://www.udemy.com/build-your-first-website-in-1-week/" target="_blank">Build Your First Website in 1 Week with HTML5 and CSS3</a> 강의를 듣고 정리한 것이다.</div>
+<div class="message">Udemy에서 <a href="https://www.udemy.com/build-your-first-website-in-1-week/">Build Your First Website in 1 Week with HTML5 and CSS3</a> 강의를 듣고 정리한 것이다.</div>
 
 ## Basic
 CSS(Cascading Style Sheets) : a language that describes the style of an HTML document.

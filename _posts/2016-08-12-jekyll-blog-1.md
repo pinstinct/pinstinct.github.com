@@ -6,7 +6,7 @@ tags: [blog, code]
 ---
 
 ## Template 선택
-<a href="https://github.com/poole/lanyon" target="_blank">lanyon template</a>를 사용하기로 결정했으나, category 메뉴가 없었다.
+[lanyon template](https://github.com/poole/lanyon)를 사용하기로 결정했으나, category 메뉴가 없었다.
 
 ## Categories 추가
 가장 쉬운 방법을 찾아 헤맸다. jekyll **page layout**을 이용하는 방법이다.
@@ -67,4 +67,4 @@ category 페이지를 첫글자만 대문자로 출력하도록 lanyon.css 파�
 {% endhighlight %}
 
 
-<cite>reference : <a href="https://blog.webjeda.com/jekyll-categories/" target="_blank">webjeda blog</a></cite>
+> reference : [webjeda blog](https://blog.webjeda.com/jekyll-categories/)

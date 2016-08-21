@@ -4,7 +4,7 @@ title: Constructors, Scoping
 categories: javascript
 tags: [udemy, js, object, Constructor, method, scoping]
 ---
-<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
+<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
 
 ## Constructors (like blueprint)
 Object를 다시 한번 정리해봤다. object를 생성하는 방법 중 constructor를 이용하는 방법이 있다. 
@@ -93,4 +93,4 @@ var apple6 = new CosturctSetApple("orange", 200, 200);
 {% endhighlight %}
 
 ### Scoping
-변수에 **접근(access)**할 수 있는 범위이다. 자바스크립트는 local variables, global variables 2가지가 있다. 자세한 사항은 <a href="http://www.w3schools.com/js/js_scope.asp" target="_blank">JavaScript Scope</a>을 참고한다.
+변수에 **접근(access)**할 수 있는 범위이다. 자바스크립트는 local variables, global variables 2가지가 있다. 자세한 사항은 [JavaScript Scope](http://www.w3schools.com/js/js_scope.asp)을 참고한다.

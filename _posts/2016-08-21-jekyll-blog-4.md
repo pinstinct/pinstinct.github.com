@@ -29,4 +29,4 @@ tags: [blog, code]
 아래의 코드를 post.html 하단에 작성한다.
 <script src="https://gist.github.com/pinstinct/7f303fbdca4abd926112bacbd9313e5b.js"></script>
 
-<cite>reference : <a href="http://zhangwenli.com/blog/2014/07/15/jekyll-related-posts-without-plugin/" target="_blank">zhangwenli blog</a></cite>
+> reference : [zhangwenli blog](http://zhangwenli.com/blog/2014/07/15/jekyll-related-posts-without-plugin/)

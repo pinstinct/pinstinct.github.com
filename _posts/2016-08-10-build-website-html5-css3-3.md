@@ -4,7 +4,7 @@ title: CSS 2
 categories: css
 tags: [udemy, css, id, class, margin, padding, grid]
 ---
-<div class="message">Udemy에서 <a href="https://www.udemy.com/build-your-first-website-in-1-week/" target="_blank">Build Your First Website in 1 Week with HTML5 and CSS3</a> 강의를 듣고 정리한 것이다.</div>
+<div class="message">Udemy에서 <a href="https://www.udemy.com/build-your-first-website-in-1-week/">Build Your First Website in 1 Week with HTML5 and CSS3</a> 강의를 듣고 정리한 것이다.</div>
 
 ## Box Model
 - margin : outside of the border
@@ -42,6 +42,6 @@ p {
 - ID : **unique**, link to take a user to that section.
 - IDs are more specific than classes so they will take priority.
 
-## Grid System (<a href="http://getbootstrap.com/css/#grid-options" target="_blank">@bootstrap</a>)
-> reference : <a href="http://lim-web-staging.getforge.io/grid.html" target="_blank">http://lim-web-staging.getforge.io/grid.html</a>
+## Grid System ([@bootstrap](http://getbootstrap.com/css/#grid-options))
+> reference : [http://lim-web-staging.getforge.io/grid.html](http://lim-web-staging.getforge.io/grid.html)
  

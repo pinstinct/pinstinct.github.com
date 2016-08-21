@@ -8,7 +8,7 @@ permalink:           pretty
 # Setup
 title:               Pinstinct
 tagline:             'Code'
-description:         'code: <a href="https://github.com/pinstinct" target="_blank">Github</a></br> idea: <a href="https://twitter.com/pinstinct" target="_blank">@pinstinct</a>.'
+description:         'code: <a href="https://github.com/pinstinct">Github</a></br> idea: <a href="https://twitter.com/pinstinct">@pinstinct</a>.'
 url:                 https://pinstinct.github.io
 baseurl:             ''
 paginate:            3

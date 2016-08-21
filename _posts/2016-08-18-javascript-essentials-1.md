@@ -4,7 +4,7 @@ title: Basic
 categories: javascript
 tags: [udemy, js, api, jquery]
 ---
-<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/" target="_blank">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
+<div class="message">Udemy에서 <a href="https://www.udemy.com/javascript-essentials/">Javascript Essentials</a>강의를 듣고 정리한 것이다.</div>
 
 ## How Javascript works?
 <table>

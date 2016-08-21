@@ -567,3 +567,8 @@ a.pagination-item:hover {
 .archive-group {
   text-transform: capitalize;
 }
+
+.tag-group {
+  text-transform: lowercase;
+}
+

@@ -1,0 +1,23 @@
+---
+layout: page
+permalink: /tags/
+title: Tags
+---
+
+
+<div id="archives">
+{% for tag in site.tags %}
+  <div>
+    {% capture tag_name %}{{ tag | first }}{% endcapture %}
+    <h3 class="category-head tag-group">{{ tag_name }}</h3>
+    {% for post in site.tags[tag_name] %}
+    <ul class="related-posts">
+      <li>
+      <small>{{ post.date | date_to_string }}</small>
+      <a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a>
+      </li>
+    </article>
+    {% endfor %}
+  </div>
+{% endfor %}
+</div>

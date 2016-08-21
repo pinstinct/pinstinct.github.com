@@ -1,7 +1,8 @@
 ---
 layout: post
-title: Crate Categories
+title: Added Categories
 categories: jekyll
+tags: [blog, code]
 ---
 
 ## Template 선택
@@ -43,6 +44,11 @@ categories: [trip, personal]
 +-- _posts
 +-- css
 +-- public
+|	+-- css
+|	|	--- <span style="font-weight: bold;">lanyon.css</span>을
+|	|	--- poole.css
+|	|	--- syntax.css
+|	--- favicon.ico
 --- config.yml
 --- index.html
 --- <span style="font-weight: bold;">categories.html</span>
@@ -50,6 +56,15 @@ categories: [trip, personal]
 
 아래의 코드를 categories.html에 작성한다.
 <script src="https://gist.github.com/pinstinct/d1fb2de8abc54b4a218ca0a201e49cd5.js"></script>
+
+
+## 3. CSS 추가
+category 페이지를 첫글자만 대문자로 출력하도록 lanyon.css 파일에 archive-group class를 작성한다.
+{% highlight css %}
+.archive-group {
+  text-transform: capitalize;
+}
+{% endhighlight %}
 
 
 <cite>reference : <a href="https://blog.webjeda.com/jekyll-categories/" target="_blank">https://blog.webjeda.com/jekyll-categories/</a></cite>

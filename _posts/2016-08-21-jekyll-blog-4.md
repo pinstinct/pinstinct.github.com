@@ -4,6 +4,7 @@ title: Show related posts by category
 categories: jekyll
 tags: [blog, code]
 ---
+
 포스트 하단에 Related Posts가 최근 포스트가 출력된다. 같은 카테고리의 포스트가 출력되도록 변경했다.
 
 ## post.html 수정 

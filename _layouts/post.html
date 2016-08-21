@@ -8,47 +8,32 @@ layout: default
   {{ content }}
 </div>
 
-<div class="related">
-  <h2>Related Posts</h2>
-  <ul class="related-posts">
-    {% for post in site.related_posts limit:3 %}
-      <li>
-        <h3>
-          <a href="{{ site.baseurl }}{{ post.url }}">
-            {{ post.title }}
-            <small>{{ post.date | date_to_string }}</small>
-          </a>
-        </h3>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
-
+<!-- @lim, order by category -->
 <div class="related">
 {% assign hasSimilar = '' %}
 {% for post in site.related_posts %}
-    {% assign postHasSimilar = false %}
-    {% for tag in post.categories %}
-        {% for thisTag in page.categories %}
-            {% if postHasSimilar == false and hasSimilar.size < 6 and post != page and tag == thisTag %}
-                {% if hasSimilar.size == 0 %}
-                <h4>Similar Posts</h4>
-                <ul>
-                {% endif %}
-                <li class="relatedPost">
-                    <a href="{{ site.url }}{{ post.url }}">{{ post.title }}
-                    {% if post.series %}
-                        (Series: {{ post.series }})
-                    {% endif %}
-                    </a>
-                </li>
-                {% capture hasSimilar %}{{ hasSimilar }}*{% endcapture %}
-                {% assign postHasSimilar = true %}
-            {% endif %}
+  {% assign postHasSimilar = false %}
+  {% for category in post.categories %}
+    {% for thisCategory in page.categories %}
+      {% if postHasSimilar == false and hasSimilar.size < 3 and post != page and category == thisCategory %}
+        {% if hasSimilar.size == 0 %}
+          <h2>Related Posts</h2>
+          <ul class="related-posts">
+        {% endif %}
+            <li>
+              <h3>
+                <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}
+                <small>{{ post.date | date_to_string }}</small>
+                </a>
+              </h3>
+            </li>
+              {% capture hasSimilar %}{{ hasSimilar }}*{% endcapture %}
+              {% assign postHasSimilar = true %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
         {% endfor %}
-    {% endfor %}
-{% endfor %}
-{% if hasSimilar.size > 0 %}
+      {% if hasSimilar.size > 0 %}
     </ul>
-{% endif %}
+  {% endif %}
 </div>

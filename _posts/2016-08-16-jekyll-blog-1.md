@@ -67,4 +67,4 @@ category 페이지를 첫글자만 대문자로 출력하도록 lanyon.css 파�
 {% endhighlight %}
 
 
-<cite>reference : <a href="https://blog.webjeda.com/jekyll-categories/" target="_blank">https://blog.webjeda.com/jekyll-categories/</a></cite>
+<cite>reference : <a href="https://blog.webjeda.com/jekyll-categories/" target="_blank">webjeda blog</a></cite>

@@ -15,9 +15,17 @@ title: Home
     <span class="post-date">{{ post.date | date_to_string }}</span>
 
     {{ post.content }}
+    
+    <div>
+      <h1>
+        
+      </h1>
+    </div>
   </div>
+
   {% endfor %}
 </div>
+
 
 <div class="pagination">
   {% if paginator.next_page %}

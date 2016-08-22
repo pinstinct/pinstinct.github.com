@@ -16,13 +16,9 @@ title: Home
 
     {{ post.content }}
     
-    <div>
-      <h1>
-        
-      </h1>
-    </div>
-  </div>
-
+    {% if forloop.last == false %}
+    <hr>
+    {% endif %}
   {% endfor %}
 </div>
 

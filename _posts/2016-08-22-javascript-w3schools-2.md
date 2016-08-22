@@ -34,3 +34,5 @@ DOM에서 모든 HTML elements는 **objects**로 정의되어 있다.
 </html>
 
 {% endhighlight %}
+
+> reference : [w3schools.com](http://www.w3schools.com/js/js_htmldom_methods.asp)

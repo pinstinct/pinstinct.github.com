@@ -16,8 +16,9 @@ title: Home
 
     {{ post.content }}
     
+    <!-- @lim, added <hr> tag -->
     {% if forloop.last == false %}
-    <hr>
+      <hr>
     {% endif %}
   {% endfor %}
 </div>

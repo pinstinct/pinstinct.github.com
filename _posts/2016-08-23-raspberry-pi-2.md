@@ -30,8 +30,8 @@ $deactivate
 
 1. Physical numbering (like 1, 2, 3, ... )
     - GPIO.BOARD : set pins to physical numbering system
-2. BCM : Broadcom SOC channel (like GPIO2, GPIO3, ...)
+2. BCM : Broadcom SOC channel (like GPIO**2**, GPI**3** , ...)
     - GPIO.BCM : set pins to BCM numbering system
 
-[Detail Guid GPIO Header and Pins](http://pinout.xyz/pinout/ground)
+> [Detail Guid GPIO Header and Pins](http://pinout.xyz/pinout/ground)
 

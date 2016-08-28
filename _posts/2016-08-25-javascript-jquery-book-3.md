@@ -324,4 +324,4 @@ var msg = '<p> 길이: ' + saying.length + '</p>';
 - Null : 변수 값이 없는 경우, 한때 어떤 값을 가지고 있었더라도 지금은 아무런 값도 갖지 않은 상태
 - Object
 
-> [3장 최종 예제](soon)
+> [3장 최종 예제](https://github.com/pinstinct/front-end-web-js-jquery/tree/master/c03)

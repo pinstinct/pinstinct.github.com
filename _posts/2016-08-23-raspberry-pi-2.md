@@ -25,8 +25,7 @@ $deactivate
 
 ## GPIO Basic
 
-<a href="http://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/">
-<img src="http://www.raspberrypi-spy.co.uk/wp-content/uploads/2012/06/Raspberry-Pi-GPIO-Layout-Model-B-Plus-rotated-2700x900.png" alt="GPIO Layout"></a>
+<img src="/image/rbpi-gpio-layout.png" alt="GPIO Layout">
 
 1. Physical numbering (like 1, 2, 3, ... )
     - GPIO.BOARD : set pins to physical numbering system

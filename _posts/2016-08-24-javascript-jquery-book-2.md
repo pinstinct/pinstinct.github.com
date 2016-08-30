@@ -2,7 +2,7 @@
 layout: post
 title: 2. 자바스크립트의 기본 명령어
 categories: javascript&jquery
-tags: [book, javascript, jquery, variable, array, operator]
+tags: [book, javascript, variable, array, operator]
 ---
 <div class="message"><a href="http://www.aladin.co.kr/shop/wproduct.aspx?ItemId=55027282">
 자바스크립트 & 제이쿼리 - 인터랙티브 프론트엔드 웹 개발 교과서</a>로 공부한 내용을 정리한 것이다.</div>

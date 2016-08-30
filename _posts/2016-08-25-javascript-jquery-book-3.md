@@ -2,7 +2,7 @@
 layout: post
 title: 3. 함수, 메서드, 객체
 categories: javascript&jquery
-tags: [book, javascript, jquery, function, parameter, argument, scope, property, methods, object, template, instance]
+tags: [book, javascript, function, parameter, argument, scope, property, methods, object, template, instance]
 ---
 <div class="message"><a href="http://www.aladin.co.kr/shop/wproduct.aspx?ItemId=55027282">
 자바스크립트 & 제이쿼리 - 인터랙티브 프론트엔드 웹 개발 교과서</a>로 공부한 내용을 정리한 것이다.</div>

@@ -2,7 +2,7 @@
 layout: post
 title: 6. 이벤트
 categories: javascript&jquery
-tags: [book, javascript, event, handling, binding, ]
+tags: [book, javascript, event, handling, binding, listener, handler]
 ---
 <div class="message"><a href="http://www.aladin.co.kr/shop/wproduct.aspx?ItemId=55027282">
 자바스크립트 & 제이쿼리 - 인터랙티브 프론트엔드 웹 개발 교과서</a>로 공부한 내용을 정리한 것이다.</div>

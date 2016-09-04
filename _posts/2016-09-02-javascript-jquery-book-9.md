@@ -44,7 +44,7 @@ HTML 5 이전에는 브라우저 내에 정보를 저장하기 위한 주요 매
     <td>X</td>
   </tr>
   <tr>
-    <td>현재 열려 있는 모든 창 또는 탭이 데이터를 롱유하는가?</td>
+    <td>현재 열려 있는 모든 창 또는 탭이 데이터를 공유하는가?</td>
     <td>O</td>
     <td>X</td>
   </tr>
@@ -80,8 +80,8 @@ HTML 5 이전에는 브라우저 내에 정보를 저장하기 위한 주요 매
 
 AngularJS는 웹 앱(Web apps)을 편리하게 구현할 수 있는 프레임워크이다. 특히 서버의 데이터를 쓰고, 읽고, 수정하고, 삭제하는 앱을 구현하는 데 유용하다. Angular는 **모델-뷰-컨트롤러(MVC, Model-View-Controller)** 패턴이라고 불리는 소프트웨어 개발 접근법을 바탕으로 하고 있다. jQuery와 마찬가지로 페이지에 angular.js 파일을 추가하면 Angular가 제공하는 다양한 도구들을 사용할 수 있다.
 
-- **뷰(View)**는 사용자가 보게 될 어떤 것을 의미한다. 사용자가 뷰 값을 변경하면 모델을 수정하기 위한 **명령( command)**이 전송된다.
-- **컨트롤러(Controller)** 혹은 뷰 모델(View Model)은 뷰를 수정하는 역할을 담당한다. 또한, 뷰에서 변경이 발생하면 모델을 수정하기도 한다. 이 둘 사이 값의 변화를 동기화하는 과정을 데이터**바인딩(data binding)**이라고 한다.
+- **뷰(View)**는 사용자가 보게 될 어떤 것을 의미한다. 사용자가 뷰 값을 변경하면 모델을 수정하기 위한 **명령(command)**이 전송된다.
+- **컨트롤러(Controller)** 혹은 뷰 모델(View Model)은 뷰를 수정하는 역할을 담당한다. 또한, 뷰에서 변경이 발생하면 모델을 수정하기도 한다. 이 둘 사이 값의 변화를 동기화하는 과정을 **데이터 바인딩(data binding)**이라고 한다.
 - **모델(Model)**은 주로 데이터베이스에 저장되며, 모델에 접근하여 수정할 수 있는 서버 측 코드에 의해 관리된다. 모델이 수정되면 **변경 알림(change notification)**이 뷰 모델에 전달된다. 이 정보는 변경 사항을 적용하기 위해 다시 뷰에 전달된다.
 
 ### Google MAP [(https://developers.google.com/maps/documentation/javascript/?hl=ko)](https://developers.google.com/maps/documentation/javascript/?hl=ko)

@@ -48,7 +48,7 @@ tags: [book, javascript, form, validate]
   </tr>
   <tr>
     <td>4</td>
-    <td>elements.birthda</td>
+    <td>elements.birthday</td>
     <td>필수</td>
   </tr>
   <tr>
@@ -124,7 +124,7 @@ tags: [book, javascript, form, validate]
 
 <table>
   <tr>
-    <td>.</td>
+    <td> . </td>
     <td>모든 단일 문자 (새 줄 문자 제외)</td>
   </tr>
   <tr>

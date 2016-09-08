@@ -124,7 +124,7 @@ tags: [book, javascript, form, validate]
 
 <table>
   <tr>
-    <td> . </td>
+    <td> .(dot) </td>
     <td>모든 단일 문자 (새 줄 문자 제외)</td>
   </tr>
   <tr>

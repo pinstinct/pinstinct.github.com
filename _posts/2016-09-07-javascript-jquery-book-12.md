@@ -104,8 +104,6 @@ function addEvent(el, event, callback) {
 -  remove(index) : 목록에서 아이템을 제거한다. 제거할 아이템의 인덱스 번호를 지정하는 하나의 매개변수를 사용한다.
 
 
-> [폼 컨트롤 & 선택상자 예제](https://github.com/pinstinct/front-end-web-js-jquery/tree/master/c13)
-
 
 ## HTML5 폼 요소
 
@@ -127,5 +125,4 @@ HTML5는 지금까지 자바스크립트를 통해 구현했던 기능들을 실
 - 대체 방안 : 구 버전 브라우저들은 새로운 HTML5 요소를 지원하지 않기 때문에 polyfil을 이용하여 동일한 경험/기능을 사용할 수 있다.  다양한 기능에 대한 대체 기능들은 [http://html5please.com/](http://html5please.com/)에서 찾아볼 수 있다.
 - 기능 탐지 : 기능 탐지(feature detection)는 브라우저가 특정 기능을 지원하는지 여부를 확인하는 것이다. Modernizr는 대체 기능 스크립트가 필요치 않은 브라우저를 위해 **조건식 로드(conditional loader)**를 제공한다. 이 로더는 스크립트가 필요로 하는 기능이 지원되지 않는 경우에만 대체 스크립트를 로드하도록 한다.
 
-
-
+> [12장 최종 예제](https://github.com/pinstinct/front-end-web-js-jquery/tree/master/c13)

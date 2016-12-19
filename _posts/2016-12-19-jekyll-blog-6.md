@@ -58,5 +58,3 @@ jekyll-watch (1.5.0)
 
 $ gem install jekyll-paginate
 {% endhighlight %}
-
-> [코드 보기](https://github.com/pinstinct/pinstinct.github.com/commit/843908721022fd417110fbbce22dccf18dc84f82?diff=unified)

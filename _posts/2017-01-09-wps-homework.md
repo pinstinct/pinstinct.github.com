@@ -13,6 +13,7 @@ tags: [fastcampus, emmet, html]
 div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 예를 들어 `div`라고 입력하면 `<div></div>`와 같이 HTML 태그로 변환한다.
 
 ## Nesting operators
+
 ### 1. Child: >
 
 `di>ul>li`

@@ -14,7 +14,7 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 
 ## Nesting operators
 
-### 1. Child: >
+### 1. Child: />
 
 `di>ul>li`
 

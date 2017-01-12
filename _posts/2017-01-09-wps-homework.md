@@ -5,15 +5,16 @@ categories: wps
 tags: [fastcampus, emmet, html]
 ---
 
-## Emmet 문서 정리
+# Emmet 문서 정리
 
 [Emmet Abbreviations Syntax](http://docs.emmet.io/abbreviations/syntax/)를 정리한 문서이다.
 
-### Elements
+## Elements
 div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 예를 들어 `div`라고 입력하면 `<div></div>`와 같이 HTML 태그로 변환한다.
 
-### Nesting operators
-#### 1. Child: >
+## Nesting operators
+### 1. Child: >
+
 `di>ul>li`
 
 ```html
@@ -23,7 +24,9 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 	</ul>
 </div>
 ```
-#### 2. Sibling: +
+
+### 2. Sibling: +
+
 `div+p+bq`
 
 ```html
@@ -31,7 +34,9 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 <p></p>
 <blockquote></blockquote>
 ```
-#### 3. Climb-up: ^
+
+### 3. Climb-up: ^
+
 `div+div>p>span+em^bq`
 
 ```html
@@ -51,7 +56,9 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 </div>
 <blockquote></blockquote>
 ```
-#### 4. Multiplication: *
+
+### 4. Multiplication: *
+
 `ul>li*5`
 
 ```html
@@ -63,7 +70,9 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
     <li></li>
 </ul>
 ```
-#### 5. Grouping: ()
+
+### 5. Grouping: ()
+
 `div>(header>ul>li*2>a)+footer>p`
 
 ```html
@@ -80,10 +89,10 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 </div>
 ```
 
-### Attribute operators
-#### 1. ID and CLASS
-**elem#id**로 표시해 element의 id 특성 값을 지정하고, **elem.class**로 표시해 element의 class 특성 값을 지정한다.
+## Attribute operators
 
+### 1. ID and CLASS
+**elem#id**로 표시해 element의 id 특성 값을 지정하고, **elem.class**로 표시해 element의 class 특성 값을 지정한다.
 
 `div#header+div.page+div#footer.class1.class2.class3`
 
@@ -92,7 +101,8 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 <div class="page"></div>
 <div id="footer" class="class1 class2 class3"></div>
 ```
-#### 2. Custom attributes
+
+### 2. Custom attributes
 **[attr]**로 표시해 element의 custom 속성을 추가한다.
 
 `td[title="Hello world!" colspan=3]`
@@ -106,8 +116,8 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 * 속성 값은 작음 따옴표 혹은 큰 따옴표를 사용할 수 있다.
 * 속성 값에 공백이 없다면, 따옴표를 사용하지 않아도 된다. `td[title=hello colspan=3]`
 
+### 3. Item numbering: $
 
-#### 3. Item numbering: $
 `ul>li.item$*5`
 
 ```html
@@ -131,7 +141,8 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
     <li class="item005"></li>
 </ul>
 ```
-##### Changing numbering base and direction
+
+#### Changing numbering base and direction
 **@** modifier로 오름차순, 내림차순 그리고 시작 값을 바꿀 수 있다.
 
 `ul>li.item$@-*5`
@@ -170,7 +181,8 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 </ul>
 ```
 
-### Text: {}
+## Text: {}
+
 `a{Click me}`
 
 ```html
@@ -198,7 +210,7 @@ div, p와 같이 **요소의 이름**을 이용해 HTML 태그를 생성한다. 
 <a href="">here</a> to continue
 ```
 
-### Notes on abbreviation formatting
+## Notes on abbreviation formatting
 `(header > ul.nav > li*5) + footer`와 같이 읽기 쉽게 작성한다면, 동작하지 않는다.  Emmet에서 공백은 *stop symbol*이기 때문이다.
 
 

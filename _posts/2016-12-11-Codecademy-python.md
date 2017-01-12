@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Codecademy Python
-categories: python
+categories: wps
 tags: [Codecademy, basic, python, code]
 toc: true
 ---
@@ -136,7 +136,7 @@ print type("python")
 
 ## C. Lists & Dictionaries
 
-### 1. List Function 
+### 1. List Function
 
 #### 1.  append(), slice
 

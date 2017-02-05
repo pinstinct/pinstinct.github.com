@@ -8,6 +8,7 @@ tags: [fastcampus, http, https, encryption]
 
 # HTTP와 HTTPS는 무엇이며 그차이는?
 ## HTTP
+
 HTTP(Hyper Transfer Protocol)는 응용프로그램(application) 통신 규약(protocol)이다.
 
 - World Wide Web을 위한 데이터 통신의 기반이다.
@@ -17,8 +18,8 @@ HTTP는 client-server 컴퓨터 모델에서 request-response 프로토콜이 �
 
 웹 브라우저는 user agent(UA)에 한 예이다.
 - User Agent는 유저 대신 행동하는 소프트웨어이다.
-	- 일반적으로 웹 브라우저가 웹 사이트에 브라우저와 운영체제에 대한 정보를 알려주는 것을 말한다. 이를 통해 웹 사이트는 특정 장치의 기능에 맞게 콘텐츠를 지정할 수 있지만, 개인 정보 문제가 제기 된다.
-	- User Agent의 또 다른 용도가 있다. 예를 들어 메일 reader는 메일 user agent이다. user agent는 client처럼 행동한다. 특히 HTTP는 client가 사용자에 의해 운영되지 않는 경우에도 user-agent header를 사용하여 요청을 보낸 클라이언트 소프트웨어를 식별한다.
+  - 일반적으로 웹 브라우저가 웹 사이트에 브라우저와 운영체제에 대한 정보를 알려주는 것을 말한다. 이를 통해 웹 사이트는 특정 장치의 기능에 맞게 콘텐츠를 지정할 수 있지만, 개인 정보 문제가 제기 된다.
+  - User Agent의 또 다른 용도가 있다. 예를 들어 메일 reader는 메일 user agent이다. user agent는 client처럼 행동한다. 특히 HTTP는 client가 사용자에 의해 운영되지 않는 경우에도 user-agent header를 사용하여 요청을 보낸 클라이언트 소프트웨어를 식별한다.
 
 ## HTTPS
 HTTPS는 secure 통신을 위한 프로토콜이다. Transport Layer Security(TLS) 또는 이전의 Secure Sockets Layer(SSL)로 암호화 된 연결 상태에서 HTTP를 통한 통신으로 이루어진다. HTTPS를 사용하는 이유는 방문한 웹 사이트의 인증과 데이터 교환의 프라이버시/무결성 보호를 입증하는 것이다.
@@ -85,11 +86,11 @@ HTTPS는 secure 통신을 위한 프로토콜이다. Transport Layer Security(TL
 
 ## HTTP vs HTTPS
 
-| HTTP          | HTTPS               |
-|---------------|---------------------|
-| 평문으로 통신 | 암호화하여 통신     |
-| 속도 빠름     | 속도 느림           |
-|    -           | 웹 서버 부하가 생김 |
+| HTTP    | HTTPS       |
+| ------- | ----------- |
+| 평문으로 통신 | 암호화하여 통신    |
+| 속도 빠름   | 속도 느림       |
+| -       | 웹 서버 부하가 생김 |
 | 웹 페이지를 보는 중 인터넷이 끊겼다 연결되도 페이지를 계속 볼수 있다 | 인터넷 연결이 끊기면 다시 인증을 해야한다
 
 

@@ -5,8 +5,8 @@ categories: wps
 tags: [fastcampus, http, https, encryption]
 ---
 
-
 # HTTP와 HTTPS는 무엇이며 그차이는?
+
 ## HTTP
 
 HTTP(Hyper Transfer Protocol)는 응용프로그램(application) 통신 규약(protocol)이다.

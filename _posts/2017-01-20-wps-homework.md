@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Day10 - HW
+title: Day10 HW - HTTP vs HTTPS, 공인인증서
 categories: wps
 tags: [fastcampus, http, https, encryption]
 ---

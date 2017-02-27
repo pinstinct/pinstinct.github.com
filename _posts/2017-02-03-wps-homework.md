@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Day18 HW - SQL 문서 정리
+title: Day18 HW - Django tutorial 문서 정리
 categories: wps
 tags: [fastcampus, database, sql]
 ---

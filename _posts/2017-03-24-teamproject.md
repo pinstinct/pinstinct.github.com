@@ -22,6 +22,10 @@
 
 ## 3. 데이터베이스 구축
 
+![](../image/wps-team-flow.png)
+
+
+
 ```
 Client					BookServer			Google Book API Server
    |   	request(keyword)  	|		 request(q)			|	
@@ -61,4 +65,4 @@ Client					BookServer			Google Book API Server
 
 - search_from_google_book(q)
 - save_book(book_id)
-- remove_book(book_id)`
+- remove_book(book_id)

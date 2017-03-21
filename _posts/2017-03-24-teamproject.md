@@ -26,17 +26,6 @@
 
 
 
-```
-Client					BookServer			Google Book API Server
-   |   	request(keyword)  	|		 request(q)			|	
-   |----------------------->|-------------------------->|
-   |	response(result)	|		response(items)	    |
-   |<-----------------------|<--------------------------|
-   |						|							|
-```
-
-
-
 ### 데이터 베이스 구성
 
 ![](../image/wps-team-db.jpg)

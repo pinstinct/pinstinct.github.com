@@ -6,7 +6,7 @@ tags: [fastcampus, code]
 ---
 
 
-# Bookshelf
+# 수북(soobook)
 
 ## 1. 목표
 

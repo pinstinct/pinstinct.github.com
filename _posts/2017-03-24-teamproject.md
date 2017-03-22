@@ -51,11 +51,11 @@ tags: [fastcampus, code]
 ### my_page
 
 - list_from_my_book(user_id)
-- detail_from_my_book(user_id)
+- detail_from_my_book(user_id, book_id)
 - search_from_my_book_list(keyword)
-- add_comment()
+- add_comment(*args)
 - remove_comment(comment_id)
-- add_star()
+- add_star(*args)
 - remove_star(star_id)
 
 ### search

@@ -92,7 +92,7 @@ $ man ls
           - 새로운 디스크를 연결하려면, 파일시스템으로 포맷하고
           - 특정 디렉토리로 **마운트**를 해야 한다.
 
-![](https://pinstinct.github.io/image//images/linux-shell.jpg)
+![](https://pinstinct.github.io/image/linux-shell.jpg)
 
 ## 디렉토리
 사용자 계정마다 고유의 *홈 디렉토리*를 갖는데, 일반 사용자로 시스템을 사용할 때 **파일 쓰기 권한이 부여된 유일한 공간**이다.

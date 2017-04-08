@@ -88,14 +88,8 @@ Usage: cp [OPTION]... [-T] SOURCE DEST
   or:  cp [OPTION]... -t DIRECTORY SOURCE...
 Copy SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.
 
-Mandatory arguments to long options are mandatory for short options too.
-  -a, --archive                same as -dR --preserve=all
-      --attributes-only        don't copy the file data, just the attributes
-      --backup[=CONTROL]       make a backup of each existing destination file
-  -b                           like --backup but does not accept an argument
-
 # t 옵션 확인
-lim@class:/tmp$ cp --help | grep "directory"
+$ cp --help | grep "directory"
   -t, --target-directory=DIRECTORY  copy all SOURCE arguments into DIRECTORY
   -T, --no-target-directory    treat DEST as a normal file
 ```
@@ -374,7 +368,7 @@ lrwxrwxrwx 1 lim lim     6 Apr  8 21:22 fun-sym -> ../fun
 # 절대 경로로 사용할 수 있지만,
 # 상대 경로로 사용하는 것이 바람직하다.
 $ ln -s /home/linux-study/lim/playground/fun dir2/fun-sym-abs
-lim@class:~/playground$ ls -l dir2
+$ ls -l dir2
 total 18
 -rw-r--r-- 4 lim lim 49721 Apr  8 21:40 fun-hard
 lrwxrwxrwx 1 lim lim     6 Apr  8 21:43 fun-sym -> ../fun

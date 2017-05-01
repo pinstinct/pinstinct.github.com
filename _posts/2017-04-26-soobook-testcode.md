@@ -1,7 +1,8 @@
 ---
 layout: post
-title: ProjectTest
-categories: About
+title: Team Project - Soobook Test Code
+categories: wps
+tags: [fastcampus, project]
 ---
 
 # 테스트 코드

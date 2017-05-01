@@ -1,7 +1,8 @@
 ---
 layout: post
-title: Project
-categories: About
+title: Team Project - Soobook Detail
+categories: wps
+tags: [fastcampus, project]
 ---
 
 

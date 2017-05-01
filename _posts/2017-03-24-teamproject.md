@@ -1,8 +1,8 @@
 ---
 layout: post
-title: TeamProject
+title: Team Project
 categories: wps
-tags: [fastcampus, code]
+tags: [fastcampus, project]
 ---
 
 

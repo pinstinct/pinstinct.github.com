@@ -5,7 +5,7 @@ categories: linux
 tags: [linux, command, shell, cli]
 ---
 
-# 확장과 인용
+# 7. 확장과 인용
 
 ## 확장 복습
 

@@ -5,7 +5,7 @@ categories: linux
 tags: [linux, command, shell, cli]
 ---
 
-# 확장과 인용
+# 7. 확장과 인용
 ## 확장
 무엇이든 입력하면 쉘이 그것을 처리하기 전에 다른 무언가로 확장한다. (like 치환)
 

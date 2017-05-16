@@ -1,3 +1,12 @@
+---
+layout: post
+title: 숫자, 문자열, 변수
+categories: python
+tags: [python]
+---
+
+
+
 # Chapter2 파이재료: 숫자, 문자열, 변수
 
 이들은 원자(atom)와 비슷하다. 3장에서는 이들을 어떻게 더 큰 분자(molecule)로 결합하는지 살펴본다.
@@ -195,7 +204,7 @@ ValueError: invalid literal for int() with base 10: '1.0e4'
 
 파이썬에서는 문자열이 불변(immutable)이다.
 
-시퀀스 (Sequence) 타입 : list, tuple, range, binary data, text strings
+시퀀스(Sequence) 타입 : list, tuple, range, binary data, text strings
 
 ### 2.3.1 인용 부호로 문자열 생성
 
@@ -240,9 +249,10 @@ I do not like thee, Doctor Fell.
 >>> poem2
 'I do not like thee, Doctor Fell.\n    The reason why, I cannot tell.\n    But this I know, and know full well:\n    I do not like thee, Doctor Fell.\n'
 
-
 >>> print(99, 'bottles', 'would be enough.')
 99 bottles would be enough.
+
+# 빈 문자열
 >>> ''
 ''
 >>> ""
@@ -251,11 +261,320 @@ I do not like thee, Doctor Fell.
 ''
 >>> """"""
 ''
+
 >>> bottles = 99
 >>> base = ''
 >>> base += 'current inventory: '
 >>> base += str(bottles)
 >>> base
 'current inventory: 99'
+```
+
+
+
+### 2.3.2 데이터 타입 변환: `str()`
+
+```python
+>>> str(98.6)
+'98.6'
+>>> str(1.0e4)
+'10000.0'
+>>> str(True)
+'True'
+```
+
+
+
+### 2.3.3 이스케이프 문자: `/`
+
+```python
+# /n : 줄바꿈
+>>> palindrome = 'A man, \nA plan, \nA canal:\nPanama.'
+>>> print(palindrome)
+A man,
+A plan,
+A canal:
+Panama.
+
+# /t : tab
+>>> print('\tabc')
+	abc
+>>> print('a\tbc')
+a	bc
+>>> print('ab\tc')
+ab	c
+>>> print('abc\t')
+abc
+
+# \", \' : 단일 혹은 이중 인용 부호
+>>> testimony = "\"I did nothing!\" he said. \"Not that either! Or the other thing.\""
+>>> print(testimony)
+"I did nothing!" he said. "Not that either! Or the other thing."
+>>> fact = "The world's largest rubber duck was 54'2\" by 65'7\" by 105'"
+>>> print(fact)
+The world's largest rubber duck was 54'2" by 65'7" by 105'
+
+# \\ : 백슬래시
+>>> speech = 'Today we honor our friend, the backslash: \\.'
+>>> print(speech)
+Today we honor our friend, the backslash: \.
+```
+
+
+
+### 2.3.4 결합: `+`
+
+```python
+# 리터럴 문자열 or 문자열 변수를 결합할 수 있다.
+>>> 'Release the kraken! ' + 'At once!'
+'Release the kraken! At once!'
+
+# 리터럴 문자열을 다음과 같이 차례대로 결합할 수 있다.
+>>> "My word! " "A gentleman caller!"
+'My word! A gentleman caller!'
+
+>>> a = 'Duck.'
+>>> b = a
+>>> c = 'Grey Duck!'
+
+# 파이썬은 문자열을 결합할 때 공백을 자동으로 붙이지 않는다.
+>>> a + b + c
+'Duck.Duck.Grey Duck!'
+
+# print()는 각 인자 사이에 공백을 붙인다. 그리고 마지막에 줄바꿈 문자를 붙인다.
+>>> print(a, b, c)
+Duck. Duck. Grey Duck!
+```
+
+
+
+### 2.3.5 복제: `*`
+
+```python
+>>> start = 'Na ' * 4 + '\n'
+>>> middle = 'Hey ' * 3 + '\n'
+>>> end = 'Goodbye.'
+>>> print(start + start + middle + end)
+Na Na Na Na
+Na Na Na Na
+Hey Hey Hey
+Goodbye.
+```
+
+
+
+### 2.3.6 문자 추출: `[]`
+
+문자열에서 한 문자를 얻기 위해서는 문자열 이름 뒤에 대괄호(`[]`)와 **오프셋**을 지정한다.
+
+```python
+>>> letters = 'abcdefghijklmnopqrstuvwxyz'
+>>> letters[0]
+'a'
+>>> letters[1]
+'b'
+
+>>> letters[-1]
+'z'
+>>> letters[-2]
+'y'
+
+# 오프셋을 문자열의 길이 혹은 이상으로 지정하는 경우 다음과 같은 예외 발생
+>>> print(len(letters))
+26
+>>> letters[26]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: string index out of range
+>>> letters[100]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: string index out of range
+```
+
+문자열은 불변하기 때문에 특정 인덱스에 문자를 삽입하거나 변경할 수 없다.
+
+```python
+>>> name = 'Henny'
+>>> name[0]
+'H'
+>>> name[0] = 'P'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'str' object does not support item assignment
+    
+# 대신 replace() 혹은 slice와 같은 문자열 함수를 사용할 수 있다.
+>>> name.replace('H', 'P')
+'Penny'
+>>> 'H' + name[1:]
+'Henny'
+```
+
+
+
+### 2.3.7 슬라이스: `[start:end:step]`
+
+슬라이스를 사용하여 한 문자열에서 **문자열의 일부(substring)**를 추출할 수 있다.
+
+```python
+>>> letters
+'abcdefghijklmnopqrstuvwxyz'
+>>> letters[:]
+'abcdefghijklmnopqrstuvwxyz'
+>>> letters[20:]
+'uvwxyz'
+>>> letters[10:]
+'klmnopqrstuvwxyz'
+
+# 파이썬은 마지막 오프셋은 포함하지 않는다.
+>>> letters[12:15]
+'mno'
+>>> letters[-3:]
+'xyz'
+>>> letters[18:-3]
+'stuvw'
+>>> letters[-6:-2]
+'uvwx'
+>>> letters[::7]
+'ahov'
+>>> letters[4:20:3]
+'ehknqt'
+>>> letters[::-1]
+'zyxwvutsrqponmlkjihgfedcba'
+```
+
+
+
+### 2.3.8 문자열 길이: `len()`
+
+파이썬의 내장 함수
+
+```python
+>>> len(letters)
+26
+>>> empty = ""
+>>> len(empty)
+0
+```
+
+
+
+### 2.3.9 문자열 나누기: `split()`
+
+`len()`과는 달리 문자열에 특정한 함수도 있다.  문자열 함수는 `string.function(arguments)` 형태로 입력하여 사용한다.
+
+어떤 **구분자(separator)**를 기준으로 하나의 문자열을 작은 문자열 **리스트**로 나누기 위해서 문자열 내장 함수 `split()`을 사용한다.
+
+```python
+>>> todos = 'get gloves,get mask,give cat vitamins,call ambulance'
+>>> todos.split(',')
+['get gloves', 'get mask', 'give cat vitamins', 'call ambulance']
+
+>>> todos.split()
+['get', 'gloves,get', 'mask,give', 'cat', 'vitamins,call', 'ambulance']
+```
+
+만약 구분자를 지정하지 않으면 `split()`는 문자열에 등장하는 공백문자(줄바꿈, 스페이스, 탭)를 사용한다.
+
+
+
+### 2.3.10 문자열로 결합하기: `join()`
+
+`join()` 함수는 `split()` 함수와 반대다. `join()` 함수는 문자열 리스트를 하나의 문자열로 결합한다. `string.join(list)` 형태로 결합한다.
+
+```python
+>>> crypto_list = ['Yeti', 'Bigfoot', 'Loch Ness Monster']
+>>> crypto_string = ', '.join(crypto_list)
+>>> print('Found and signing book deals:', crypto_string)
+Found and signing book deals: Yeti, Bigfoot, Loch Ness Monster
+```
+
+
+
+### 2.3.11 문자열 다루기
+
+```python
+>>> poem  = '''All that doth flow we cannot liquid name
+... Or else would fire and water be the same;
+... But that is liquid which is moist and wet
+... Fire that property can naver get.
+... Then 'tis not cold that doth the fire put out
+... But 'tis the wet that makes it die, no doubt.'''
+>>> poem[:13]
+'All that doth'
+>>> len(poem)
+250
+
+# All로 시작하는가?
+>>> poem.startswith('All')
+True
+
+# That's all, folks!로 끝나는가?
+>>> poem.endswith('That\'s all, folks!')
+False
+
+>>> word = 'the'
+# 첫 번째로 the가 나오는 오프셋은?
+>>> poem.find(word)
+73
+# 마지막으로 the가 나오는 오프셋은?
+>>> poem.rfind(word)
+214
+
+>>> poem.count(word)
+3
+# 글자와 숫자로만 이루어져 있는가?
+>>> poem.isalnum()
+False
+```
+
+
+
+### 2.3.12 대소문자와 배치
+
+```python
+>>> setup = 'a duck goes into a bar...'
+
+# 문자열은 불변하기 때문에,
+# 다음의 어느 예제에서도 setup 문자열을 바꿀 수 없다.
+# 함수를 수행한 뒤 새로운 문자열로 결과를 반환한다.
+>>> setup.strip('.')
+'a duck goes into a bar'
+>>> setup.capitalize()
+'A duck goes into a bar...'
+>>> setup.title()
+'A Duck Goes Into A Bar...'
+>>> setup.upper()
+'A DUCK GOES INTO A BAR...'
+>>> setup.swapcase()
+'A DUCK GOES INTO A BAR...'
+
+# 문자열 정렬
+# 문자열을 지정한 공간(여기서는 30)에서 정렬
+
+# 중앙 배치
+>>> setup.center(30)
+'  a duck goes into a bar...   '
+# 왼쪽 배치
+>>> setup.ljust(30)
+'a duck goes into a bar...     '
+# 오른쪽 배치
+>>> setup.rjust(30)
+'     a duck goes into a bar...'
+```
+
+
+
+### 2.3.13 대체하기: `replace()`
+
+인자로 바꿀 문자열, 대체할 새 문자열, 바꿀 문자열에 대한 횟수를 입력한다. 마지막 인자를 생략하면 첫 번째 인스턴스만 바꾼다.
+
+```python
+>>> setup.replace('duck', 'marmoset')
+'a marmoset goes into a bar...'
+>>> setup.replace('a ', 'a famous ', 100)
+'a famous duck goes into a famous bar...'
+>>> setup.replace('a', 'a famous', 100)
+'a famous duck goes into a famous ba famousr...'
 ```
 

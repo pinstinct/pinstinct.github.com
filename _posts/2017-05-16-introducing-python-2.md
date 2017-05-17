@@ -438,3 +438,320 @@ True
 
 
 ## 3.3 튜플
+
+리스트와 다르게 튜플은 **불변**한다. 튜플은 정의한 후에는 추가, 삭제, 수정을 할 수 없다는 것을 의미한다. 그러므로 튜플은 상수의 리스트라고 할 수 있다.
+
+### 3.3.1 튜플 생성하기: `()`
+
+```python
+>>> empty_tuple = ()
+>>> empty_tuple
+()
+
+# 하나 이상의 요소가 있는 튜플을 만들기 위해서는
+# 각 요소 뒤에 콤마(,)를 붙인다.
+>>> one_marx = 'Groucho',
+>>> one_marx
+('Groucho',)
+
+# 두 개 이상의 요소가 있을 경우,
+# 마지막 요소에는 콤마를 붙이지 않는다.
+>>> marx_tuple = 'Groucho', 'Chico', 'Harpo'
+>>> marx_tuple
+('Groucho', 'Chico', 'Harpo')
+
+# 괄호를 적어주면, 더 명시적이다.
+>>> marx_tuple = ('Groucho', 'Chico', 'Harpo')
+>>> marx_tuple
+('Groucho', 'Chico', 'Harpo')
+
+# tuple() : 다른 객체를 튜플로 만든다.
+>>> marx_list = ['Groucho', 'Chico', 'Harpo']
+>>> tuple(marx_list)
+('Groucho', 'Chico', 'Harpo')
+```
+
+튜플을 정의할 때 괄호(`()`)가 필요 없다. 뒤에 콤마가 붙는다는 것은 튜플을 정의한다는 뜻이다.
+
+#### 튜플 언패킹(tuple unpacking)
+
+```python
+>>> a, b, c = marx_tuple
+>>> a
+'Groucho'
+>>> b
+'Chico'
+>>> c
+'Harpo'
+
+# 한 문장에서 값을 교환하기 위해 임시 변수를 사용하지 않고 튜플을 사용할 수 있다.
+>>> password = 'swordfish'
+>>> icecream = 'tuttifrutti'
+>>> password, icecream = password, icecream
+>>> password
+'swordfish'
+>>> icecream
+'tuttifrutti'
+```
+
+
+
+### 3.3.2 튜플과 리스트
+
+튜플은 리스트의 `append()`, `insert()` 등과 같은 함수가 없고, 함수의 수가 매우 적다. 그러면 왜 튜플을 사용할까?
+
+- 튜플은 더 적은 공간을 사용한다.
+- 실수로 튜플의 항목이 손상될 염려가 없다.
+- 튜플을 딕셔너리의 키로 사용할 수 있다.
+- 네임드 튜플(named tuple)은 객체의 단순한 대안이 될 수 있다.
+- 함수의 인자들은 튜플로 전달된다.
+
+일반적으로 리스트와 딕셔너리를 더 많이 사용한다.
+
+
+
+## 3.4 딕셔너리
+
+딕셔너리(dictionary)는 리스트와 비슷하다. 다른 점은 항목의 순서를 따지지 않으며, 0또는 1과 같은 오프셋으로 항목을 선택할 수 없다. 대신 **값(value)**에 상응하는 고유한 **키(key)**를 지정한다. 딕셔너리는 변경 가능하므로 키-값 요소를 추가, 삭제, 수정할 수 있다.
+
+> 다른 언어에서는 딕셔너리를 **associative array, hash, hashmap** 이라고 부른다.
+
+### 3.4.1 딕셔너리 생성하기:`{}`
+
+```python
+>>> empty_dict = {}
+>>> empty_dict
+{}
+
+>>> bierce = {
+... "day" : "A period of twenty-four hours, mostly misspent",
+... "positive" : "Mistaken at the top of one's voice",
+... "misfortune" : "The kind of fortune that never misses",
+... }
+>>> bierce
+{'day': 'A period of twenty-four hours, mostly misspent', 'misfortune': 'The kind of fortune that never misses', 'positive': "Mistaken at the top of one's voice"}
+```
+
+
+
+### 3.4.2 딕셔너리로 변환하기: `dict()`
+
+딕셔너리의 키 순서는 임의적이다.
+
+```python
+>>> lol = [['a', 'b'], ['c', 'd'], ['e', 'f']]
+>>> dict(lol)
+{'c': 'd', 'a': 'b', 'e': 'f'}
+
+>>> lot = [('a', 'b'), ('c', 'd'), ('e', 'f')]
+>>> dict(lot)
+{'c': 'd', 'a': 'b', 'e': 'f'}
+
+>>> tol = (['a', 'b'], ['c', 'd'], ['e', 'f'])
+>>> dict(tol)
+{'c': 'd', 'a': 'b', 'e': 'f'}
+
+>>> los = ['ab', 'cd', 'ef']
+>>> dict(los)
+{'c': 'd', 'a': 'b', 'e': 'f'}
+```
+
+
+
+### 3.4.3 항목 추가/변경하기: `[key]`
+
+리스트와 달리 딕셔너리를 할당할 때는 인덱스의 범위 지정이 벗어났다는 예외에 대해 걱정할 필요가 없다.
+
+```python
+>>> pythons = {
+... 'Chapman': 'Graham',
+... 'Cleese': 'John',
+... 'Idle': 'Eric',
+... 'Jones': 'Terry',
+... 'Palin': 'Michael',
+... }
+>>> pythons
+{'Idle': 'Eric', 'Cleese': 'John', 'Chapman': 'Graham', 'Palin': 'Michael', 'Jones': 'Terry'}
+
+>>> pythons['Gilliam'] = 'Gerry'
+>>> pythons
+{'Idle': 'Eric', 'Cleese': 'John', 'Chapman': 'Graham', 'Palin': 'Michael', 'Gilliam': 'Gerry', 'Jones': 'Terry'}
+
+>>> pythons['Gilliam'] = 'Terry'
+>>> pythons
+{'Idle': 'Eric', 'Cleese': 'John', 'Chapman': 'Graham', 'Palin': 'Michael', 'Gilliam': 'Terry', 'Jones': 'Terry'}
+```
+
+딕셔너리 키들은 반드시 **유일**해야 한다. 만약 같은 키를 두 번 이상 사용하면 마지막 값이 승리한다.
+
+```python
+>>> some_python = {
+... 'Graham': 'Chapman',
+... 'John': 'Cleese',
+... 'Eric': 'Idle',
+... 'Terry': 'Gilliam',
+... 'Michael': 'Palin',
+... 'Terry': 'Jones',
+... }
+>>> some_python
+{'Eric': 'Idle', 'John': 'Cleese', 'Michael': 'Palin', 'Graham': 'Chapman', 'Terry': 'Jones'}
+```
+
+
+
+### 3.4.4 딕셔너리 결합하기: `update()`
+
+`update()` 함수는 한 딕셔너리의 키와 값들을 복사해서 다른 딕셔너리에 붙여준다.
+
+```python
+>>> pythons
+{'Idle': 'Eric', 'Cleese': 'John', 'Chapman': 'Graham', 'Palin': 'Michael', 'Gilliam': 'Terry', 'Jones': 'Terry'}
+>>> others = {'Marx': 'Groucho', 'Howard': 'Moe'}
+>>> pythons.update(others)
+>>> pythons
+{'Idle': 'Eric', 'Cleese': 'John', 'Chapman': 'Graham', 'Howard': 'Moe', 'Marx': 'Groucho', 'Palin': 'Michael', 'Gilliam': 'Terry', 'Jones': 'Terry'}
+
+>>> first = {'a': 1, 'b': 2}
+>>> second = {'b': 'platypus'}
+>>> first.update(second)
+>>> first
+{'a': 1, 'b': 'platypus'}
+```
+
+
+
+### 3.4.5 항목 삭제하기: `[key]`와 `del`
+
+```python
+>>> del pythons['Marx']
+>>> pythons
+{'Idle': 'Eric', 'Cleese': 'John', 'Chapman': 'Graham', 'Howard': 'Moe', 'Palin': 'Michael', 'Gilliam': 'Terry', 'Jones': 'Terry'}
+
+>>> del pythons['Howard']
+>>> pythons
+{'Idle': 'Eric', 'Cleese': 'John', 'Chapman': 'Graham', 'Palin': 'Michael', 'Gilliam': 'Terry', 'Jones': 'Terry'}
+```
+
+
+
+### 3.4.6 모든 항목 삭제하기: `clear()`
+
+```python
+>>> pythons.clear()
+>>> pythons
+{}
+
+>>> others = {}
+>>> others
+{}
+```
+
+
+
+### 3.4.7 키(key)를 위한 테스트: `in`
+
+딕셔너리에 키가 존재하는지 알고 싶다면 in을 사용한다.
+
+```python
+>>> pythons = {
+... 'Chapman': 'Graham',
+... 'Cleese': 'John',
+... 'Jones': 'Terry',
+... 'Palin': 'Michael'
+... }
+>>> 'Chapman' in pythons
+True
+>>> 'Palin' in pythons
+True
+>>> 'Gilliam' in pythons
+False
+```
+
+
+
+### 3.4.8 항목 얻기: `[key]`
+
+```python
+>>> pythons['Cleese']
+'John'
+
+# 딕셔너리에 키가 존재하지 않으면 예외발생
+>>> pythons['Marx']
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+KeyError: 'Marx'
+```
+
+위의 문제를 피하는 방법이 있다. 첫 번째 `in`으로 키에 대해 테스트를 실행하는 것이다. 두 번째 방법은 딕셔너리의 `get()` 함수를 사용하는 것이다. 이 함수는 딕셔너리, 키, 옵션값을 사용한다.
+
+```python
+# 키가 존재할 경우, 그 값을 얻는다.
+>>> pythons.get('Cleese')
+'John'
+
+# 키가 존재하지 않을 경우, 옵션값을 지정해 이를 출력
+>>> pythons.get('Marx', 'Not a Python')
+'Not a Python'
+# 옵션값을 지정하지 않으면 None을 얻는다.
+>>> pythons.get('Marx')
+>>>
+```
+
+
+
+### 3.4.9 모든 키 얻기: `keys()`
+
+딕셔너리의 모든 키를 가져오기 위해서는 `keys()`를 사용한다.
+
+```python
+>>> signals = {'green': 'go', 'yellow': 'go faster', 'red': 'smile for the camera'}
+>>> signals.keys()
+dict_keys(['green', 'yellow', 'red'])
+```
+
+> 순회가능한(iterable) `dict_keys()`를 반환한다. 이것은 아주 큰 딕셔너리에 유용하다. 사용되지 않을 리스트를 생성하고 저장하기 위한 메모리와 시간을 소비하지 않기 때문이다.
+>
+> 이것을 실제 리스트로 쓰고 싶을 때가 있다. 파이썬 3에서는 `list()`를 호출해서 dict_keys 객체를 리스트로 변환할 수 있다.
+>
+> ```python
+> >>> list(signals.keys())
+> ['green', 'yellow', 'red']
+> ```
+
+### 3.4.10 모든 값 얻기: `values()`
+
+```python
+>>> list(signals.values())
+['go', 'go faster', 'smile for the camera']
+```
+
+### 3.4.11 모든 쌍의 키-값 얻기: `items()`
+
+```python
+# 각 키와 값은 튜플로 반환
+>>> list(signals.items())
+[('green', 'go'), ('yellow', 'go faster'), ('red', 'smile for the camera')]
+```
+
+### 3.4.12 할당: `=`, 복사: `copy()`
+
+```python
+>>> signals
+{'green': 'go', 'yellow': 'go faster', 'red': 'smile for the camera'}
+>>> save_signals = signals
+>>> signals['blue'] = 'confuse everyone'
+>>> save_signals
+{'green': 'go', 'yellow': 'go faster', 'blue': 'confuse everyone', 'red': 'smile for the camera'}
+
+>>> signals = {'green': 'go', 'yellow': 'go faster', 'red': 'smile for the camera'}
+>>> original_signals = signals.copy()
+>>> signals['blue'] = 'confuse everyone'
+>>> signals
+{'green': 'go', 'yellow': 'go faster', 'blue': 'confuse everyone', 'red': 'smile for the camera'}
+>>> original_signals
+{'green': 'go', 'yellow': 'go faster', 'red': 'smile for the camera'}
+```
+
+
+
+## 3.5 셋

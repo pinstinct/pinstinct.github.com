@@ -755,3 +755,228 @@ dict_keys(['green', 'yellow', 'red'])
 
 
 ## 3.5 셋
+
+**셋(set)**은 값은 버리고 키만 남은 딕셔너리와 같다. 딕셔너리와 마찬가지로 각 키는 유일해야 한다. 어떤 것이 존재하는지 여부만 판단하기 위해서는 셋을 사용한다. 그리고 키에 어떤 정보를 첨부해서 그 결과를 얻고 싶으면 딕셔너리를 사용한다.
+
+### 3.5.1 셋 생성하기: `set()`
+
+딕셔너리의 키와 마찬가지로 셋은 순서가 없다.
+
+```python
+>>> empty_set = set()
+>>> empty_set
+set()
+>>> even_number = {0, 2, 4, 6, 8}
+>>> even_number
+{8, 0, 2, 4, 6}
+>>> odd_number = {1, 3, 5, 7, 9}
+>>> odd_number
+{9, 1, 3, 5, 7}
+```
+
+> `{}`는 빈 딕셔너리를 생성한다. 이것이 인터프리터가 빈 셋을 `{}` 대신 `set()`으로 출력하는 이유이기도 하다. 왜 그럴까? 파이썬에서 딕셔너리가 먼저 등장해서 중괄호를 이미 차지하고 있었기 때문이다.
+
+### 3.5.2 데이터 타입 변환하기: `set()`
+
+리스트, 문자열, 튜플, 딕셔너리로부터 중복된 값을 버린 셋을 생성할 수 있다.
+
+```python
+>>> set('letters')
+{'l', 't', 'e', 'r', 's'}
+>>> set(['Dasher', 'Dancer', 'Prancer', 'Mason-Dixon'])
+{'Dasher', 'Prancer', 'Dancer', 'Mason-Dixon'}
+>>> set(('Ummagumma', 'Echoes', 'Atom Heart Mother'))
+{'Ummagumma', 'Echoes', 'Atom Heart Mother'}
+>>> set({'apple': 'red', 'orange': 'orange', 'cherry': 'red'})
+{'cherry', 'orange', 'apple'}
+```
+
+### 3.5.3 `in`으로 값 멤버십 테스트하기
+
+이것은 일반적으로 사용되는 셋의 용도다.
+
+```python
+# 딕셔너리 안에 여러개의 키-값 쌍들이 있다.
+# 셋은 값들의 시퀀스이다.
+>>> drinks = {
+... 'martini': {'vodka', 'vermouth'},
+... 'black russian': {'vodka', 'kahlua'},
+... 'white russian': {'cream', 'kahlua', 'vodka'},
+... 'manhattan': {'rye', 'vermouth', 'bitters'},
+... 'screwdriver': {'orange juice', 'vodka'}
+... }
+
+>>> for name, contents in drinks.items():
+...     if 'vodka' in contents:
+...         print(name)
+...
+screwdriver
+black russian
+white russian
+martini
+```
+
+### 3.5.4 콤비네이션과 연산자
+
+셋값의 **조합(combination)**을 어떻게 확인할까? 
+
+**셋 교집합 연산자(set intersection operator)**인 **앰퍼샌드(`&`)**를 사용한다.
+
+```python
+>>> for name, contents in drinks.items():
+...     if contents & {'vermouth', 'orange juice'}:
+...         print(name)
+...
+manhattan
+screwdriver
+martini
+```
+
+`&` 연산자 결과가 없다면, False로 간주되는 빈 셋을 반환한다.
+
+```python
+>>> bruss = drinks['black russian']
+>>> wruss = drinks['white russian']
+>>> a = {1, 2}
+>>> b = {2, 3}
+
+# 교집합(intersection) : 양쪽 셋에 모두 들어있는 멤버
+>>> a & b
+{2}
+>>> a.intersection(b)
+{2}
+>>> bruss & wruss
+{'kahlua', 'vodka'}
+
+# 합집합(union) : 각 셋의 멤버 모두
+>>> a | b
+{1, 2, 3}
+>>> a.union(b)
+{1, 2, 3}
+>>> bruss | wruss
+{'kahlua', 'cream', 'vodka'}
+>>> bruss.union(wruss)
+{'kahlua', 'cream', 'vodka'}
+
+# 차집합(difference) : 첫 번째 셋에는 있지만 두 번째 셋에는 없는 멤버
+>>> a - b
+{1}
+>>> a.difference(b)
+{1}
+>>> bruss - wruss
+set()
+>>> wruss - bruss
+{'cream'}
+
+# 대칭 차집합(exclusive) : 한 쪽 셋에는 들어 있지만 양쪽 모두에 들어 있지 않은 멤버
+>>> a ^ b
+{1, 3}
+>>> a.symmetric_difference(b)
+{1, 3}
+>>> bruss ^ wruss
+{'cream'}
+
+# 부분집합(subset)
+>>> a <= b
+False
+>>> a.issubset(b)
+False
+>>> bruss <= wruss
+True
+# 모든 셋은 자신의 서브셋이다.
+>>> a <= a
+True
+>>> a.issubset(a)
+True
+
+# 진부분집합(proper subset) : 첫 번째 셋이 두 번째 셋의 진부분집합이 되려면,
+# 두 번째 셋에는 첫 번째 셋의 모든 멤버를 포함한 그 이상의 멤버가 있어야 한다.
+>>> a < b
+False
+>>> a < a
+False
+>>> bruss < wruss
+True
+
+# superset : subset의 반대이다.
+>>> a >= b
+False
+>>> a.issuperset(b)
+False
+>>> wruss >= bruss
+True
+# 모든 셋은 자신의 슈퍼셋이다.
+>>> a >= a
+True
+>>> a.issuperset(a)
+True
+
+# proper superset: 첫 번째 셋이 두 번째 셋의 프로퍼 슈퍼셋이 되려면,
+# 첫 번째 셋에는 두 번째 셋의 모든 멤버를 포함한 그 이상의 멤버가 있어야 한다.
+>>> a > b
+False
+>>> wruss > bruss
+True
+# 모든 셋은 자신의 프로퍼 슈퍼셋이 될 수 없다.
+>>> a > a
+False
+```
+
+
+
+## 3.6 자료구조 비교하기
+
+- `[]` : 리스트
+- `,` : 튜플
+- `{}` : 딕셔너리
+
+```python
+>>> marx_list = ['Groucho', 'Chico', 'Harpo']
+>>> marx_tuple = ('Groucho', 'Chico', 'Harpo')
+>>> marx_dict = {'Harpo': 'harp', 'Chico': 'piano', 'Groucho': 'banjo'}
+>>> marx_list[2]
+'Harpo'
+>>> marx_tuple[2]
+'Harpo'
+>>> marx_dict['Harpo']
+'harp'
+```
+
+리스트와 튜플은 대괄호에 들어가는 값이 정수 **오프셋**이고, 딕셔너리의 경우에는 **키**다.
+
+
+
+## 3.7 자료구조를 더 크게
+
+내장된 자료구조를 결합해서 더 크고 복잡한 자료구조를 만들 수 있다.
+
+```python
+>>> marxes = ['Groucho', 'Chico', 'Harpo']
+>>> pythons = ['Chapman', 'Cleese', 'Gilliam', 'Jones', 'Palin']
+>>> stooges = ['Moe', 'Curly', 'Larry']
+
+# 튜플의 각 요소의 리스트다.
+>>> tuple_of_lists = marxes, pythons, stooges
+>>> tuple_of_lists
+(['Groucho', 'Chico', 'Harpo'], ['Chapman', 'Cleese', 'Gilliam', 'Jones', 'Palin'], ['Moe', 'Curly', 'Larry'])
+
+# 세 리스트를 한 리스트에 포함
+>>> list_of_lists = [marxes, pythons, stooges]
+>>> list_of_lists
+[['Groucho', 'Chico', 'Harpo'], ['Chapman', 'Cleese', 'Gilliam', 'Jones', 'Palin'], ['Moe', 'Curly', 'Larry']]
+
+# 리스트의 딕셔너리
+>>> dict_of_lists = {'Pythons': pythons, 'Stooges': stooges, 'Marxes': marxes}
+>>> dict_of_lists
+{'Pythons': ['Chapman', 'Cleese', 'Gilliam', 'Jones', 'Palin'], 'Stooges': ['Moe', 'Curly', 'Larry'], 'Marxes': ['Groucho', 'Chico', 'Harpo']}
+```
+
+제한사항이 있다면 데이터 타입 그 자체다. 예를 들어 딕셔너리의 키는 불변하기 때문에 리스트, 딕셔너리, 셋은 다른 딕셔너리의 키가 될 수 없다. 그러나 튜플은 딕셔너리의 키가 될 수 있다.
+
+```python
+>>> houses = {
+...:     (44.79, -93.14, 285): 'My House',
+...:     (38.89, -77.03, 13): 'The White House'
+...: }
+```
+

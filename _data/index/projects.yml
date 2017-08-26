@@ -1,0 +1,23 @@
+- name: 개인 도서 관리 서비스 수북(SooBook)
+  descr: "읽었거나 읽고 싶은 책을 개인 책장에 보관하고 관리할 수 있는 서비스입니다. 클라이언트(Web&iOS)와 통신하는 API 서버를 개발했습니다."
+  tech: "사용 기술 : Python, Django, Git, AWS, Docker"
+  image:
+  github: https://github.com/pinstinct/soobook
+
+- name: 수북(SooBook) Sample Code
+  descr: "SooBook API를 Web Frontend에서 호출하는 샘플 프로젝트를 제작했습니다."
+  tech: "사용 기술 : HTML, CSS, jQuery"
+  image:
+  github: https://github.com/pinstinct/soobook-frontend-sample
+
+- name: IGAWorks Release Site
+  descr: "SDK의 이력관리를 위한 사이트 제작을 제안 및 개발"
+  tech: "사용 기술 : Jekyll(Ruby on Rails), Github"
+  image:
+  github: http://igaworks-release.github.io/
+
+- name: IGAWorks Sample Project
+  descr: "쉽게 서비스를 적용할 수 있도록 샘플 프로젝트 도입을 제안 및 개발 "
+  tech: "사용 기술 : Java, Github"
+  image:
+  github: https://github.com/igaworks-release

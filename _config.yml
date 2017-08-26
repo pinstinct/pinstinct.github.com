@@ -1,27 +1,67 @@
-# Permalinks
 #
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
-# relative_permalinks: true
+###################################
+# Site wide configuration
+####################################
+#
+title: Pinstinct
+email: gusals3407@gmail.com
+description: A simple and awesome blog theme powered by jekyll.
+url: https://pinstinct.github.io/pinstinct # the base hostname & protocol for your site
+keywords: ["Programming", "Web", "Python"]
 
+#
+###################################
+# Jekyll configuration
+####################################
+#
+timezone:          Asia/Seoul
+markdown:          kramdown
+highlighter:       rouge
+excerpt_separator: <!--more-->
+permalink:         pretty #/articles/:year-:month/:title
 
-# Setup
-title:               Pinstinct
-tagline:             'Code'
-description:         'code: <a href="https://github.com/pinstinct">Github</a></br> idea: <a href="https://twitter.com/pinstinct">@pinstinct</a>.'
-url:                 https://pinstinct.github.io
-baseurl:             ''
-paginate:            3
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
 
-# About/contact
-author:
-  name:              LIM
-  url:               https://twitter.com/pinstinct
-  email:             gusals3407@gmail.com
-
-# Custom vars
-version:             1.1.5
-
-# Jekyll V3.x requires gems
-# gems
-gems:                [jekyll-paginate]
+#
+###################################
+# Site Owner configuration
+####################################
+#
+owner:
+  name: Pinstinct
+  #avatar: leonids-logo.png
+  job: "Web Developer"
+  #bio: "A backend developer who loves awesome things."
+  email: gusals3407@gmail.com
+  disqus-shortname: hmlim07
+  twitter: pinstinct #username
+  facebook: #username
+  google:
+    plus: #username
+    analytics:
+    verify:
+    ad-client:
+    ad-slot:
+  bing-verify:
+  github: pinstinct #username
+  stackoverflow: #123456/username   from a "http://stackoverflow.com/users/123456/username" link
+  linkedin: #username
+  xing: #username
+  instagram: #username
+  lastfm: #username
+  tumblr: #username
+  pinterest: #username
+  foursquare: #username
+  steam: #username
+  dribbble: #username
+  youtube: #username
+  soundcloud: #username
+  weibo: #username
+  flickr: #username
+  codepen: #username
+  telegram: #username

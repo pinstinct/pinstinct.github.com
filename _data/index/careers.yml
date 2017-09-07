@@ -1,8 +1,14 @@
 # careers section data
 # if you don't have language feature(language.yml is empty), ignore "i18n" items
+- name: 
+  link:
+  date: 2017.9 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  job: Web Developer
+  descr : ""
+
 - name: TouchWorks
   link: http://www.mytouching.com/
-  date: 2017.6 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  date: 2017.6 - 2017.8
   job: Software Engineer
   descr : "- 개발팀에서 사원으로 근무 </br>
            - 서비스 페이지에 문의하기 기능 추가 </br>

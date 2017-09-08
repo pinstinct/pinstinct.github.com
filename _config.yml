@@ -14,6 +14,7 @@ keywords: ["Programming", "Web", "Python"]
 # Jekyll configuration
 ####################################
 #
+baseurl:           ''
 timezone:          Asia/Seoul
 markdown:          kramdown
 highlighter:       rouge

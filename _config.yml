@@ -6,7 +6,7 @@
 title: Pinstinct
 email: gusals3407@gmail.com
 description: A simple and awesome blog theme powered by jekyll.
-url: https://pinstinct.github.io/pinstinct # the base hostname & protocol for your site
+url: https://pinstinct.github.io # the base hostname & protocol for your site
 keywords: ["Programming", "Web", "Python"]
 
 #

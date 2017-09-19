@@ -45,4 +45,4 @@ SITE_ID = 1
 그런데 `Site` 테이블에 `localhost`가 없기 때문에 현재 사이트를 가져올 수 없어 에러가 발생한다.
 `SITE_ID=1`로 지정하고 `localhost:8000/admin/` 페이지 접속하면 정상적으로 동작한다. admin 페이지에 로그인 후, sites 메뉴에서 `localhost`를 등록한다. 그 후 `SITE_ID=1`를 제거하면 정상적으로 동작한다.
 
-> https://docs.djangoproject.com/ko/1.11/ref/contrib/sites/
+> [The "sites" framework](https://docs.djangoproject.com/ko/1.11/ref/contrib/sites/)

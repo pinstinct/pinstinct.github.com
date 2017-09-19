@@ -43,6 +43,8 @@ SITE_ID = 1
 `SITE_ID` 설정은 `Site` 객체의 데이터베이스 ID를 지정한다. 만약 이 설정을 생략하면, `request.get_host()` 메서드가 가져온 호스트 이름의 **domain**과 비교하여 `get_current_site()` 함수가 현재 사이트를 가져오려고 시도한다.
 
 그런데 `Site` 테이블에 `localhost`가 없기 때문에 현재 사이트를 가져올 수 없어 에러가 발생한다.
-`SITE_ID=1`로 지정하고 `localhost:8000/admin/` 페이지 접속하면 정상적으로 동작한다. admin 페이지에 로그인 후, sites 메뉴에서 `localhost`를 등록한다. 그 후 `SITE_ID=1`를 제거하면 정상적으로 동작한다.
+`SITE_ID=1`로 지정하고 `localhost:8000/admin/` 페이지 접속하면 정상적으로 동작한다.
+
+admin 페이지에 로그인 후, sites 메뉴에서 `localhost`를 등록한다. 그 후 `SITE_ID=1`를 제거하면 정상적으로 동작한다.
 
 > [The "sites" framework](https://docs.djangoproject.com/ko/1.11/ref/contrib/sites/)

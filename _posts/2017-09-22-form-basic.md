@@ -99,8 +99,10 @@ form = NameForm (request.POST)
 #### 템플릿
 ```html
 <form action="/your-name/" method="post">
+{% raw %}
     {% csrf_token %}
     {{ form }}
+{% endraw %}
     <input type="submit" value="Submit" />
 </form>
 ```

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 장고 모델폼 commit 키워드 인수
+title: 장고 모델폼 - commit
 categories: patentstart
 tags: [python, django, project]
 ---

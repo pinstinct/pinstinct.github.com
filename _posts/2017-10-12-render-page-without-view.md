@@ -1,6 +1,6 @@
 ---
 layout: post
-title: urls.py에서 템플릿 연결
+title: 뷰 없이 템플릿 렌더링하는 법
 categories: patentstart
 tags: [python, django, project]
 ---

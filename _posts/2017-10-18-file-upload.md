@@ -34,7 +34,7 @@ class MyModel(models.Model):
 
 1. 설정 파일에서 `MEDIA_ROOT`을 정의한다. (성능을 위해 이러한 파일은 데이터베이스에 저장되지 않는다.)
 2. 모델에 `FileField` 또는 `ImageField`를 추가하고 `upload_to` 옵션을 정의한다. 업로드 된 파일에 사용할 `MEDIA_ROOT`의 **하위 디렉토리**를 지정합니다.
-3. 데이터베이스에 저장되는 것은 모두 파일에 대한 경로이다. `url` 속성을 사용해 간편하게 가져올 수 있다. 예를 들어 `ImageField`의 이름이 `mug_shot`인 경우 `{{object.mug_shot.url}}` 템플릿을 사용하여 이미지의 절대 경로를 가져올 수 있다.
+3. 데이터베이스에 저장되는 것은 모두 파일에 대한 경로이다. `url` 속성을 사용해 간편하게 가져올 수 있다. 예를 들어 `ImageField`의 이름이 `mug_shot`인 경우 {% raw %}{{object.mug_shot.url}}{% endraw %} 템플릿을 사용하여 이미지의 절대 경로를 가져올 수 있다.
 
 업로드 된 파일의 파일 이름 또는 크기를 검색하려면, `name` 및 `size` 속성을 각각 사용할 수 있다. (파일의 상대 경로 `path`, 파일의 절대 경로 `url`)
 

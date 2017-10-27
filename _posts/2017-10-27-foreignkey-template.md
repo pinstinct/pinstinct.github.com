@@ -7,20 +7,7 @@ tags: [python, django, project]
 
 > [Query Django Object Lists of ForeignKey](https://stackoverflow.com/questions/42403375/query-django-object-lists-of-foreignkey)
 
-```python
-from django.db import models
-
-class Reporter(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.EmailField()
-
-class Article(models.Model):
-    headline = models.CharField(max_length=100)
-    pub_date = models.DateField()
-    reporter = models.ForeignKey(Reporter, on_delete=models.CASCADE)
-```
-위의 모델의 데이터를 아래와 같은 구조로 출력하려고 한다.
+외래키 관계 모델의 데이터를 아래와 같은 구조로 출력하려고 한다.
 ```
 reporter.first_name
     article.headline
@@ -33,8 +20,23 @@ reporter.first_name
     ...
 ```
 
-뷰에서 아래의 쿼리로 데이터를 컨텍스트에 담아 보낸다.
 ```python
+# models.py
+from django.db import models
+
+class Reporter(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.EmailField()
+
+class Article(models.Model):
+    headline = models.CharField(max_length=100)
+    pub_date = models.DateField()
+    reporter = models.ForeignKey(Reporter, on_delete=models.CASCADE)
+```
+
+```python
+# views.py
 context = {
     'repoter_article': Reporter.objects.all()
 }

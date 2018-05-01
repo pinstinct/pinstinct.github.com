@@ -13,6 +13,23 @@
     <div class="col s12 m9">
       <div class="post-listing">
         {{ content }}
+
+        <!-- 구글 검색  -->
+        <div>
+          <script>
+            (function() {
+              var cx = '004130224481714020566:aqzjz-dzpwo';
+              var gcse = document.createElement('script');
+              gcse.type = 'text/javascript';
+              gcse.async = true;
+              gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(gcse, s);
+            })();
+          </script>
+          <gcse:search></gcse:search>
+        </div>
+        
         {% include footer.html %}
       </div>
     </div>

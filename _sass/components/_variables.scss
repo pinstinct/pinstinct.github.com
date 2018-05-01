@@ -3,6 +3,8 @@
  */
 
 // Google font import
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600);
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:600,400,400italic|Roboto+Mono);
 
 // Custom variables
@@ -20,11 +22,11 @@ $border-width:               .0625rem !default;
 // Typography
 //
 // Font, line-height, and color for body text, headings, and more.
-
-$font-family-sans-serif:     "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-my:             'Open Sans', 'Noto Sans KR', sans-serif;
+$font-family-sans-serif:     "Source Sans Pro", "Helvetica Neue", Arial, sans-serif, Helvetica, !default;
 $font-family-serif:          Georgia, "Times New Roman", Times, serif !default;
 $font-family-monospace:      "Roboto Mono", "Courier New", monospace !default;
-$font-family-base:           $font-family-sans-serif !default;
+$font-family-base:           $font-family-my !default;
 
 // Pixel value used to responsively scale all typography. Applied to the `<html>` element.
 $font-size-root:             15px !default;

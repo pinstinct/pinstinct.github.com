@@ -3,30 +3,26 @@
 - name: 온음
   link: http://www.omipc.com
   date: 2017.9 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
-  job: Web Developer
-  descr : ""
+  job: Software Developer
+  descr : "- 예비출원 플랫폼 개발 중"
 
 - name: TouchWorks
   link: http://www.mytouching.com/
   date: 2017.6 - 2017.8
   job: Software Engineer
-  descr : "- 개발팀에서 사원으로 근무 </br>
-           - 서비스 페이지에 문의하기 기능 추가 </br>
-           - 어드민 페이지에 통계 기능 추가"
+  descr : "- 서비스 페이지에 기능 개발</br>
+           - 관리자 페이지에 통계 기능 개발"
 
 - name: IGAWorks
   link: http://www.igaworks.com/
   date: 2014.7 - 2016.4
   job: Technical Support Engineer
-  descr: "- 연동지원팀에서 사원으로 근무 </br>
-          - 기술 문서 작성 </br>
+  descr: "- 기술 문서 작성 </br>
           - Android/iOS/Server API 연동 안내 및 교육 </br>
-          - Sample project 제작 </br>
-          - Release site 제작"
+          - 샘플 프로젝트 및 릴리즈 사이트 제작"
 
 - name: WINS
   link: https://www.wins21.co.kr/
   date: 2011.1 - 2011.6
-  job: QA Internship
-  descr: "- QA팀에서 인턴으로 근무 </br>
-          - 리눅스 기반의 보안 SW에 대해 Unit Test 및 Blackbox Test 수행"
+  job: QA Intern
+  descr: "- 리눅스 기반 보안 SW에 대해 Unit Test 및 Blackbox Test 수행"

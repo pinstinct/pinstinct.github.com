@@ -6,7 +6,7 @@
 title: Pinstinct
 email: dev@limhm.com
 description: A simple and awesome blog theme powered by jekyll.
-url: http://blog.limhm.com # the base hostname & protocol for your site
+url: https://blog.limhm.com # the base hostname & protocol for your site
 keywords: ["Programming", "Web", "Python"]
 
 #

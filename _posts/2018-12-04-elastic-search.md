@@ -1,4 +1,4 @@
-# 엘라스틱 서치(Elastic Search)
+# 엘라스틱 서치(Elastic Search) 01
 
 > [시작하세요! 엘라스틱서치](http://wikibook.co.kr/elasticsearch/) 정리한 글 입니다.
 
@@ -288,7 +288,7 @@ $ bin/elasticsearch
 [2018-12-05T15:00:15,251][INFO ][o.e.n.Node               ] [zHVF9t8] initialized
 [2018-12-05T15:00:15,251][INFO ][o.e.n.Node               ] [zHVF9t8] starting ...
 [2018-12-05T15:00:15,482][INFO ][o.e.t.TransportService   ] [zHVF9t8] publish_address {127.0.0.1:9301}, bound_addresses {[::1]:9301}, {127.0.0.1:9301}
-[2018-12-05T15:00:18,950][INFO ][o.e.c.s.ClusterApplierService] [zHVF9t8] detected_master {Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true}, added {{Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true},}, reason: apply cluster state (from master [master {Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true} committed version [4]])
+[2018-12-05T15:00:18,950][INFO ][o.e.c.s.ClusterApplierService] [zHVF9t8] detected_master {Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true}, added {Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true},}, reason: apply cluster state (from master [master {Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true} committed version [4]])
 [2018-12-05T15:00:19,531][INFO ][o.e.x.s.t.n.SecurityNetty4HttpServerTransport] [zHVF9t8] publish_address {127.0.0.1:9201}, bound_addresses {[::1]:9201}, {127.0.0.1:9201}
 ```
 `zHVF9t8` 노드이름으로 엘라스틱 서치가 실행됐다.
@@ -298,8 +298,8 @@ $ bin/elasticsearch
 
 ```bash
 ~/Project/start-elasticsearch/c1_n1
-[2018-12-05T15:00:18,900][INFO ][o.e.c.s.MasterService    ] [Q7hCteh] zen-disco-node-join[{zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true}], reason: added {{zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true},}
-[2018-12-05T15:00:19,474][INFO ][o.e.c.s.ClusterApplierService] [Q7hCteh] added {{zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true},}, reason: apply cluster state (from master [master {Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true} committed version [4] source [zen-disco-node-join[{zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true}]]])
+[2018-12-05T15:00:18,900][INFO ][o.e.c.s.MasterService    ] [Q7hCteh] zen-disco-node-join[{zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true}], reason: added {zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true},}
+[2018-12-05T15:00:19,474][INFO ][o.e.c.s.ClusterApplierService] [Q7hCteh] added {zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true},}, reason: apply cluster state (from master [master {Q7hCteh}{Q7hCtehFT3uwEUJvLetUkw}{rSP198_yQ_SYKNz1WgVgYw}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=17179869184, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true} committed version [4] source [zen-disco-node-join[{zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}{ml.machine_memory=17179869184, ml.max_open_jobs=20, xpack.installed=true, ml.enabled=true}]]])
 ```
 첫 번째로 실행했던 `Q7hCteh` 노드의 터미널로 돌아 실행 로그를 확인해보자. 위와 같은 로그가 추가된 것을 확인할 수 있다. `zen-disco-node-join[{zHVF9t8}{zHVF9t8XRtCvpHijMFglfA}{ASz4xmTdSxWrD_9C5mKoxw}{127.0.0.1}{127.0.0.1:9301}`에서 `zHVF9t8` 노드가 추가됐고, 9301 포트를 통해 통신하고 있음을 확인할 수 있다.
 

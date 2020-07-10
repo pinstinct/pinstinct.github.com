@@ -1,4 +1,4 @@
-# 엘라스틱 서치(Elastic Search)
+# 엘라스틱 서치(Elastic Search) 02
 
 > [시작하세요! 엘라스틱서치](http://wikibook.co.kr/elasticsearch/) 정리한 글 입니다.
 

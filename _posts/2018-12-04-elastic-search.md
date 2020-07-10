@@ -374,7 +374,7 @@ $ curl -XGET 'localhost:9201/books/book/1?pretty'
 
 헤드 플러그인으로 현재 구성된 엘라스틱 서치 시스템의 구조와 데이터를 확인해보자. `Q7hCteh`와 `zHVF9t8` 두 개의 노드가 실행되고 있다. `Q7hCteh` 노드의 별 표시는 마스터 노드임을 뜻한다.
 
-![](../image/elastic-search-1.png)
+![](/image/elastic-search-1.png)
 
 `Q7hCteh`와 `zHVF9t8` 노드가 바인딩 된 이유는 클러스터명이 같기 때문이다. 클러스터명이 다르면 노드들은 서로 바인딩 되지 않고 서로 다른 엘라스틱 서치 시스템을 구성하게 된다. 클러스터 명이 `es-test-2`인 노드를 하나 더 실행해보자.
 
@@ -406,7 +406,7 @@ java.lang.IllegalStateException: handshake failed, mismatched cluster name [Clus
 ```
 `zen-disco-elected-as-master ([0] nodes joined), reason: new_master {fe9Fs1a}{fe9Fs1alQ_quXF9qrGj5RA}{J97hTnoSR6-kqN1dtR72Fw}{127.0.0.1}{127.0.0.1:9302}`에서 노드명이 `fe9Fs1a`인 새 노드가 9302번 포트로 통신하며 `fe9Fs1a` 노드가 현재 마스터 노드로 선출됐음을 확인할 수 있다.
 
-![](../image/elastic-search-1-1.png)
+![](/image/elastic-search-1-1.png)
 
 새로 생성한 `fe9Fs1a` 노드는 기존 `es-test` 클러스터에 바인딩 되지 않고 `es-test-2`라는 독립적인 시스템으로 실행됐다. 서로 다른 클러스터지만 한 서버에서 실행되고 있으므로 `fe9Fs1a` 노드의 http 포트는 9202, 데이터 통신 포트는 9302 포트로 실행돼 기존의 노드와 충돌이 일어나지 않는다. 서로 다른 클러스터이므로 데이터 교환도 일어나지 않는다.
 
@@ -460,7 +460,7 @@ $ curl -XPUT 'http://localhost:9200/books/book/1' -H 'Content-Type: application/
 
 별 표시가 된 `node-1` 마스터 노드와 `node-2` 노드를 각각 확인할 수 있다. `node-1` 노드는 `node.data: false`로 설정했기 때문에 데이터가 저장되지 않았다. *Unassigned*라는 항목이 보이고 상단에 클러스터 상태(cluster health)가 yellow로 됐다. 엘라스틱 서치에 색인된 데이터들은 샤드(shard)와 복사본(replica)로 구성해 저장하는데, 현재 데이터를 저장하는 노드가 `node-2` 하나밖에 없어서 복사본의 저장이 이뤄지지 않았다. 따라서 복사본 데이터는 현재 미할당(Unassigned) 상태로 돼 있고, 미할당 상태의 데이터가 존재하므로 클러스터 상태는 yellow다.
 
-![](../image/elastic-search-2.png)
+![](/image/elastic-search-2.png)
 
 노드를 하나 더 실행해보겠다.
 
@@ -477,7 +477,7 @@ node.master: false
 node.data: true
 ```
 
-![](../image/elastic-search-3.png)
+![](/image/elastic-search-3.png)
 
 `node-3`인 데이터 노드가 추가로 생성됐다. 기존에 미할당 상태였던 데이터들이 `node-3`에 할당되면서 클러스터 상태도 다시 green으로 변경됐다.
 
@@ -508,7 +508,7 @@ node.data: true
 
 magazines 인덱스를 생성하는데 샤드 개수를 2개, 복사본은 0으로 설정했다. 주의할 점은 이미 생성된 인덱스의 샤드 설정은 변경할 수 없다. 항상 데이터를 색인하기 전에 샤드와 복사본 개수를 설정해야 한다.
 
-![](../image/elastic-search-4.png)
+![](/image/elastic-search-4.png)
 
 magazines 인덱스는 복사본 없이 최초 샤드만 2개가 존재한다. 여기서 새로운 노드를 하나 더 실행해보자.
 
@@ -522,11 +522,11 @@ node.data: true
 
 books 인덱스는 복사본이 있으므로 node-2, node-3, node-4 중 어떤 노드가 실패해도 0~4의 샤드들이 손실없이 유지된다. 하지만 magazines 인덱스는 node-2, node-3 노드가 실패하면 데이터의 손실이 생긴다. node-3 노드를 종료해보자.
 
-![](../image/elastic-search-5.png)
+![](/image/elastic-search-5.png)
 
 node-3 종료 시 books 인덱스에는 1, 3, 4 샤드가 유실된다. 하지만 node-2에 0, 2, 3, 4 샤드가 있고 node-4에 0, 1, 2 샤드가 있어서 0~4까지 빠진 샤드 없이 전체 데이터가 유지된다. 하지만 node-3에 있던 magazines 인덱스의 1 샤드는 복사본이 없으므로 미할당 상태가 된다.
 
-![](../image/elastic-search-6.png)
+![](/image/elastic-search-6.png)
 
 복사본은 데이터 무결성을 위해서 반드시 필요하다. 샤드와 복사본의 개수는 노드 수와 데이터 용량을 고려해 적절하게 조절하는 것이 좋다. 색인된 데이터의 크기가 5GB고 해당 인덱스가 5개의 샤드와 1쌍의 복사본으로 구성됐다고 가정하면 1개의 샤드 용량은 각 1GB고 전체 합은 최초샤드와 복사본을 합한 10개의 샤드, 총 10GB가 된다.
 

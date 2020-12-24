@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Froala 에디터 설치
-categories: patentstart
+categories: experience
 tags: [python, django, project, jquery]
 ---
 

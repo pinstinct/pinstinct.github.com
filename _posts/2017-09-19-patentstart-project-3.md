@@ -1,7 +1,7 @@
 ---
 layout: post
 title: django-allauth 설치
-categories: patentstart
+categories: experience
 tags: [python, django, project]
 ---
 

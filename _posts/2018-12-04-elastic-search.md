@@ -1,4 +1,12 @@
-# 엘라스틱 서치(Elastic Search) 01
+---
+layout: post
+title: 엘라스틱 서치(Elastic Search) 01
+categories: ElasticSearch
+tags: [elasticsearch]
+excerpt: 엘라스틱 서치를 설치하고 실행합니다.
+---
+
+
 
 > [시작하세요! 엘라스틱서치](http://wikibook.co.kr/elasticsearch/) 정리한 글 입니다.
 
@@ -58,6 +66,7 @@ $ curl -XGET 'localhost:9200'
 다음과 같이 프로세스 ID를 이용해 엘라스틱서치를 종료한다.
 - `-d` : 백그라운드 실행
 - `-p <file>` : 프로세스 ID를 file에 저장
+
 ```bash
 $ ps -ef | grep elasticsearch
 501 59861 58164   0 12:04PM ttys000    1:19.85 /usr/bin/java -Xms1g -Xmx1g -XX:+UseConcMarkSweepGC ....

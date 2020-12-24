@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Codecademy Python
-categories: wps
+categories: web
 tags: [Codecademy, basic, python, code]
 toc: true
 ---

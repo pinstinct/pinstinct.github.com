@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 장고 파일 업로드
-categories: patentstart
+categories: experience
 tags: [python, django, project]
 ---
 

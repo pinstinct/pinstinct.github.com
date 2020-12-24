@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 장고 폼 기본
-categories: patentstart
+categories: experience
 tags: [python, django, project]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: AWS EC2 서버 설정과 배포
-categories: patentstart
+categories: experience
 tags: [python, django, project, aws, ec2, deploy, uwsgi, nginx]
 ---
 

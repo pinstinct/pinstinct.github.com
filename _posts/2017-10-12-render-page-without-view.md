@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 뷰 없이 템플릿 렌더링하는 법
-categories: patentstart
+categories: experience
 tags: [python, django, project]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Day1 HW - Emmet 문서 정리
-categories: wps
+title: Emmet 문서 정리
+categories: web
 tags: [fastcampus, emmet, html]
 ---
 

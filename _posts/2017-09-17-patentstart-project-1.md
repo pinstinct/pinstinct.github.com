@@ -1,7 +1,7 @@
 ---
 layout: post
 title: User 모델 설정
-categories: patentstart
+categories: experience
 tags: [python, django, project]
 ---
 

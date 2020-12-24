@@ -1,4 +1,11 @@
-# 엘라스틱 서치(Elastic Search) 02
+---
+layout: post
+title: 엘라스틱 서치(Elastic Search) 02
+categories: ElasticSearch
+tags: [elasticsearch]
+excerpt: 엘라스틱 서치를 이용해 실제 데이터를 다룹니다.
+---
+
 
 > [시작하세요! 엘라스틱서치](http://wikibook.co.kr/elasticsearch/) 정리한 글 입니다.
 

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Day43 HW - DRF API Guide 문서 정리
-categories: wps
+title: DRF API Guide 문서 정리
+categories: web
 tags: [fastcampus, api, sql]
 ---
 

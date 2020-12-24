@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Day14 HW - SQL 문서 정리
-categories: wps
+title: SQL 문서 정리
+categories: web
 tags: [fastcampus, database, sql]
 ---
 

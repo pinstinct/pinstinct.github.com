@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 장고 모델폼 - commit
-categories: patentstart
+categories: experience
 tags: [python, django, project]
 ---
 

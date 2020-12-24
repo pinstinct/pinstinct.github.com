@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Day18 HW - Django tutorial 문서 정리
-categories: wps
+title: Django tutorial 문서 정리
+categories: web
 tags: [fastcampus, database, sql]
 ---
 

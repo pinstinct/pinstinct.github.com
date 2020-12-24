@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 장고 폼 유효성
-categories: patentstart
+categories: experience
 tags: [python, django, project]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Day5 HW - HTML/CSS 실습
-categories: wps
+title: HTML/CSS 실습
+categories: web
 tags: [fastcampus, css, html]
 ---
 

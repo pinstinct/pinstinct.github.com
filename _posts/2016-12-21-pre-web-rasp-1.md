@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Pre-SCHOOL 1 X Raspberry Pi
-categories: wps
+title: Pre 1 X Raspberry Pi
+categories: web
 tags: [fastcampus, vim, python, code]
 ---
 

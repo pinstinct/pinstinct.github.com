@@ -1,7 +1,7 @@
 ---
 layout: post
 title: AWS IAM/S3를 이용한 정적 파일 배포
-categories: patentstart
+categories: experience
 tags: [python, django, project, aws, deploy]
 ---
 

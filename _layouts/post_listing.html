@@ -35,7 +35,7 @@ layout: default
 
     </header>
 
-    <!-- {% if post.excerpt %}
+    {% if post.excerpt %}
     <div class="post-description">
       <p>
         {{ post.excerpt }}
@@ -56,8 +56,8 @@ layout: default
       {% if post.image.credit %}
       <span class="image-credit">Photo Credit: <a href="{{ post.image.creditlink }}">{{ post.image.credit }}</a></span>
       {% endif %}
-    </div><!-- /.image-wrap -->
-    {% endif %} -->
+    </div>/.image-wrap
+    {% endif %}
 
 </section>
 {% endfor %}

@@ -1,28 +1,40 @@
 # careers section data
 # if you don't have language feature(language.yml is empty), ignore "i18n" items
-# - name: 온음
-#   link: http://www.omipc.com
-#   date: 2017.9 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
-#   job: Software Developer
-#   descr : "- 예비출원 플랫폼 개발 중"
+- name: 놀이의 발견
+  link: https://nolbal.com/
+  date: 2020.3 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  job: Software Engineer
+  descr : "- 놀이의발견 사장님페이지 서버 개발</br>
+           - Django 기반 서버를 API 서버로 변경</br>"
+          #  - 테스트 코드 도입</br>
+          #  - 배포 자동화 도입
 
-# - name: TouchWorks
-#   link: http://www.mytouching.com/
-#   date: 2017.6 - 2017.8
-#   job: Software Engineer
-#   descr : "- 서비스 페이지에 기능 개발</br>
-#            - 관리자 페이지에 통계 기능 개발"
+- name: 온음
+  link: http://www.omipc.com
+  date: 2017.9 - 2019.05
+  job: Software Developer
+  descr : "- 예비출원 플랫폼 개발(http://www.patentstart.co.kr/)</br>
+           - IT operations(AWS, Docker)</br>
+           - Elastic Search를 이용해 특허정보 검색 기능 개발"
 
-# - name: IGAWorks
-#   link: http://www.igaworks.com/
-#   date: 2014.7 - 2016.4
-#   job: Technical Support Engineer
-#   descr: "- 기술 문서 작성 </br>
-#           - Android/iOS/Server API 연동 안내 및 교육 </br>
-#           - 샘플 프로젝트 및 릴리즈 사이트 제작"
+- name: TouchWorks
+  link: http://www.mytouching.com/
+  date: 2017.6 - 2017.8
+  job: Software Engineer
+  descr : "- 서비스 페이지에 기능 개발</br>
+           - 관리자 페이지에 통계 기능 개발"
 
-# - name: WINS
-#   link: https://www.wins21.co.kr/
-#   date: 2011.1 - 2011.6
-#   job: QA Intern
-#   descr: "- 리눅스 기반 보안 SW에 대해 Unit Test 및 Blackbox Test 수행"
+- name: IGAWorks
+  link: http://www.igaworks.com/
+  date: 2014.7 - 2016.4
+  job: Technical Support Engineer
+  descr: "- 기술 문서 작성 </br>
+          - Android/iOS/Server API 연동 안내 및 교육 </br>
+          - 플랫폼 연동 앱/웹 제작</br>
+          - 정적 사이트 생성기 기반 릴리즈 사이트 제작"
+
+- name: WINS
+  link: http://wins21.co.kr/main/main.html
+  date: 2011.1 - 2011.6
+  job: QA Intern
+  descr: "- 리눅스 기반 보안 SW에 대해 Unit Test 및 Blackbox Test 수행"

@@ -3,7 +3,7 @@ layout: post
 title: form-data를 전송할 때 발생한 문제 해결
 categories: experience
 tags: [http, network]
-excerpt: Content-Type multipart/form-data를 정의해 요청했을 때, 서버에 데이터를 받을 수 없었던 문제를 해결합니다.
+excerpt: Content-Type multipart/form-data를 정의해 요청했을 때, 서버에서 데이터를 받을 수 없었던 문제를 해결합니다.
 ---
 
 클라이언트가 서버와 통신할 때, 헤더의 `Content-Type`을 포함해 호출합니다. `application/json`으로 보낼땐 문제가 없었는데, `multipart/form-data` 보내니 서버에 데이터가 오지 않았습니다.

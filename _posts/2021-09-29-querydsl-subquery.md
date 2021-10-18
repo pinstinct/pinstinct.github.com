@@ -3,10 +3,10 @@ layout: post
 title: QueryDsl에서 from 혹은 join에 subQuery 
 categories: querydsl
 tags: [java, spring, querydsl]
-excerpt: QueryDsl에서 sub query를 하는 법을 정리합니다.
+excerpt: QueryDsl에서 sub query를 사용하는 법을 정리합니다.
 ---
 
-### sub query
+### sub query
 
 
 `SubQueryExpression`은 sub query를 표현합니다. 아래와 같이 subQuery를 선언합니다.
@@ -14,11 +14,9 @@ excerpt: QueryDsl에서 sub query를 하는 법을 정리합니다.
 
 ```java
 import static com.querydsl.sql.SQLExpressions.select;
-
 import com.querydsl.core.types.SubQueryExpression;
 
 QSurvey survey = QSurvey.survey;
-
 SubQueryExpression<String> subQuery = select(survey.name)
   .from(survey);
 
@@ -28,9 +26,7 @@ SubQueryExpression<String> subQuery = select(survey.name)
 
 ```java
 import static com.querydsl.core.types.dsl.Expressions.stringPath;
-
 import com.querydsl.core.types.dsl.StringPath;
-
 
 final StringPath subQueryAlias = stringPath("subQueryAlias"); 
 
@@ -49,7 +45,7 @@ return queryFactory
 ```
 
 
-### multi table union sub query 
+### multi table union sub query 
 
 
 ```java
@@ -65,13 +61,13 @@ final String name = "name";
 final StringPath unionQueryAlias = stringPath("unionQueryAlias");
 
 SubQueryExpression<Tuple> employeeQuery = select(
-    http://employee.id.as(id),
-    http://employee.name.as(name))
+    employee.id.as(id),
+    employee.name.as(name))
     .from(employee);
 
 SubQueryExpression<Tuple> surveyQuery = select(
-    http://survey.employeeId.as(id),
-    http://survey.name.as(name))
+    survey.employeeId.as(id),
+    survey.name.as(name))
     .from(survey);
 
 SubQueryExpression<Tuple> unionQuery = unionAll(employeeQuery, surveyQuery);

@@ -9,7 +9,7 @@ excerpt: QueryDsl에서 기능을 확인하고 적용하는 방법을 예(connec
 
 ## Oracle, Hierarchical Queries 
 
-> https://docs.oracle.com/cd/B19306_01/server.102/b14200/queries003.htm
+> [Database SQL Reference](https://docs.oracle.com/cd/B19306_01/server.102/b14200/queries003.htm)
 
 
 ```sql
@@ -22,7 +22,7 @@ CONNECT BY LEVEL <= 3
 
 `CONNECT BY` 쿼리가 오라클의 기능인 것을 확인하고 아래의 테스트 코드를 참고했다.
 
-> https://github.com/querydsl/querydsl/blob/master/querydsl-sql/src/test/java/com/querydsl/sql/oracle/OracleQueryTest.java
+> [QueryDsl Github](https://github.com/querydsl/querydsl/blob/master/querydsl-sql/src/test/java/com/querydsl/sql/oracle/OracleQueryTest.java)
 
 또한, 구글에서 `connectby site: https://querydsl.com/static/querydsl/4.4.0` 검색어를 이용해 QueryDsl 자바 문서를 찾았다.
 

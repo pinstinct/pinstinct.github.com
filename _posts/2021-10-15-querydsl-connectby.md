@@ -33,7 +33,7 @@ CONNECT BY LEVEL <= 3
 
 ```java
 private final OracleQueryFactory queryFactory;
-import static com.querydsl.sql.oracle.OracleGrammar.level;  // level pseudocolumn
+import static com.querydsl.sql.oracle.OracleGrammar.level;  // level pseudo column
 
 queryFactory
   .query()  // 쿼리를 먼저 호출

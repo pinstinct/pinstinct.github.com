@@ -1,28 +1,58 @@
 # careers section data
 # if you don't have language feature(language.yml is empty), ignore "i18n" items
-- name: 놀이의 발견
-  link: https://nolbal.com/
-  date: 2020.3 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
-  job: Software Engineer
-  descr : "- 놀이의발견 사장님페이지 서버 개발</br>
-           - Django 기반 서버를 API 서버로 변경</br>"
-          #  - 테스트 코드 도입</br>
-          #  - 배포 자동화 도입
+- name: 데상트코리아
+  link: https://shop.descentekorea.co.kr
+  date: 2021.7 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  job: API 서버 개발
+  descr : "- 패션 eCommerce 서비스 API 서버를 개발합니다.</br>
+            - Java, SpringBoot, Oracle을 사용합니다.</br>
+            - 모노리틱아키텍쳐에서마이크로서비스아키텍쳐로변경하는작업을진행했습니다.</br>
+            &nbsp;&nbsp;  - 장바구니,주문,결제관련기능을담당했습니다.</br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• 팩토리패턴을도입해결제로직리팩토링(PG추가시,작업속도향상)</br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• raw 쿼리를 queryDsl로 변경하고, 페이지네이션을 적용해 속도 향상</br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• 단위테스트코드도입</br>
+            - 개발환경을개선했습니다.</br>
+              &nbsp;&nbsp;• Git hooks, pre-commit 도구를 이용해 google java style 린트 자동화 적용</br>"
+
+
+- name: 놀이의발견
+  link: https://ceo.nolbal.com
+  date: 2020.3 - 2021.6
+  job: BackEnd Developer
+  descr : "- 키즈 플랫폼 서비스의 Business to Business 백엔드 개발합니다. </br>
+          - Python, Django, Mysql을 사용합니다.</br>
+          - Restful API 서버로 변경했습니다.</br>
+          &nbsp;&nbsp;• 정산관련 코드를 작은 기능 단위로 리팩토링 (수정 시, 작업속도 향상) </br>
+          &nbsp;&nbsp;• 단위테스트코드도입</br>
+          &nbsp;&nbsp;• Docker, Github을 이용해 배포자동화</br>
+        - 유지보수</br>
+        &nbsp;&nbsp;• 유저의 권한 기능을 추가하고, 그에 따른 테이블 관계 변화로 데이터 마이그레이션 진행</br>
+"
 
 - name: 온음
   link: http://www.omipc.com
-  date: 2017.9 - 2019.05
+  date: 2017.9 - 2019.6
   job: Software Developer
-  descr : "- 예비출원 플랫폼 개발(http://www.patentstart.co.kr/)</br>
-           - IT operations(AWS, Docker)</br>
-           - Elastic Search를 이용해 특허정보 검색 기능 개발"
+  descr : "- 특허예비출원 웹 어플리케이션을 개발합니다.</br>
+- Python, Django, Mysql을 사용합니다.</br>
+- Docker, AWS를 사용해 배포했습니다.</br>
+- 프로젝트처음시작부터배포까지담당해서비스를런칭했습니다. </br>
+- 유지보수</br>
+ &nbsp; &nbsp;• Celery를 이용해 정기알림(Email, Sms)을 비동기로 발송</br>
+  &nbsp; &nbsp; • ElasticSearch를 이용해 특허 검색기능 도입</br>
+ "
 
 - name: TouchWorks
   link: http://www.mytouching.com/
   date: 2017.6 - 2017.8
   job: Software Engineer
-  descr : "- 서비스 페이지에 기능 개발</br>
-           - 관리자 페이지에 통계 기능 개발"
+  descr : "
+  - 포인트 적립 플랫폼 서비스를 개발합니다. </br>
+  - Ruby, Rails, Mysql을 사용합니다.</br>
+- 유지보수</br>
+&nbsp;&nbsp;• Javascript를 사용해 서비스 페이지에 기능 개발</br>
+&nbsp;&nbsp;• SQL과 ORM을 이용해 관리자 페이지에 통계기능 개발</br>
+  "
 
 - name: IGAWorks
   link: http://www.igaworks.com/

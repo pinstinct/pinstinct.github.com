@@ -38,8 +38,8 @@
 - Docker, AWS를 사용해 배포했습니다.</br>
 - 프로젝트 처음 시작부터 배포까지 담당해 서비스를 런칭했습니다. </br>
 - 유지보수</br>
- &nbsp; &nbsp;• Celery를 이용해 정기알림(Email, Sms)을 비동기로 발송</br>
-  &nbsp; &nbsp; • ElasticSearch를 이용해 특허 검색기능 도입</br>
+ &nbsp;&nbsp;• Celery를 이용해 정기알림(Email, Sms)을 비동기로 발송</br>
+  &nbsp;&nbsp;• ElasticSearch를 이용해 특허 검색기능 도입</br>
  "
 
 - name: TouchWorks

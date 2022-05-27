@@ -2,7 +2,7 @@
 # if you don't have language feature(language.yml is empty), ignore "i18n" items
 - name: 샌드박스 네트워크
   link: https://sandbox.co.kr
-  date: 2021.7 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  date: 2022.4 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
   job: Software Engineer
   descr: "
   - Youtube 분석 서비스 API 서버를 개발합니다.<br>

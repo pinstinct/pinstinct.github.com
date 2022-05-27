@@ -1,8 +1,18 @@
 # careers section data
 # if you don't have language feature(language.yml is empty), ignore "i18n" items
+- name: 샌드박스 네트워크
+  link: https://sandbox.co.kr
+  date: 2021.7 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  job: Software Engineer
+  descr: "
+  - Youtube 분석 서비스 API 서버를 개발합니다.<br>
+  - Python, FastAPI, SQLAlchemy, MySQL을 사용합니다.
+  "
+
+
 - name: 데상트코리아
   link: https://shop.descentekorea.co.kr
-  date: 2021.7 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  date: 2021.7 - 2022.3
   job: API 서버 개발
   descr : "- 패션 eCommerce 서비스 API 서버를 개발합니다.</br>
             - Java, SpringBoot, Oracle을 사용합니다.</br>
@@ -18,7 +28,7 @@
 - name: 놀이의발견
   link: https://ceo.nolbal.com
   date: 2020.3 - 2021.6
-  job: BackEnd Developer
+  job: Software Developer
   descr : "- 키즈 플랫폼 서비스의 Business to Business 백엔드 개발합니다. </br>
           - Python, Django, Mysql을 사용합니다.</br>
           - Restful API 서버로 변경했습니다.</br>
@@ -32,7 +42,7 @@
 - name: 온음
   link: http://www.omipc.com
   date: 2017.9 - 2019.6
-  job: Software Developer
+  job: Developer
   descr : "- 특허예비출원 웹 어플리케이션을 개발합니다.</br>
 - Python, Django, Mysql을 사용합니다.</br>
 - Docker, AWS를 사용해 배포했습니다.</br>

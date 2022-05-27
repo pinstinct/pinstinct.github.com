@@ -1,17 +1,19 @@
 --- 
 layout: post
 title: HTML
-categories: html
+categories: html&css
 tags: [udemy, html, structure, div, span]
 --- 
-<div class="message">Udemy에서 <a href="https://www.udemy.com/build-your-first-website-in-1-week/">Build Your First Website in 1 Week with HTML5 and CSS3</a> 강의를 듣고 정리한 것이다.</div>
+
+Udemy에서 [Build Your First Website in 1 Week with HTML5 and CSS3](https://www.udemy.com/build-your-first-website-in-1-week/) 강의를 듣고 정리한 것이다.
 
 
 ## Basic
 HTML(Markup language) : It controls the structure of the site's code. 
 
 ## Structure
-{% highlight html %}
+
+```html
 <!DOCTYPE html>
 <html>
 	<!-- <head></head> section is background info,
@@ -31,10 +33,11 @@ HTML(Markup language) : It controls the structure of the site's code.
 		always defined name/value pair -->
 	</body>
 </html>
-{% endhighlight %}
+```
 
 ## Path
-{% highlight html %}
+
+```html
 <!-- folder directory -->
 .first-site
 +-- css
@@ -51,8 +54,7 @@ css : The browser to look for the "css" folder in the same directory
 / : Once "css" folder is found, go into it
 bootstrap.min.css : Then find "bootstrap.min.css"
 " -->
-
-{% endhighlight %}
+```
 
 ## DIV
 element는 Block element와 Inline element가 있다.
@@ -64,6 +66,7 @@ element는 Block element와 Inline element가 있다.
 
 ## Span
 group inline elements in a document.
-{% highlight html %}
+
+```html
 <strong>strong <span style="color:red">red</span> text.</strong>
-{% endhighlight %}
+```

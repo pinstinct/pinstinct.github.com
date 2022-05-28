@@ -1,24 +1,25 @@
-# - name: 개인 도서 관리 서비스 수북(SooBook)
-#   descr: "읽었거나 읽고 싶은 책을 개인 책장에 보관하고 관리할 수 있는 서비스입니다. 
-#           클라이언트(Web&iOS)와 통신하는 API 서버를 개발했습니다."
-#   tech: "Python, Django, PostgreSQL, git, AWS, Docker"
-#   image:
-#   github: https://github.com/pinstinct/soobook
+- name: 밋고(MeetGo)
+  descr: "
+  오프라인 모임 플랫폼을 개발했습니다.<br>
+  - 테크페미에서 진행한 프로젝트에 백엔드 개발자로 참여했습니다.<br>
+  - 2020년 12월에 서비스를 종료했습니다.<br>
+  API 서버를 개발했습니다.<br>
+  - 아임포트 결제 모듈을 사용해 결제 API 개발했습니다.<br>
+  - 회원관리 API를 개발했습니다.<br>
+  - 관리자 페이지 개발했습니다.
+  "
+  tech: "Python, Django, MySQL, git, AWS"
+  image:
+  url: https://meetgo.gitbook.io/api/
+  urlname: API 문서
 
-# - name: 수북(SooBook) Client Sample
-#   descr: "SooBook API를 Web Frontend에서 호출하는 샘플 프로젝트를 제작했습니다."
-#   tech: "HTML, CSS, Javascript, jQuery"
-#   image:
-#   github: https://github.com/pinstinct/soobook-frontend-sample
-
-# - name: IGAWorks Release Site
-#   descr: "SDK 이력관리를 위한 사이트를 기획하고 개발했습니다."
-#   tech: "Ruby, Rails, Github"
-#   image:
-#   github: http://igaworks-release.github.io/
-
-# - name: IGAWorks Sample Project
-#   descr: "안드로이드 샘플 프로젝트의 버전관리를 위해 git을 도입하고 샘플 프로젝트를 제작했습니다."
-#   tech: "Java, git"
-#   image: 
-#   github: https://github.com/igaworks-release
+- name: 수북(SooBook)
+  descr: "
+  도서 관리 서비스를 개발했습니다.<br>
+  API 서버를 개발했습니다.<br>
+  - 외부 서버(Google, Kakao API)와 통신해 도서 데이터베이스를 구축했습니다.<br>
+  - 테스트 코드를 작성했습니다.
+  "
+  tech: "Python, Django, PostgreSQL, git, Docker, AWS"
+  image:
+  github: https://github.com/pinstinct/soobook

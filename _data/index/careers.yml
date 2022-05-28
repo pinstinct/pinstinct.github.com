@@ -3,78 +3,88 @@
 - name: 샌드박스 네트워크
   link: https://sandbox.co.kr
   date: 2022.4 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
-  job: Software Engineer
+  job: Content Tech, Senior Software Engineer
   descr: "
-  - Youtube 분석 서비스 API 서버를 개발합니다.<br>
-  - Python, FastAPI, SQLAlchemy, MySQL을 사용합니다.
+  Youtube 분석 서비스 API 서버를 개발합니다.<br>
+  - Python, FastAPI, SQLAlchemy, Mysql을 사용합니다.<br>
   "
 
 
 - name: 데상트코리아
   link: https://shop.descentekorea.co.kr
   date: 2021.7 - 2022.3
-  job: API 서버 개발
-  descr : "- 패션 eCommerce 서비스 API 서버를 개발합니다.</br>
-            - Java, SpringBoot, Oracle을 사용합니다.</br>
-            - 모노리틱 아키텍쳐에서 마이크로서비스 아키텍쳐로 변경하는 작업을 진행했습니다.</br>
-            &nbsp;&nbsp;  - 장바구니, 주문, 결제 관련 기능을 담당했습니다.</br>
-                &nbsp;&nbsp;&nbsp;&nbsp;• 팩토리 패턴을 도입해 결제 로직 리팩토링(PG추가시, 작업속도 향상)</br>
-                &nbsp;&nbsp;&nbsp;&nbsp;• raw 쿼리를 queryDsl로 변경하고, 페이지네이션을 적용해 속도 향상</br>
-                &nbsp;&nbsp;&nbsp;&nbsp;• 단위 테스트 코드 도입</br>
-            - 개발환경을 개선했습니다.</br>
-              &nbsp;&nbsp;• Git hooks, pre-commit 도구를 이용해 google java style 린트 자동화 적용</br>"
-
+  job: 온라인시스템팀, API 개발
+  descr : "
+  패션 eCommerce 서비스 API 서버를 개발했습니다.<br>
+  - 데상트 코리아 온라인 커머스 사이트를 개발했습니다.<br>
+  - Java, SpringBoot, Oracle을 사용했습니다.<br>
+  API 서버 개발를 개발했습니다. <br>
+  - Java, Spring으로 구성된 모노리틱아키텍쳐에서 마이크로서비스 아키텍쳐로 변경했습니다.<br>
+  - Java, SpringBoot 프로젝트 초기 구성을 담당했습니다.<br>
+  - Git hooks pre-commit 도구를 사용해 google java style 린트 자동화를 적용했습니다.<br>
+  장바구니, 주문, 결제 기능을 담당했습니다.<br>
+  - 팩토리 메소드 패턴을 도입해 결제 로직을 리팩토링했습니다.<br>
+  - Raw 쿼리를 queryDsl로 변경하고, 페이지네이션을 적용했습니다.<br>
+  - 단위 테스트를 도입했습니다.<br>
+  "
 
 - name: 놀이의발견
   link: https://ceo.nolbal.com
   date: 2020.3 - 2021.6
-  job: Software Developer
-  descr : "- 키즈 플랫폼 서비스의 Business to Business 백엔드 개발합니다. </br>
-          - Python, Django, Mysql을 사용합니다.</br>
-          - Restful API 서버로 변경했습니다.</br>
-          &nbsp;&nbsp;• 정산관련 코드를 작은 기능 단위로 리팩토링 (수정 시, 작업속도 향상) </br>
-          &nbsp;&nbsp;• 단위 테스트 코드 도입</br>
-          &nbsp;&nbsp;• Docker, Github을 이용해 배포자동화</br>
-        - 유지보수</br>
-        &nbsp;&nbsp;• 유저의 권한 기능을 추가하고, 그에 따른 테이블 관계 변화로 데이터 마이그레이션 진행</br>
-"
+  job: IT 개발팀, Software Developer
+  descr : "
+  놀이의발견 사장님 서비스 BackEnd를 개발했습니다.<br>
+  - 키즈 플랫폼 서비스의 Business to Business 백엔드를 개발했습니다.<br>
+  - Python, Django, Mysql을 사용했습니다.<br> 
+  Restful API 서버로 변경했습니다.<br>
+  - 모노리틱 아키텍쳐에서 Restful API 서버로 변경하며, 리팩토링을 진행했습니다.<br>
+  - 하나의 함수로 작성된 정산 관련 코드를 기능 단위로 리팩토링했습니다.<br>
+  - 단위 테스트를 도입했습니다.<br>
+  - Docker, Github Action을 사용해 배포 자동화를 구성했습니다.<br>
+  개발 사항<br>
+  - 유저의 권한 기능을 추가했습니다. 그에 따른 테이블 관계 변화로 데이터 마이그레이션을 진행했습니다.<br>
+  "
 
 - name: 온음
   link: http://www.omipc.com
   date: 2017.9 - 2019.6
-  job: Developer
-  descr : "- 특허예비출원 웹 어플리케이션을 개발합니다.</br>
-- Python, Django, Mysql을 사용합니다.</br>
-- Docker, AWS를 사용해 배포했습니다.</br>
-- 프로젝트 처음 시작부터 배포까지 담당해 서비스를 런칭했습니다. </br>
-- 유지보수</br>
- &nbsp;&nbsp;• Celery를 이용해 정기알림(Email, Sms)을 비동기로 발송</br>
-  &nbsp;&nbsp;• ElasticSearch를 이용해 특허 검색기능 도입</br>
+  job: 개발팀, Developer
+  descr : "
+  특허예비출원 웹 어플리케이션을 개발했습니다.</br>
+  - Python, Django, Mysql을 사용했습니다.</br>
+  - Docker, AWS를 사용해 배포했습니다.</br>
+  - 프로젝트 처음부터 개발을 시작해 서비스를 런칭했습니다.</br>
+  개발 사항</br>
+  - Celery를 이용해 정기알림(Email, Sms)을 비동기로 발송했습니다.</br>
+  - ElasticSearch를 이용해 특허 검색기능 도입했습니다.</br>
  "
 
 - name: TouchWorks
   link: http://www.mytouching.com/
   date: 2017.6 - 2017.8
-  job: Software Engineer
+  job: 개발팀, Software Engineer
   descr : "
-  - 포인트 적립 플랫폼 서비스를 개발합니다. </br>
-  - Ruby, Rails, Mysql을 사용합니다.</br>
-- 유지보수</br>
-&nbsp;&nbsp;• Javascript를 사용해 서비스 페이지에 기능 개발</br>
-&nbsp;&nbsp;• SQL과 ORM을 이용해 관리자 페이지에 통계기능 개발</br>
+  포인트 적립 플랫폼 서비스를 개발했습니다.</br>
+  - Ruby, Rails, Mysql을 사용했습니다.</br>
+  개발 사항</br>
+  - Javascript를 사용해 서비스 페이지에 기능 개발했습니다.</br>
+  - SQL과 ORM을 사용해 관리자 페이지에 통계기능 개발했습니다.</br>
   "
 
 - name: IGAWorks
   link: http://www.igaworks.com/
   date: 2014.7 - 2016.4
-  job: Technical Support Engineer
-  descr: "- 기술 문서 작성 </br>
-          - Android/iOS/Server API 연동 안내 및 교육 </br>
-          - 플랫폼 연동 앱/웹 제작</br>
-          - 정적 사이트 생성기 기반 릴리즈 사이트 제작"
+  job: IntegrationTeam, Technical Support Engineer
+  descr: "
+  Server API, iOS/안드로이드 SDK 연동을 지원했습니다.</br>
+  기술 문서를 작성하고, 샘플 프로젝트를 제작해 배포했습니다.</br>
+  릴리즈 사이트를 제작했습니다.</br>
+  "
 
 - name: WINS
   link: http://wins21.co.kr/main/main.html
   date: 2011.1 - 2011.6
-  job: QA Intern
-  descr: "- 리눅스 기반 보안 SW에 대해 Unit Test 및 Blackbox Test 수행"
+  job: QA팀, Intern
+  descr: "
+  리눅스 기반 보안 소프트웨어를 Unit Test 및 Blackbox Test 수행했습니다.
+  "

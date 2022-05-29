@@ -1,7 +1,7 @@
 --- 
 layout: post
 title: First Site
-categories:  html&css
+categories: HTML&CSS
 tags: code
 --- 
 

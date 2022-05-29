@@ -1,7 +1,7 @@
 --- 
 layout: post
 title: CSS 1
-categories: html&css
+categories: HTML&CSS
 tags: [udemy, css]
 --- 
 

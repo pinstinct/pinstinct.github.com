@@ -3,6 +3,7 @@ layout: post
 title: date query optimization
 categories: experience
 tags: [python, sqlalchemy, project]
+excerpt: 쿼리 실행 속도 개선을 위해 작업한 기록입니다.
 ---
 
 ## 쿼리 튜닝

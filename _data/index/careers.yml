@@ -6,7 +6,20 @@
   job: Content Tech, Senior Software Engineer
   descr: "
   Youtube 분석 서비스 API 서버를 개발합니다.<br>
+  - Media Insight 플랫폼 Business to Business 백엔드를 개발했습니다.<br>
   - Python, FastAPI, SQLAlchemy, Mysql을 사용합니다.<br>
+  API 서버를 개발했습니다.<br>
+  - Explain 구문을 통해 원인을 조사 후, 쿼리 튜닝을 통해 실행속도를 1/10로 단축했습니다.<br>
+  - redis 캐시를 사용해 응답속도를 1/2로 단축했습니다.<br>
+  - 프로젝트의 디렉토리 단위로 배포 할 수 있도록 모듈화했습니다. 또한 google cloud run 512MiB 메모리에서 작동하도록 메모리 최적화를 진행했습니다.<br>
+  파이썬 패키지를 개발했습니다.<br>
+  - 네이버/구글 트렌드 검색, 네이버/구글 통합검색 결과를 requests 패키지와 정규표현식을 사용해 크롤링하는 기능을 개발했습니다.<br>
+  - pandas를 사용해 시계열 데이터의 검색 횟수를 계산했습니다.<br>
+  - 응답속도 개선을 위해 비동기 처리를 적용했습니다.<br>
+  - 테스트 코드를 작성했습니다.<br>
+  인증 서버를 개발했습니다.<br>
+  - Docker(nginx, uwsgi, django)와 GitHub action을 사용해 배포 자동화를 구성했습니다.<br>
+  - 로깅 구성을 했습니다. Docker 내부에 파일로 로그를 쌓고 매일 12시에 google cloud storage로 업로드 하도록 했습니다.<br>
   "
 
 
@@ -28,7 +41,7 @@
   - 단위 테스트를 도입했습니다.<br>
   "
 
-- name: 놀이의발견
+- name: 놀이의발견, 웅진씽크빅
   link: https://ceo.nolbal.com
   date: 2020.3 - 2021.6
   job: IT 개발팀, Software Developer
@@ -42,18 +55,18 @@
   - 단위 테스트를 도입했습니다.<br>
   - Docker, Github Action을 사용해 배포 자동화를 구성했습니다.<br>
   개발 사항<br>
-  - 유저의 권한 기능을 추가했습니다. 그에 따른 테이블 관계 변화로 데이터 마이그레이션을 진행했습니다.<br>
+  - 유저의 권한 기능을 추가했습니다. 기존에 단일 권한에서 여러 권한을 생성했습니다. 그에 따른 테이블 관계 변화로 데이터 마이그레이션을 진행했습니다.<br>
   "
 
 - name: 온음
-  link: http://www.omipc.com
+  link: https://patentstart.co.kr/home
   date: 2017.9 - 2019.6
   job: 개발팀, Developer
   descr : "
   특허예비출원 웹 어플리케이션을 개발했습니다.</br>
   - Python, Django, Mysql을 사용했습니다.</br>
   - Docker, AWS를 사용해 배포했습니다.</br>
-  - 프로젝트 처음부터 개발을 시작해 서비스를 런칭했습니다.</br>
+  - 프로젝트 처음부터 개발을 시작해 서비스를 런칭했습니다. 또한, 매출을 창출했습니다.</br>
   개발 사항</br>
   - Celery를 이용해 정기알림(Email, Sms)을 비동기로 발송했습니다.</br>
   - ElasticSearch를 이용해 특허 검색기능 도입했습니다.</br>

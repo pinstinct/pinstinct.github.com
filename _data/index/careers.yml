@@ -1,8 +1,19 @@
 # careers section data
 # if you don't have language feature(language.yml is empty), ignore "i18n" items
+- name: 교보생명
+  link: https://www.donots.co.kr/main/
+  date: 2023.4 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  job: 플랫폼추진2팀, Software Engineer
+  descr: "
+  영유아 건강 증진 플랫폼 Backend를 담당합니다.<br>
+  - 영유아 건강 증진 플랫폼 API 서버를 개발합니다.<br>
+  - Java, Springboot, MyBatis,PostgreSql을 사용합니다.<br>
+
+  "
+
 - name: 샌드박스 네트워크
   link: https://sandbox.co.kr
-  date: 2022.4 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
+  date: 2022.4 - 2022.02
   job: Content Tech, Senior Software Engineer
   descr: "
   Youtube 분석 서비스 API 서버를 개발합니다.<br>

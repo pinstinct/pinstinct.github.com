@@ -1433,8 +1433,105 @@ excerpt: 책을 읽고 정리한 내용입니다.
       - 매개변수로 바이트 스트림과 문자 세트를 매개변수로 지정한다. 문자 세트는 문자를 표현하는 인코딩 방식이다. 바이트 자료가 문자로 변환될 때 지정된 문자 세트가 적용된다. 적용할 문자 세트를 명시하지 않으면 시스템이 기본으로 사용하는 문자 세트가 적용된다.
       - 대표적으로 자바에서 사용하는 UTF-16 문자 세트는 유니코드를 나타내는 문자 세트다.
     - 채팅 프로그램을 만든다고 할 때 바이트 단위로 사용하면 영어로만 채팅해야 한다. 이럴 때 읽어 들인 자료를 InputStreamReader나 OutputStreamWriter를 활용해 문자로 변환해 사용한다.
-  - Buffered 스트림: 입출력이 한 바이트나 문자 단위로 이루어지면 그만큼 프로그램 수행 속도가 느려진다. Buffered 스트림은 내부적으로 8,912 바이트 크기의 배열을 가지고 있으며 이미 생성된 스트림에 배열 기능을 추가해 더 빠르게 입출력을 실행할 수 있는 버퍼링 기능을 제공한다. 한 바이트나 한 문자 단위로 처리할 때보다 훨씬 빠르게 처리할 수 있다.
+  - Buffered 스트림: 입출력이 한 바이트나 문자 단위로 이루어지면 그만큼 프로그램 수행 속도가 느려진다. Buffered 스트림은 내부적으로 8,912 바이트 크기의 배열을 가지고 있으며 이미 생성된 스트림에 배열 기능을 추가해 더 빠르게 입출력을 실행할 수 있는 버퍼링 기능을 제공한다. 한 바이트나 한 문자 단위로 처리할 때보다 **훨씬 빠르게 처리**할 수 있다.
     - 버퍼링 기능을 제공하는 스트림 클래스
-      - BufferedInputStream
+      - BufferedInputStream: 바이트 단위로 읽는 스트림에 버퍼링 기능을 제공
+      - BufferedOutputStream: 바이트 단위로 출력하는 스트림에 버퍼링 기능을 제공
+      - BufferedReader: 문자 단위로 읽는 스트림에 버퍼링 기능을 제공
+      - BufferedWriter: 문자 단위로 출력하는 스트림에 버퍼링 기능을 제공
+    - 생성자
+      - BufferedInputStream(InputStream in)
+      - BufferedInputStream(InputStream in, int size): size는 버퍼 크기
+  - 소켓 통신에서 스트림 사용하기
+    - 자바는 통신을 위한 여러 클래스를 제공한다. 가장 간단한 소켓(통신에 사용하는 네트워크 연결 리소스) 통신을 한다고 가정하자. 소켓 통신을 위해 자바는 Socket 클래스를 제공한다.
+    
+    ```java
+    Socket socket = new Socket();
+    InputStream is = socket.getInputStream();
+    ```
+    InputStream은 바이트 단위 스트림이므로 한글을 쓰면 깨진다. 따라서 이를 문자로 변환해야 한다. 그리고 여기에 버퍼링 기능을 추가해 더 빠르게 읽고 쓸 수 있다. 
+
+    ```java
+    Socket socket = new Socket();
+    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    ```
+  - DataInputStream과 DataOutputStream: 지금까지 살펴본 스트림은 사람이 읽고 쓰는 텍스트 형식의 자료를 다루었다. DataInputStream과 DataOutputStream은 메모리에 저장된 0, 1 상태를 그대로 읽거나 쓴다. 자료형을 그대로 읽고 쓰는 스트림이기 때문에 같은 정수라도 자료형에 따라 다르게 처리한다. 따라서 자료를 쓸 때 사용한 메서드와 같은 자료형의 메서드로 읽어야 한다.
 - 직렬화
+  - 직렬화와 역직렬화: 클래스의 인스턴스가 생성되면 인스턴스의 상태, 즉 인스턴스 변수 값은 마치 생명체처럼 계속 변한다. 그런데 인스턴스를 어느 순간 상태를 그대로 저장하거나 네트워크를 통해 전송할 일이 있습니다. 이를 직렬화(serialization)이라고 한다. 그리고 저장된 내용이나 전송받은 내용을 다시 복원하는 것을 역직렬화(deserialization)라 한다. 다시 말해 직렬화란 인스턴스 내용을 연속 스트림으로 만드는 것이다. 자바에서 보조 스트림인 ObjectInputStream과 ObjectOutputStream을 사용하여 좀 더 쉽게 구현할 수 있다.
+    - 생성자
+      - ObjectInputStream(InputStream in)
+      - ObjectOutputStream(OutputStream out)
+  - Person 클래스를 하나 만들어 인스턴스로 생성 후 파일에 썼다가 복원하는 예제
+
+  ```java
+  package stream.serialization;
+
+  import java.io.FileInputStream;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.io.ObjectInputStream;
+  import java.io.ObjectOutputStream;
+  import java.io.Serializable;
+
+  class Person implements Serializable{  // 직렬화하겠다는 의도 표시
+    
+    private static final long serialVersionUID = -1503252402544036183L;  // 버전 관리를 위한 정보
+
+    String name;
+    transient String job;
+    
+    
+    public Person() {}
+
+    public Person(String name, String job) {
+      this.name = name;
+      this.job = job;
+    }
+    
+    public String toString()
+    {
+      return name + "," + job;
+    }
+  }
+
+  public class SerializationTest {
+
+    public static void main(String[] args) throws ClassNotFoundException {
+
+      Person personAhn = new Person("안재용", "대표이사");
+      Person personKim = new Person("김철수", "상무이사");
+      
+      try(FileOutputStream fos = new FileOutputStream("serial.out");
+          ObjectOutputStream oos = new ObjectOutputStream(fos)){
+        
+        oos.writeObject(personAhn);  // 직렬화
+        oos.writeObject(personKim);  // 직렬화
+      
+      }catch(IOException e) {
+        e.printStackTrace();
+      }
+        
+      try(FileInputStream fis = new FileInputStream("serial.out");
+        ObjectInputStream ois = new ObjectInputStream(fis)){
+        
+        Person p1 = (Person)ois.readObject();  // 역직렬화
+        Person p2 = (Person)ois.readObject();  // 역직렬화 
+        
+        System.out.println(p1);
+        System.out.println(p2);
+      }catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+  ```
+  - Serializable 인터페이스: 직렬화는 인스턴스 내용이 외부로 유출되는 것이므로 프로그래머가 직렬화를 하겠다는 의도를 표시해야 한다. 
+  - transient 예약어: 직렬화 대상이 되는 클래스는 모든 인스턴스 변수가 직렬화되고 복원된다. 그런데 직렬화 될 수 없는 클래스(Socket 클래스)가 인스턴스 변수로 있다거나 직렬화하고 싶지 않은 변수가 있을 수 있다. 그럴 때 사용한다. 그러면 해당 변수 정보는 그 자료형의 기본값으로 저장된다. 
+    - `transient String job;`
+  - serialVersionUID를 사용한 버전 관리: 객체를 역직렬화할 때, 직렬화할 때의 클래스와 상태가 다르면 오류가 발생한다. 따라서 직렬화할 때 자동으로 serialVersionUID를 생성하여 정보를 저장한다. 그리고 역직렬화 할때 serialVersionUID를 비교하는데 만약 클래스 내용이 변경되었다면 클래스 버전이 맞지 않는다는 오류가 발생한다. 그런데 작은 변경에도 클래스 버전이 계속 바뀌면 네트워크로 서로 객체를 공유해서 일하는 경우에 매번 클래스를 새로 배포해야 하는 번거로움이 있다. 이런 경우 클래스의 버전 관리를 개발자가 할 수 있다. 자바가 제공하는 자바 설치 경로의 bin\serialver.exe 사용하거나 IDE에서 제공하는 기능을 사용하면 된다.
+  - Externalizable 인터페이스: Serializable 인터페이스는 자료를 읽고 쓰는 데 필요한 부분을 프로그래머가 따로 구현하지 않는다. 하지만 Externalizable 인터페이스는 프로그래머가 구현해야 할 메서드가 있다. 객체의 직렬화와 역직렬화를 프로그래머가 직접 세밀하게 제어하고자 할 때, 메서드에 그 내용을 구현한다.
 - 그 외 입출력 클래스
+  - File 클래스: 별도의 입출력 기능은 없지만 파일 자체의 경로나 정보를 알 수 있고 파일을 생성할 수 있다.
+  - RandomAccessFile 클래스: 입출력 클래스 중 유일하게 파일 입출력을 동시에 할 수 있는 클래스이다. 또한 지금까지 배운 스트림은 처음부터 아례대로 자료를 읽었지만 RandomAccessFile은 임의의 위치로 이동하여 자료를 읽을 수 있다. 스트림을 생성하지 않고 간단하게 파일에 자료를 쓰거나 읽을 때 사용하면 유용하다.
+  - [예시 코드](https://github.com/easyspubjava/JAVA_LAB/blob/master/Chapter15/src/stream/others/RandomAccessFileTest.java)

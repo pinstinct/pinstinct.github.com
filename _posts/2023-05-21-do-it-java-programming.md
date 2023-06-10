@@ -442,7 +442,7 @@ excerpt: 책을 읽고 정리한 내용입니다.
 
   ```
   - 추상 클래스는 인스턴스로 생성할 수 없다.
-  
+
   ```java
     package abstractex;
 
@@ -1356,8 +1356,85 @@ excerpt: 책을 읽고 정리한 내용입니다.
   - System.in: 표준 입력용 스트림
   - System.err: 오류 메시지를 출력
   - System 클래스를 생성하지 않고 System.out을 사용할 수 있었던 이유는 out, in, err 모두 정적(static) 변수이기 때문이다.
+  - 그 외 입력 클래스
+    - Scanner 클래스: java.util 패키지에 있는 입력 클래스이다. 문자뿐 아니라 정수, 실수 등 다른 자료형도 읽을 수 있다. 또한 콘솔 화면뿐 아니라 파일이나 문자열을 생성자의 매개변수로 받아 자료를 읽어 올 수 있다. Scanner 클래스는 System.in으로 입력받는 것보다 다양한 메서드를 활용할 수 있기 때문에 자주 사용하는 클래스이다.
+    - Console 클래스: System.in을 사용하지 않고 간단히 콘솔 내용을 읽을 수 있다. 
 - 바이트 단위 스트림
+  - InputStream: 바이트 단위로 읽는 스트림 중 최상위 스트림이다. InputStream은 추상 메서드를 포함한 추상 클래스로 하위 스트림 클래스가 상속받아 각 클래스 역할에 맞게 추상 메서드 기능을 구현한다.
+  - 주로 사용하는 하위 클래스
+    - FileInputStream: 파일에서 바이트 단위로 자료를 읽는다.
+    - ByteArrayInputStream: Byte 배열 메모리에서 바이트 단위로 자료를 읽는다.
+    - FilterInputStream: 기반 스트림에서 자료를 읽을 때 추가 기능을 제공하는 보조 스트림의 상위 클래스이다.
+  - InputStream은 바이트 자료를 읽기 위해 다음 메서드를 제공
+    - `int read()`: 입력 스트림으로부터 한 바이트의 자료를 읽는다.
+    - `int read(byte b[])`: 입력 스트림으로부터 b[] 크기의 자료를 b[]에 읽는다.
+    - `int read(byte b[], int off, int len)`
+    - `void close()`
+  - InputStream 중 가장 많이 사용하는 FileInputStream 클래스
+    - 파일에서 바이트 단위로 자료를 읽어 들일 때 사용하는 스트림 클래스
+    - 생성자
+      - FileInputStream(String name): 파일이름 또는 경로를 매개변수로 받아 입력 스트림 생성
+      - FileInputStream(File f): File 클래스 정보를 매개변수로 받아 입력 스트림 생성
+      - `FileInputStream fis = new FileInputStream("input.txt")`
+      - 예외 처리를 하면 프로그램이 중단되거나 멈춘 것이 아니라 마지막 부분까지 실행이 된다. 프로그램 수행을 중단시키지 않는 예외 처리의 중요성을 알 수 있다.
+  - OutputStream: 바이트 단위로 쓰는 스트림 중 최상위 스트림이다.
+    - FileOutputStream: 바이트 단위로 파일에 자료를 쓴다.
+    - ByteArrayOutputStream: Byte 배열에 바이트 단위로 자료를 쓴다.
+    - FilterOutputStream: 기반 스트림에서 자료를 쓸 때 추가 기능을 제공하는 보조 스트림의 상위 클래스이다.
+    - OutputStream에서 제공하는 메서드는 다음과 같다.
+      - `void write(int b)`: 한 바이트를 출력
+      - `void write(byte[] b)`: b[] 배열에 있는 자료를 출력
+      - `void write(byte b[], int off, int len)`
+      - `void flush()`: 출력을 위해 잠시 자료가 머무르는 출력 버퍼를 강제로 비워 자료를 출력
+      - `void close()`
+    - FileOutputStream: 파일에 바이트 단위 자료를 출력하기 위해 사용하는 스트림
+      - 생성자
+        - FileOutputStream(String name)
+        - FileOutputStream(String name, boolean append): append값이 true이면 파일 스트림을 닫고 다시 생성할 때 파일의 끝에 이어쓴다. 디폴트는 false.
+        - FileOutputStream(File f,)
+        - FileOutputStream(File f, boolean append)
 - 문자 단위 스트림
+  - Reader : 문자 단위로 읽는 스트림 중 최상위 스트림이다.
+    - FileReader: 파일에서 문자 단위로 읽는 스트림 클래스
+    - InputStreamReader: 바이트 단위로 읽은 자료를 문자로 변환해주는 보조 스트림
+    - BufferedReader: 문자로 읽을 때 배열을 제공하여 한꺼번에 읽을 수 있는 기능을 제공해주는 보조 스트림
+  - Reader 제공 메서드
+    - `int read()`: 파일로부터 한 문자를 읽고 읽은 값을 반환
+    - `int read(char[] buf)`: 파일로부터 buf 배열에 문자를 읽는다.
+    - `int read(char[] buf, int off, int len)`
+    - `void close()`
+    - 바이트 단위로 읽어오면 문자가 깨지기 때문에 문자를 입출력할 때는 문자 스트림을 사용해야 한다.
+  - Writer: 문자 단위로 출력하는 최상위 스트림이다.
+    - FileWriter: 파일에 문자 단위로 출력하는 스트림 클래스
+    - OutputStreamWriter: 파일에 바이트 단위로 출력한 자료를 문자로 변환해 주는 보조 스트림
+    - BufferedWriter: 문자로 쓸 때 배열을 제공하여 한꺼번에 쓸 수 있는 기능을 제공해주는 보조 스트림
+  - Writer 제공 메서드
+    - `void write(int c)`: 한 문자를 파일에 출력
+    - `void write(char[] buf)`: 문자 배열 buf 내용을 파일에 출력
+    - `void write(char[] buf, int off, int len)`
+    - `void write(String str)`: 문자열 str를 파일에 출력 
+    - `void write(String str, int off, int len)`
+    - `void flush()`
+    - `void close()`
 - 보조 스트림
+  - 보조 스트림은 입출력 대상이 되는 파일이나 네트워크에 직접 쓰거나 읽는 기능은 없다. 보조 기능을 추가하는 스트림이다. 보조 스트림은 Wrapper 스트림이라고도 한다. 스스로는 입출력 기능이 없기 때문에 생성자의 매개변수로 다른 스트림을 받게 되면 자신이 갑싸고 있는 스트림이 읽거나 쓰는 기능을 수행할 때 보조 기능을 추가한다.
+  - FiltereInputStream과 FilterOutputStream: 보조 스트림의 상위 클래스이다.
+    - 생성자
+      - protected FilterInputStream(InputStream in): 생성자의 매개변수로 InputStream을 받는다.
+      - public FilterOutputStream(OutputStream out): 생성자의 매개변수로 OutputStream을 받는다.
+    - 직접 생성하여 사용하는 경우는 거의 없고 이를 상속한 하위 클래스를 프로그램에서 많이 사용한다.
+    - 하나의 기반 스트림에 여러 보조 스트림 기능이 추가된다.
+  - InputStreamReader와 OutputStreamWriter: 바이트 단위로 자료를 읽으면 한글 같은 문자는 깨진다. 그래서 문자는 Reader나 Writer에서 상속받은 스트림을 사용해서 자료를 읽거나 써야 한다. 하지만 바이트 자료만 입력되는 스트림도 있다. 대표적으로 표준 입출력 System.in 스트림이다. 또한 네트워크에서 소켓이나 인터넷이 연결되었을 때 읽거나 쓰는 스트림은 바이트 단위인 InputStream과 OutputStream이다. 이렇게 생성된 바이트 스트림을 문자로 변환해 주는 보조 스트림이 InputStreamReader와 OutputStreamWriter이다.
+    - 생성자
+      - InputStreamReader(InputStream in)
+      - InputStreamReader(InputStream in, Charset cs)
+      - InputStreamReader(InputStream in, CharsetDecoder dec)
+      - InputStreamReader(InputStream in, String charsetName)
+      - 매개변수로 바이트 스트림과 문자 세트를 매개변수로 지정한다. 문자 세트는 문자를 표현하는 인코딩 방식이다. 바이트 자료가 문자로 변환될 때 지정된 문자 세트가 적용된다. 적용할 문자 세트를 명시하지 않으면 시스템이 기본으로 사용하는 문자 세트가 적용된다.
+      - 대표적으로 자바에서 사용하는 UTF-16 문자 세트는 유니코드를 나타내는 문자 세트다.
+    - 채팅 프로그램을 만든다고 할 때 바이트 단위로 사용하면 영어로만 채팅해야 한다. 이럴 때 읽어 들인 자료를 InputStreamReader나 OutputStreamWriter를 활용해 문자로 변환해 사용한다.
+  - Buffered 스트림: 입출력이 한 바이트나 문자 단위로 이루어지면 그만큼 프로그램 수행 속도가 느려진다. Buffered 스트림은 내부적으로 8,912 바이트 크기의 배열을 가지고 있으며 이미 생성된 스트림에 배열 기능을 추가해 더 빠르게 입출력을 실행할 수 있는 버퍼링 기능을 제공한다. 한 바이트나 한 문자 단위로 처리할 때보다 훨씬 빠르게 처리할 수 있다.
+    - 버퍼링 기능을 제공하는 스트림 클래스
+      - BufferedInputStream
 - 직렬화
 - 그 외 입출력 클래스

@@ -45,8 +45,8 @@ public class FileParser {
     // http 요청으로 오는 스트림 파일 처리 (오버로딩)
     public ArrayList<Map<String, String>> convertCsvFile(MultipartFile file) {
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            // InputStreamReader: 보조 스트림&문자스트림 (바이트 단위로 읽은 자료를 문자로 변환해주는 보조스트림)
-            // 네트워크 읽거나 쓸 때 스트는 스트림 (이유: 바이트 자료만 입력되는 스트림이기 때문)
+            // InputStreamReader: 보조 스트림&문자 스트림 (바이트 단위로 읽은 자료를 문자로 변환해주는 보조스트림)
+            // BufferedReader: 네트워크 읽거나 쓸 때 사용하는 스트림 (이유: 바이트 자료만 입력되는 스트림이기 때문)
             return processingData(bufferedReader);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -57,7 +57,7 @@ public class FileParser {
     public ArrayList<Map<String, String>> convertCsvFile(String file) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             // BufferedReader: 보조 스트림 (스트림 버퍼를 제공해 빠르게 처리 가능)
-            // FileReader: 기반 스트림&문자스트림 (한글은 바이트스트림 대신 문자스트림 사용해야)
+            // FileReader: 기반 스트림&문자 스트림 (한글은 바이트스트림 대신 문자스트림 사용해야)
             return processingData(bufferedReader);
         } catch (FileNotFoundException e) {
             throw  new RuntimeException(e);

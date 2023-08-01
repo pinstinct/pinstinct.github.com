@@ -83,6 +83,7 @@ public ResponseEntity uploadImage(HttpServletRequest request
 @Getter
 @Setter
 public class ImageDto {
+  // ...
   private String image_description;
   // private MultipartFile image;
 }

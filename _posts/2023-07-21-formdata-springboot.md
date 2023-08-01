@@ -8,7 +8,7 @@ tags: [web, springboot, project]
 
 ## 문제 상황
 
-스프링부트 프로젝트 controller에서 이미지를 받을 때, DTO 클래스에서 MultipartFile을 받을 때 발생하는 문제에 대해 기록합니다.
+스프링부트 프로젝트 controller에서 이미지를 다룰 때 발생한 이슈입니다. DTO 클래스 MultipartFile 필드를 통해 이미지를 매핑할 때 발생한 문제입니다.
 
 ```java
 @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)

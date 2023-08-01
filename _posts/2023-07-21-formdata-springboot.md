@@ -13,8 +13,7 @@ tags: [web, springboot, project]
 ```java
 @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
 @RequestBody
-public ResponseEntity uploadImage(HttpServletRequest request
-    , @Valid ImageDto dto) throws Exception {
+public ResponseEntity uploadImage(HttpServletRequest request, @Valid ImageDto dto) throws Exception {
   // ...
   return new ResponseEntity("", HttpStatus.OK);
 }
@@ -25,6 +24,7 @@ public ResponseEntity uploadImage(HttpServletRequest request
 @Getter
 @Setter
 public class ImageDto {
+  // ...
   private String image_description;
   private MultipartFile image;
 }

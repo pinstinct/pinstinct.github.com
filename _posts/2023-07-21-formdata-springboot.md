@@ -40,7 +40,7 @@ form 데이터가 서버로 제출될 때, 데이터가 인코딩되는 방법�
 - text/plain: 공백 문자(space)는 "+" 기호로 변환하지만, 나머지 문자는 모두 인코딩하지 않음을 명시
 - multipart/form-data: 모든 문자를 인코딩하지 않음을 명시, 파일이나 이미지를 서버로 전송할 때 사용
 
-> http://www.tcpschool.com/html-tag-attrs/form-enctype
+> [참고링크](http://www.tcpschool.com/html-tag-attrs/form-enctype)
 
 ### @ModelAttribute
 

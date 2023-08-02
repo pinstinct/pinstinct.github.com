@@ -63,6 +63,8 @@ form 데이터가 서버로 제출될 때, 데이터가 인코딩되는 방법�
 - HTTP 요청의 body를 자바 객체로 매핑하는 어노테이션
 - POST, PUT 요청 본문에 json, xml 등의 데이터를 자바 객체로 변환
 
+> [RequestBody vs RequestPart vs RequestParam vs ModelAttribute](https://middleearth.tistory.com/35)
+
 ## 해결 방법 
 
 Controller에서 DTO 클래스로 매핑하던 파일을 `@RequestParam`으로 매핑할 수 있도록 수정했다.

@@ -22,7 +22,7 @@ tags: [java, project]
 위의 두 경우를 제외한 모든 경우가 겹치는 기간이다. 
 
 여기에 드모르간 법칙을 이용하면,
-- not (A or B) <-> not A and not B
+- `not (A or B) <-> not A and not B`
 
 다음과 같이 겹치는 기간을 표현할 수 있다.
 - startA <= endB and EndA >= startB

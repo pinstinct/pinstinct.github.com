@@ -7,7 +7,7 @@ tags: [java, test, project]
 
 ### DCI 패턴(Describe 방식)
 
-보통 given, when, then 방식(Behavior 방식)을 많이 사용하는데 주석을 사용하기 때문에 강제성이 없다. 때문에 테스트 코드에 DCI 패턴을 도입했다.
+보통 테스트 코드 작성할 때 given, when, then 방식(Behavior 방식)을 많이 사용한다. 하지만 주석을 사용하기 때문에 강제성이 없다. 때문에 테스트 코드에 DCI 패턴을 도입했다.
 
 - Describe: 테스트 대상을 명시 (클래스, 메소드 이름 명시)
 - Context: 테스트 대상이 놓인 상황을 설명 (파라미터 설명)

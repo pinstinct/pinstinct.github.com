@@ -5,9 +5,6 @@ categories: java
 tags: [java]
 ---
 
-
-## SimpleDateFormat vs DateTimeFormatter
-
 ### SimpleDateFormat
 
 SimpleDateFormat: 날짜를 파싱(text -> date) 또는 포매팅(date -> text)할 때 사용하는 locale-sesitive 클래스이다.

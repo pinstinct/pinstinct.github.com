@@ -93,7 +93,7 @@ public class MainTests {
 ```
 
 ```java
-import com.limhm.AdminTests;
+import com.limhm.MainTests;
 import com.limhm.common.FileParser;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -103,7 +103,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class FileParserTest extends AdminTests {
+public class FileParserTest extends MainTests {
     @DisplayName("csv 파일 파싱 테스트")
     @Test
     public void success() {
@@ -127,7 +127,7 @@ public class FileParserTest extends AdminTests {
 ### HTTP 요청 Controller 테스트 
 
 ```java
-import com.limhm.AdminTests;
+import com.limhm.MainTests;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -140,7 +140,7 @@ import org.springframework.util.MultiValueMap;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-public class FileControllerTest extends AdminTests {
+public class FileControllerTest extends MainTests {
     @DisplayName("파일 테스트")
     @Test
     public void success() throws Exception {
@@ -165,25 +165,3 @@ public class FileControllerTest extends AdminTests {
 }
 ```
 
-### AdminTests 클래스
-
-```java
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-
-@ActiveProfiles("local")
-@SpringBootTest
-@AutoConfigureMockMvc
-public class AdminTests {
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    protected ObjectMapper mapper;
-}
-
-```

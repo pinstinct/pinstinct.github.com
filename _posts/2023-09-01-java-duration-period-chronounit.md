@@ -85,7 +85,7 @@ DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 LocalDate requestDate = LocalDate.parse("2022-02-02", formatter);
 ZonedDateTime kst = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 
-long result = ChronoUnit.MONTHS.between(kst.toLocalDate(), requestDate);
+long result = ChronoUnit.MONTHS.between(requestDate, kst.toLocalDate());
 ```
 
 ChronoUnit이 더 효율적이기 때문에 ChronoUnit을 사용한다.

@@ -45,7 +45,7 @@ HttpMessageConverter를 사용하여 request body에서 메서드 인수 값을 
 - 주어진 parameter, targetType을 기반으로 targetClass 및 contextClass 확인
 - inputMessage(request)의 contentType을 확인하고, 없는 경우 기본값으로 `MediaType.APPLICATION_OCTET_STREAM` 설정
 - inputMessage(request)의 httpMethod를 가져옴
-- messageConverters 목록을 반복하며 contextClass, targetClass, contentType에 대한 메시지 컨버터를 찾아 요청 본문을 읽어 반환
+- messageConverters 목록을 반복하며 contextClass, targetClass, contentType에 맞는 메시지 컨버터를 찾아 요청 본문을 읽어 반환
 
 여기서 두번째 항목에 대한 코드를 자세히 보겠습니다.
 
@@ -53,15 +53,17 @@ HttpMessageConverter를 사용하여 request body에서 메서드 인수 값을 
    @Nullable
     protected <T> Object readWithMessageConverters(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType) throws IOException, HttpMediaTypeNotSupportedException, HttpMessageNotReadableException {
         Class<?> contextClass = parameter.getContainingClass();
+        Class<T> targetClass = (targetType instanceof Class clazz ? clazz : null);
         // ...
         if (contentType == null) {
             noContentType = true;
             contentType = MediaType.APPLICATION_OCTET_STREAM;
         }
+        // ...
 }
 ```
 
-디버깅하여 살펴보니, **contentType**이 null로 들어옵니다. 때문에 contentType이 `application/octet-stream`으로 설정됩니다. 하지만 해당 타입을 지원하지 않기 때문에 에러가 발생하게 됩니다.
+디버깅하여 살펴보니, **contentType**이 null로 들어옵니다. 때문에 contentType이 `application/octet-stream`으로 설정됩니다. 하지만 스프링은 해당 타입을 지원하지 않기 때문에 에러가 발생하게 됩니다.
 
 > [[Spring] Swagger + RequestPart를 통해 파일, Dto 동시 요청 시 발생 에러 핸들링](https://one-armed-boy.tistory.com/entry/Swagger-RequestPart%EB%A5%BC-%ED%86%B5%ED%95%B4-%ED%8C%8C%EC%9D%BC-Dto-%EB%8F%99%EC%8B%9C-%EC%9A%94%EC%B2%AD-%EC%8B%9C-%EB%B0%9C%EC%83%9D-%EC%97%90%EB%9F%AC)
 
@@ -84,7 +86,7 @@ Class RequestPartMethodArgumentResolver](https://docs.spring.io/spring-framework
 ](https://github.com/swagger-api/swagger-ui/issues/6462)
 
 
-그래서 해결 방안을 제시한 댓글을 활용해 프로젝트에 적용했습니다.
+그래서 댓글들을 활용해 프로젝트에 적용했습니다.
 
 ```java
 public SwaggerConfig(MappingJackson2HttpMessageConverter converter) {
@@ -98,4 +100,4 @@ public SwaggerConfig(MappingJackson2HttpMessageConverter converter) {
     }
 ```
 
-swagger 관련 설정 클래스가 생성될 때, 지원하는 contentType에 'application/octet-stream'을 추가해서 문제를 해결할 수 있었습니다.
+swagger 관련 설정 클래스가 생성될 때, 지원하는 contentType에 'application/octet-stream'을 추가해 문제를 해결했습니다.

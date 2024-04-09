@@ -13,7 +13,7 @@ tags: [github, project]
 - docs/pull_request_template.md 파일이 있는 경우
 - .github/pull_request_template.md 파일이 있는 경우
 - 여러개의 템플릿을 사용하려면 .github/PULL_REQUEST_TEMPATE 디렉토리에 `*.md` 파일들을 넣는 경우   
-  - 쿼리 파라미터를 이용해야 템플릿을 불러오므로 잘 사용하지 않음 
+  - 쿼리 파라미터를 이용해서 템플릿을 불러오므로 잘 사용하지 않음 
 
 > [Creating a pull request template for your repository](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
 

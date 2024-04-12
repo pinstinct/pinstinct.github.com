@@ -1,6 +1,6 @@
 ---
 layout: post
-title: github의 pull_request_template
+title: java servlet
 categories: java
 tags: [java]
 ---

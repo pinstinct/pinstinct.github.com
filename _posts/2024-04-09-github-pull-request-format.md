@@ -50,7 +50,7 @@ tags: [github, project]
 - List up changes so that reviewer can quickly understand the important parts.
 
 ## 링크 (Links) - option
-- [JIRA 티켓 이름](ex.http://jiraaddress.com/sandworks/SW-450)
+- [JIRA 티켓 이름](ex.http://jiraaddress.com/company/SW-450)
 - [필요 시: 참고 문서 URL](ex.http://google.com)
 
 ## 기타 사항 (Etc)

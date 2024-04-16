@@ -95,7 +95,7 @@ tags: [java, test, project]
 
 
 
-### BDDBehavior Driven Development) 스타일의 테스트 코드
+### BDD(Behavior Driven Development) 스타일의 테스트 코드
 
 #### Given - When - Then 패턴
 

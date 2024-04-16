@@ -54,7 +54,7 @@ tags: [java, test, project]
 ### 테스트 코드를 작성하는 나만의 철학
 
 - 테스트하고자 하는 대상이 한눈에 보이도록 최대한 간단하게 작성
-- 하나의 테스트에 최소한의 검증(assert)
+- 하나의 테스트에 최소한의 검증
 - 과도한 추상화 금지  
 - 성공 케이스 반드시는 작성
 - 경계값에 대한 테스트 작성
@@ -85,7 +85,7 @@ tags: [java, test, project]
 #### 단점
 
 - 테스트 코드 유지에 복잡성 증가
-  - 의존한 코드들이 조금이라도 변경되면 테스트 코드가 모두 깨져, 모두 수정해야 함
+  - 의존한 코드들이 조금이라도 변경되면 테스트 코드가 모두 깨져, 수정해야 함
 - 실제 객체로 작동했을 때, 작동하지 않을 수 있음
   - mock은 동작하길 기대하는 것 일뿐 실제 구현체는 의도한대로 동작하지 않을 수 있음
 
@@ -127,8 +127,7 @@ class DescribeAddOccupancyAuth {  // Describe + 메서드 이름
        @DisplayName("회원 인증 정보를 저장하고 결과를 반환한다")
        @Test
        void itSaveMemberAuth() throws Exception {  // it + *
-           AddOccupancyAuthRequestDto dto = getAddOccupancyAuthRequestDtoObj(AuthType.EMAIL,
-               "");
+           AddOccupancyAuthRequestDto dto = getAddOccupancyAuthRequestDtoObj(AuthType.EMAIL, "");
            AddOccupancyAuthResponseDto result = memberCommandService.addOccupancyAuth(dto);
            assertThat(result).isNotNull();
        }

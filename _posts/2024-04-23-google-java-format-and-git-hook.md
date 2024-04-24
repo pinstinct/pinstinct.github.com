@@ -25,9 +25,9 @@ java -jar /path/to/google-java-format-${GJF_VERSION?}-all-deps.jar <options> [fi
 #### options
 
 `--help` 옵션을 통해 실행해보면, 아래와 같은 옵션들이 존재한다. 이 중에서 필요한 옵션만 추려봤다. 
-- `--replace`: (필수)formatting 변경 내용을 파일에 그대로 적용한다.
-- `--set-exit-if-changed`: (필수)formatting 변경 내용이 있다면 exit code 1을 반환한다.
-- `--aosp`: (옵션)4-space 들여쓰기를 하고 싶다면 적용한다.
+- `--replace`: (필수) formatting 변경 내용을 파일에 그대로 적용한다.
+- `--set-exit-if-changed`: (필수) formatting 변경 내용이 있다면 exit code 1을 반환한다.
+- `--aosp`: (옵션) 4-space 들여쓰기를 하고 싶다면 적용한다.
 
 ```shell
   -i, -r, -replace, --replace
@@ -62,7 +62,7 @@ java -jar /path/to/google-java-format-${GJF_VERSION?}-all-deps.jar <options> [fi
 
 깃에서는 어떤 이벤트가 생겼을 때, 자동으로 스크립트를 실행할 수 있는 훅을 제공한다. 훅을 적용하기 위해서 `.git/hooks` 디렉토리에 적용하려는 훅 이름의 파일을 저장하면 된다.
 
-commit 전에 강제로 fomatting하고 싶으므로, `pre-commit` 훅을 사용한다. `pre-commit` 파일을 하나 생성 후 아래의 내용을 저장한다.
+commit 전에 자동으로 fomatting하고 싶으므로, `pre-commit` 훅을 사용한다. `pre-commit` 파일을 하나 생성 후 아래의 내용을 저장한다.
 
 ```sh
 #!/bin/sh

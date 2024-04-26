@@ -4,9 +4,9 @@
 ####################################
 #
 title: Pinstinct
-email: dev@limhm.com
+email: contact@limhm.dev
 description: A simple and awesome blog theme powered by jekyll.
-url: https://blog.limhm.com # the base hostname & protocol for your site
+url: https://blog.limhm.dev # the base hostname & protocol for your site
 keywords: ["Programming", "Web", "Python"]
 plugins:
   - jekyll-sitemap
@@ -39,7 +39,7 @@ owner:
   # avatar: leonids-logo.png
   job: "Software Engineer"
   # bio: "A backend developer who loves awesome things."
-  email: dev@limhm.com
+  email: contact@limhm.dev
   disqus-shortname: pinstinct07
   twitter: pinstinct #username
   facebook: #username

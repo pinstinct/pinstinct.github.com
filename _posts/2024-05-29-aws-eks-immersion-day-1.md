@@ -198,7 +198,8 @@ cd ~/eksworkshop-custom/introduction/setup/05.kube-ops-view
   # -k 옵션: kustomization.yaml 파일을 읽어서 적용
   kubectl apply -k ~/environment/eks-workshop/base-application/catalog
   ```
-  - 배포 확인
+
+- 배포 확인
   ```shell
   kubectl get svc -n catalog                                                         
   NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE

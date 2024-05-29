@@ -285,17 +285,16 @@ Cloud9(AWS IDE 서비스)을 통해 미리 구축된 환경에서 실습했다.
         }
         ```
         `alb.ingress.kubernetes.io/target-type: ip` ip 모드를 지정했기 때문에, ui pod의 ip와 포트가 타겟에 등록됨
-    - 로드밸런서(ip mode)
+    - 로드밸런서(ip mode), 그림 3번에 해당 
       ![](/image/ip-mode-5a2f1be81ebf0ed8c08f825bfb1394c6.png) 
-      3번에 해당 
+    
       - 로드밸런서 node port mode 설정에서 한줄만 변경
         ```yaml
         apiVersion: v1
         kind: Service
         metadata:
           annotations:
-        -    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
-        +    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+            service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip  # instance에서 ip로 변경
             service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
             service.beta.kubernetes.io/aws-load-balancer-type: external
           name: ui-nlb

@@ -50,6 +50,8 @@ tags: [docker, kubernetes, aws]
 
 Cloud9(AWS IDE 서비스)을 통해 미리 구축된 환경에서 실습했다.
 
+#### ECR 및 EKS 생성
+
 - 도커 이미지 만들기
 - ECR에 이미지 올리기
   - ECR Repository 생성
@@ -162,148 +164,156 @@ Cloud9(AWS IDE 서비스)을 통해 미리 구축된 환경에서 실습했다.
 
 > [Amazon EKS로 웹 애플리케이션 구축하기 (한글자료)](https://catalog.us-east-1.prod.workshops.aws/workshops/9c0aa9ab-90a9-44a6-abe1-8dff360ae428/ko-KR)
 
-- kube-ops-view 설치: 그래픽으로 보여주는 기능
-  ```shell
-  git clone https://github.com/dobal-production/eksworkshop-custom.git
-  cd ~/eksworkshop-custom/introduction/setup/05.kube-ops-view
-  ./05.kube-ops-view-clb.sh
-  ```
+
+#### kube-ops-view 설치
+
+쿠버네테스 클러스터 구성을 그래픽으로 보여주는 기능이다.
+
+```shell
+git clone https://github.com/dobal-production/eksworkshop-custom.git
+cd ~/eksworkshop-custom/introduction/setup/05.kube-ops-view
+./05.kube-ops-view-clb.sh
+```
 
 > [강사님 Githup repo](https://github.com/dobal-production/eksworkshop-custom)
 
 
-- 시작하기 
-  - catalog component 배포
-    ```shell
-    # catalog component 확인
-    ls ~/environment/eks-workshop/base-application/catalog
-    configMap.yaml  # key-value 저장
-    deployment.yaml
-    kustomization.yaml
-    namespace.yaml
-    secrets.yaml  # secret 저장
-    service-mysql.yaml
-    service.yaml
-    serviceAccount.yaml
-    statefulset-mysql.yaml
+#### 어플리케이션 배포  
 
-    # 배포
-    # -k 옵션: kustomization.yaml 파일을 읽어서 적용
-    kubectl apply -k ~/environment/eks-workshop/base-application/catalog
-    ```
-    - 배포 확인
-    ```shell
-    kubectl get svc -n catalog                                                         
-    NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-    catalog         ClusterIP   172.20.49.6    <none>        80/TCP     2m28s
-    catalog-mysql   ClusterIP   172.20.7.250   <none>        3306/TCP   2m28s
-    ```
-- 기초
-  - 어플리케이션 노출: 서비스는 기본적으로 Cluster IP 방식을 사용하므로, 외부 통신을 위한 작업이 필요 
-    - 로드밸런서: 서비스를 로드밸런서로 노출(node port mode)
-      - NLB(TCP 계층에서 작동하는 레이어4 로드 밸런서)에 연결
-      - 로드밸런서 생성
-        ```yaml
-        # ~/environment/eks-workshop/modules/exposing/load-balancer/nlb/nlb.yaml
-        apiVersion: v1
-        kind: Service
-        metadata:
-          name: ui-nlb
-          annotations:  # AWS와 쿠버네티스 명령을 연결
-            service.beta.kubernetes.io/aws-load-balancer-type: external  # internal로 하면 private 존 안에 내부 통신만 가능
-            service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-            service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance  # 노드로 연결
-          namespace: ui
-        spec:
-          type: LoadBalancer
-          ports:
-            - port: 80
-              targetPort: 8080
-              name: http
-          selector:
-            app.kubernetes.io/name: ui
-            app.kubernetes.io/instance: ui
-            app.kubernetes.io/component: service
-        ```
+- catalog component 배포
+  ```shell
+  # catalog component 확인
+  ls ~/environment/eks-workshop/base-application/catalog
+  configMap.yaml  # key-value 저장
+  deployment.yaml
+  kustomization.yaml
+  namespace.yaml
+  secrets.yaml  # secret 저장
+  service-mysql.yaml
+  service.yaml
+  serviceAccount.yaml
+  statefulset-mysql.yaml
 
-        ```shell
-        kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/nlb
-        ```
-      - 서비스마다 로드밸런스를 생성하므로, http(s)만 사용한다면 ingress를 사용하는게 좋다.
-    - Ingress: 서비스에 연결
-      - ALB(http(s) 계층에서 작동하는 레이어7 로드밸런서) 사용
-      - 로드밸런스 하나로 path(경로)를 이용해 라우팅
-      - ingress 생성 
-        ```yaml
-        # ~/environment/eks-workshop/modules/exposing/ingress/creating-ingress/ingress.yaml
-        apiVersion: networking.k8s.io/v1
-        kind: Ingress
-        metadata:
-          name: ui
-          namespace: ui
-          annotations:
-            alb.ingress.kubernetes.io/scheme: internet-facing
-            alb.ingress.kubernetes.io/target-type: ip
-            alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/liveness
-        spec:
-          ingressClassName: alb
-          rules:
-            - http:
-                paths:
-                  - path: /  # 루트 80에 ui 연결
-                    pathType: Prefix
-                    backend:
-                      service:
-                        name: ui
-                        port:
-                          number: 80
-        ```
+  # 배포
+  # -k 옵션: kustomization.yaml 파일을 읽어서 적용
+  kubectl apply -k ~/environment/eks-workshop/base-application/catalog
+  ```
+  - 배포 확인
+  ```shell
+  kubectl get svc -n catalog                                                         
+  NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+  catalog         ClusterIP   172.20.49.6    <none>        80/TCP     2m28s
+  catalog-mysql   ClusterIP   172.20.7.250   <none>        3306/TCP   2m28s
+  ```
 
-        ```shll
-        kubectl apply -k ~/environment/eks-workshop/modules/exposing/ingress/creating-ingress
-        ```
-      - 확인
-        ```shell
-        # 근본을 파헤칠 때, describe 명령 사용 
-        $ ALB_ARN=$(aws elbv2 describe-load-balancers --query 'LoadBalancers[?contains(LoadBalancerName, `k8s-ui-ui`) == `true`].LoadBalancerArn' | jq -r '.[0]')
-        $ TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --load-balancer-arn $ALB_ARN | jq -r '.TargetGroups[0].TargetGroupArn')
-        $ aws elbv2 describe-target-health --target-group-arn $TARGET_GROUP_ARN
-        {
-            "TargetHealthDescriptions": [
-                {
-                    "Target": {
-                        "Id": "10.42.180.183",
-                        "Port": 8080,
-                        "AvailabilityZone": "us-west-2c"
-                    },
-                    "HealthCheckPort": "8080",
-                    "TargetHealth": {
-                        "State": "healthy"
-                    }
-                }
-            ]
-        }
-        ```
-        `alb.ingress.kubernetes.io/target-type: ip` ip 모드를 지정했기 때문에, ui pod의 ip와 포트가 타겟에 등록됨
-    - 로드밸런서(ip mode), 그림 3번에 해당 
-      ![](/image/ip-mode-5a2f1be81ebf0ed8c08f825bfb1394c6.png) 
-    
-      - 로드밸런서 node port mode 설정에서 한줄만 변경
-        ```yaml
-        apiVersion: v1
-        kind: Service
-        metadata:
-          annotations:
-            service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip  # instance에서 ip로 변경
-            service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-            service.beta.kubernetes.io/aws-load-balancer-type: external
-          name: ui-nlb
-          namespace: ui
-        ```
+#### 어플리케이션 네트워크  
 
-        ```shell
-        kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/ip-mode
-        ```
+- 어플리케이션 노출: 서비스는 기본적으로 Cluster IP 방식을 사용하므로, 외부 통신을 위한 작업이 필요 
+  - 로드밸런서: 서비스를 로드밸런서로 노출(node port mode)
+    - NLB(TCP 계층에서 작동하는 레이어4 로드 밸런서)에 연결
+    - 로드밸런서 생성
+      ```yaml
+      # ~/environment/eks-workshop/modules/exposing/load-balancer/nlb/nlb.yaml
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: ui-nlb
+        annotations:  # AWS와 쿠버네티스 명령을 연결
+          service.beta.kubernetes.io/aws-load-balancer-type: external  # internal로 하면 private 존 안에 내부 통신만 가능
+          service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+          service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance  # 노드로 연결
+        namespace: ui
+      spec:
+        type: LoadBalancer
+        ports:
+          - port: 80
+            targetPort: 8080
+            name: http
+        selector:
+          app.kubernetes.io/name: ui
+          app.kubernetes.io/instance: ui
+          app.kubernetes.io/component: service
+      ```
+
+      ```shell
+      kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/nlb
+      ```
+    - 서비스마다 로드밸런스를 생성하므로, http(s)만 사용한다면 ingress를 사용하는게 좋다.
+  - Ingress: 서비스에 연결
+    - ALB(http(s) 계층에서 작동하는 레이어7 로드밸런서) 사용
+    - 로드밸런스 하나로 path(경로)를 이용해 라우팅
+    - ingress 생성 
+      ```yaml
+      # ~/environment/eks-workshop/modules/exposing/ingress/creating-ingress/ingress.yaml
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: ui
+        namespace: ui
+        annotations:
+          alb.ingress.kubernetes.io/scheme: internet-facing
+          alb.ingress.kubernetes.io/target-type: ip
+          alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/liveness
+      spec:
+        ingressClassName: alb
+        rules:
+          - http:
+              paths:
+                - path: /  # 루트 80에 ui 연결
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: ui
+                      port:
+                        number: 80
+      ```
+
+      ```shll
+      kubectl apply -k ~/environment/eks-workshop/modules/exposing/ingress/creating-ingress
+      ```
+    - 확인
+      ```shell
+      # 근본을 파헤칠 때, describe 명령 사용 
+      $ ALB_ARN=$(aws elbv2 describe-load-balancers --query 'LoadBalancers[?contains(LoadBalancerName, `k8s-ui-ui`) == `true`].LoadBalancerArn' | jq -r '.[0]')
+      $ TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --load-balancer-arn $ALB_ARN | jq -r '.TargetGroups[0].TargetGroupArn')
+      $ aws elbv2 describe-target-health --target-group-arn $TARGET_GROUP_ARN
+      {
+          "TargetHealthDescriptions": [
+              {
+                  "Target": {
+                      "Id": "10.42.180.183",
+                      "Port": 8080,
+                      "AvailabilityZone": "us-west-2c"
+                  },
+                  "HealthCheckPort": "8080",
+                  "TargetHealth": {
+                      "State": "healthy"
+                  }
+              }
+          ]
+      }
+      ```
+      `alb.ingress.kubernetes.io/target-type: ip` ip 모드를 지정했기 때문에, ui pod의 ip와 포트가 타겟에 등록됨
+  - 로드밸런서(ip mode), 그림 3번에 해당 
+    ![](/image/ip-mode-5a2f1be81ebf0ed8c08f825bfb1394c6.png) 
+  
+    - 로드밸런서 node port mode 설정에서 한줄만 변경
+      ```yaml
+      apiVersion: v1
+      kind: Service
+      metadata:
+        annotations:
+          service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip  # instance에서 ip로 변경
+          service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+          service.beta.kubernetes.io/aws-load-balancer-type: external
+        name: ui-nlb
+        namespace: ui
+      ```
+
+      ```shell
+      kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/ip-mode
+      ```
+
 
 > [EKS Workshop (영문자료)](https://www.eksworkshop.com)
 

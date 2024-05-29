@@ -1,7 +1,7 @@
 ---
 layout: post
 title: AWS EKS Immersion Day 1 워크샵
-categories: docker, kubernetes, aws
+categories: kubernetes
 tags: [docker, kubernetes, aws]
 ---
 

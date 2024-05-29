@@ -23,14 +23,21 @@ tags: [docker, kubernetes, aws]
 쿠버네티스를 배포하면 클러스터를 얻는다. 그리고 클러스터는 노드들의 집합이다. 노드들은 크게 두 가지 유형으로 나눠진다.
 
 - Control Plane
-  - 구성: api 서버, 컨트롤러, 스케줄러(pod 배치), etcd(key-value 저장소, 쿠버네티스 클러스터 상태 저장)
+  - 구성
+    - api 서버
+    - 컨트롤러
+    - 스케줄러(pod 배치)
+    - etcd(key-value 저장소, 쿠버네티스 클러스터 상태 저장)
   - 스케줄링을 수행하고, 클러스터 이벤트를 감지하고 반응하는 역할을 한다.
     - 하지만 설정이 많고 구성하기 어렵기 때문에 AWS에서 EKS라는 서비스로 쉽게 제공한다.
     - (vs AWS ECS: AWS에서 만든 완전 관리형 컨테이너 오케스트레이션 서비스)
   
 
 - Data Plane
-  - 구성: pod, kube-proxy(ip router table, 네트워크 담당), kubelet(노드의 상태를 control plane에 주기적으로 보내는 역할) 
+  - 구성
+    - pod
+    - kube-proxy(ip router table, 네트워크 담당)
+    - kubelet(노드의 상태를 control plane에 주기적으로 보내는 역할) 
   - AWS EC2
   - AWS Fargate: EC2와 달리 컨테이너와 1:1 매칭되는 완전 관리형 서비스
 
@@ -44,7 +51,7 @@ tags: [docker, kubernetes, aws]
   - Cluster IP: 쿠버네티스 내부 IP
   - Node Port: 외부 port 개방
   - Load Balancer: 클라우드 제공 로드밸런서로 노출
-- Ingress: 클러스터 외부에서 클러스터 내부 서비스로 HTTP와 HTTPS 경로 노출
+- Ingress: 클러스터 외부에서 클러스터 내부 서비스로 HTTP(S) 경로 노출
 
 ### Hands on
 

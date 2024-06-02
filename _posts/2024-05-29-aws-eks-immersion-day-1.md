@@ -182,6 +182,8 @@ cd ~/eksworkshop-custom/introduction/setup/05.kube-ops-view
 ./05.kube-ops-view-clb.sh
 ```
 
+  ![](/image/ip-18-42-124-89-node.png)
+
 > [강사님 Githup repo](https://github.com/dobal-production/eksworkshop-custom)
 
 
@@ -321,6 +323,53 @@ cd ~/eksworkshop-custom/introduction/setup/05.kube-ops-view
       ```shell
       kubectl apply -k ~/environment/eks-workshop/modules/exposing/load-balancer/ip-mode
       ```
+
+
+- 오토스케일링
+  - HPA(Horizontal Pod Autoscaler): 노드 안에서 pod를 스케일링
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: ui
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ui
+              resources:
+                requests:  # 항상 자원을 다 쓰려는 습성이 있기 때문에 설정해주는게 좋음
+                  cpu: 250m
+                limits:
+                  cpu: 500m
+    ```
+
+  - CA(Cluster Autoscaler): 노드의 상태에 따라 컴퓨팅 인프라를 스케일링
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: all
+    spec:
+      replicas: 4
+    ```
+    - AWS Auto scaling 그룹에 매핑 됨 
+    - Auto scaling 그룹이 주기적으로 pulling해서 오토스케일링 하므로 작동하는데 분 단위의 시간이 걸림 
+    - Auto scaling 그룹의 단점은 리소스를 줄일 때, 엄청 느리게 줄어듦 
+    - Cluster Over Provisioning
+      - Auto scaling 그룹은 노드가 증가하는데 시간이 걸리기 때문에 사용하는 방법
+    - 우선순위가 낮은 더미 pod를 만들어 두고 트래픽이 늘어 pod가 증가할 때, 더미 pod가 pending 상태가 되고 실제 서비스 pod 들이 들어가게 되어 빠르게 스케일링 가능 
+    - 그 후, 더미 pod를 위한 노드가 하나 생성
+    - 결국 여유 노드 1대를 더 운영하는 방식
+    - 비용이 증가하는 대신 빠른 대응이 가능
+  - Karpenter: 쿠버네티스를 위한 오픈소스 오토스케일링 프로젝트
+    - 자원들을 관찰하여 몇 초 안에 오토스케일링 함
+    - 현재 상태를 보고 빈 곳이 있으면 알아서 줄여주고, 심지어 EC2 타입도 알어서 변경해줌
+    - 너무 민감하게 반응해서 자주 자원의 상태가 변할 수 있음
+
+- 오토스케일링 방식
+  - 메트릭에 기반한 방식: 메모리 사용량, CPU 사용량 등
+  - 스케줄링에 기반한 방식: 티켓팅과 같이 정해진 시간에 트래픽이 몰릴 것으로 예정된 경우 
 
 
 > [EKS Workshop (영문자료)](https://www.eksworkshop.com)

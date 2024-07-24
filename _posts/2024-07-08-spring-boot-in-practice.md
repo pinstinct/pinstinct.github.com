@@ -505,13 +505,279 @@ CrudRepository 인터페이스가 표준 CRUD 연산을 제공해주지만 이�
     - QueryDSL 
       - NamedQuery, Query의 심각한 단점은 작성된 쿼리의 문법 정합성을 컴파일 타임에 검사할 수 없어서 쿼리문이 잘못 작성된 경우 런타임에서만 에러가 발생한다.
       - Criteria API 사용
-        - JPA 2.0에 도입된 Criteria(크라이티리아) API를 사용하면 쿼리를 단순 문자열이 아니라 프로그램 코드로 작성할 수 있어서 타입 안전성을 보장할 수 있다.
+        - JPA 2.0에 도입된 Criteria API를 사용하면 쿼리를 단순 문자열이 아니라 프로그램 코드로 작성할 수 있어서 타입 안전성을 보장할 수 있다.
         - [Criteria API를 사용해서 관계형 데이터베이스에 저장된 도메인 객체 관리](https://github.com/pinstinct/spring-boot-in-practice/commit/9416d3cbb4ecba4fb76df0f32db3ed4fee6ccbc0)
-
+      - 스프링 데이터 JPA와 QueryDSL
+        - Criteria API가 자바 표준인 JPA의 네이티브 명세이기는 하지만 코드양이 많아진다는 단점이 있다. QueryDSL은 Criteria API 처럼 타입 안전성을 보장하면서도 평문형 API를 사용해서 코드 작성량을 더 줄일 수 있게 해주는 서드파트 라이브러리다.
+        - [관계형 데이터베이스에 저장된 도메인 객체를 QueryDSL로 관리](https://github.com/pinstinct/spring-boot-in-practice/commit/0cf97d2fce19a36f6ccc9ebc7d31710293dcd4c4)
+      - Criteria API와 QueryDSL
+        - Criteria API는 표준 JPA 명세서에 포함되는 라이브러리이므로 JPA를 사용하면 Criteria API도 사용할 수 있다. 반면에 QueryDSL은 오픈소스 서드파티 라이브러리다.
+        - Criteria API는 API가 장황하고 복잡해서 아주 단순한 쿼리를 작성하는 데도 상당히 많은 코드를 작성해야 한다는 단점이 있다. QueryDSL을 사용하면 일반적으로 더 간결하게 쿼리를 작성할 수 있다.
+        - Criteria API는 JPA가 사용되는 환경에서만 사용할 수 있다. 반면에 QueryDSL은 JPA 외에도 몽고 DB나 루신, JDO을 사용하는 환경에서도 사용할 수 있다.
 
 #### PagingAndSortingRepository를 활용한 페이징
 
 PagingAndSortingRepository 인터페이스도 CrudRepository 인터페이스를 상속받으므로 CRUD 연산을 수행할 수 있다. 
 
 [PagingAndSortingRepository 인터페이스로 데이터 페이징 및 정렬](https://github.com/pinstinct/spring-boot-in-practice/commit/099b6bd43516967c21892f70f73a9f704cb80092)
+
+#### 기법: 프로젝션
+
+하나 또는 그 이상의 엔티티에 속하는 필드 중에서 필요한 일부 부분 집합만을 추려내서 조회하는 것을 프로젝션(projection)이라고 한다. 스프링 데이터는 인터페이스 기반 프로젝션과 클래스 기반 프로젝션을 지원한다.
+
+인터페이스 기반 프로젝션은 필요한 필드에 대한 getter 메서드를 정의한 인터페이스를 통해 프로젝션을 수행한다.
+
+[인터페이스 기반 프로젝션](https://github.com/pinstinct/spring-boot-in-practice/commit/0bd76413b67a8d1a248191fb24a4ae266c3fe8d7)
+
+클래스 기반 프로젝션은 인터페이스 대신에 데이터 전송 객체라고 불리는 DTO(Data Transfer Object)를 사용한다. DTO는 쿼리에 의해 반환되는 필드를 포함하고 있는 자바 POJO 객체다. DAO 계층과 서비스 계층 사이에서 데이터를 전송하는 것이 DTO의 주요 목적이다.
+
+### 도메인 객체 관계 관리 
+
+엔티티 사이의 관계는 다음과 같이 분류할 수 있다.
+
+- 일대일 관계: Course와 CourseDetail
+- 일대다 관계: Person과 Address
+- 다대일 관계: Book과 Publisher
+- 다대다 관계: Course와 Author, 조인 테이블 필요 
+
+[스프링 데이터 JPA를 사용해서 관계형 데이터베이스에서 다대다 관계 도메인 객체 관리](https://github.com/pinstinct/spring-boot-in-practice/commit/5983ad95ba4f3065171ae18b18912b7d6248e951)
+
+- @ManyToMany: 관계에는 소유자와 비소유자가 존재한다. 소유자는 관계를 소유하는 입장이고, 비소유자는 관계를 소유하지 않고 참조되는 입장이다. 일대다 관계에서는 다 쪽이 소유자다. 왜냐하면 다 쪽에서 일 쪽을 가리키는 참조 하나만 가지면 일대다 관계를 쉽게 관리할 수 있기 때문에 다 쪽이 관계를 소유하게 된다. 만약 일 쪽이 소유자라면 다 쪽을 가리키는 참조 여러 개를 관리해야 하므로 훨씬 복잡해진다. 다대다 관계에서는 양쪽 모두 다이므로 어느 쪽을 관게의 소유자로 정할지는 선택의 문제다. 예제에서는 강사가 강의를 소유한다는 관점에서 Author 엔티티를 관계의 소유자로 정했다. 
+
+## Chapter4. 스프링 자동 구성과 액추에이터 
+
+스프링 부트 자동 구성을 뒷받침하는 다양한 빌딩 블록(building block)을 살펴보고 애플리케이션에서 어떻게 동작하는지 알아본다.
+
+스프링 부트 자동 구성을 가능하게 해주는 다양한 조건부 애너테이션을 살펴보고, 애플리케이션의 상태를 모니터링하고 제어할 수 있게 해주는 스프링 부트 액추에이터를 사용해본다.
+
+### 스프링 부트 자동 구성 이해 
+
+자동 구성은 이름 그대로 스프링 애플리케이션 개발에 필요한 컴포넌트를 자동으로 구성해준다. 자동 구성은 사용할 애플리케이션 컴포넌트를 적절히 추론하고 기본 설정 값을 자동으로 구성해서 애플리케이션을 초기화한다. 예를 들어 빌드 설정 파일에 spring-boot-starter-web 의존 관계를 추가하면 스프링 부트는 웹 애플리케이션 구동에 필요한 웹 서버가 필요할 것이라고 추론하고 아파치 톰캣 웹 서버를 기본 웹 서버로 추가해준다.
+
+- [스프링 부트 애플리케이션에서 톰캣 대신 제티 사용](https://github.com/pinstinct/spring-boot-in-practice/commit/7d27bfe4d1a6304bd5c0d7b0e4652606ddc5a1ef)
+
+이번에는 조금 다른 시나리오를 생각해보자. 다수의 개발팀에서 스프링 프레임워크를 사용해서 여러 가지 프로젝트를 진행하고 있는데, 몇 가지 설정 bean은 모든 팀에서 복사해서 사용하고 있다는 사실을 어떤 개발자가 발견했다. 그래서 공통으로 사용되는 bean을 추출해서 공통 애플리케이션 컨텍스트 설정에 모아서 사용하려고 한다.
+
+```java
+/**
+ * 분리된 프로젝트에 존재하는 설정 클래스이다.
+ * 이 설정 클래스를 사용하는 개발팀에서 이 프로젝트를 의존 관계로 추가해서 사용할 수 있다.
+ * */
+@Configuration  // 스프링 설정을 담당하는 어노테이션
+public class CommonApplicationContextConfiguration {
+
+  // 여러 팀에서 공통으로 사용되는 스프링 빈 생성
+  @Bean
+  public RelationalDataSourceConfiguration dataSourceConfiguration() {
+    return new RelationalDataSourceConfiguration();
+  }
+
+  // 그 외 공통으로 사용되는 스프링 빈 정의 생략
+}
+
+```
+
+개발팀에서 다음과 같이 `CommonApplicationContextConfiguration`을 가져와서 사용할 수 있다.
+
+```java
+@Configuration
+@Import(CommonApplicationContextConfiguration.class)
+public class CommonPaymentContextConfiguration {
+
+  // Payment 개발팀의 다른 빈 정의 내용 생량
+}
+```
+
+이렇게 하면 중복적으로 사용되던 빈을 추출해서 한곳에 모으고 중복 없이 사용할 수 있지만 한 가지 문제가 있다. 관계형 데이터베이스를 사용하지 않는 어떤 팀에서 `CommonApplicationContextConfiguration` 안에 있는 빈을 사용하되, `RelationalDataSourceConfiguration` 빈은 사용하지 않고 싶다면 어떻게 해야 할까? 이를 가능하게 해주는 것이 바로 스프링의 `@Conditional` 애너테이션이다.
+
+#### @Conditional 애너테이션 이해
+
+스프링 프레임워크에서는 스프링이 관리하는 컴포넌트의 생성을 제어할 수 있도록 @Bean, @Component, @Configuration 애너테이션과 함께 사용할 수 있는 @Conditional 애너테이션을 제공한다. @Conditional 애너테이션은 Condition 클래스를 인자로 받는다. Condition 인터페이스는 Boolean 값을 반환하는 mathces() 메서드 하나만 포함하고 있는 함수형 인터페이스다. mathces() 메서드가 true를 반환하면 @Conditional 함께 붙어 있는 @Bean이나 @Component, @Configuration이 붙어 있는 메서드나 클래스로부터 빈이 생성된다. 
+
+```java
+public class RelationDatabaseCondition implements Condition {
+
+  @Override
+  public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+    return isMySqlDatabase();
+  }
+
+  private boolean isMySqlDatabase() {
+    try {
+      // 클래스패스에 MySQL 드라이버가 포함돼 있으면 true
+      Class.forName("com.mysql.jdbc.Driver");
+      return true;
+    } catch (ClassNotFoundException e) {
+      return false;
+    }
+  }
+}
+```
+
+```java
+@Configuration 
+public class CommonApplicationContextConfiguration {
+
+  @Bean
+  @Conditional(RelationDatabaseCondition.class)  // mathces() 메서드가 true를 반활할 때만 RelationalDataSourceConfiguration 빈을 생성 
+  public RelationalDataSourceConfiguration dataSourceConfiguration() {
+    return new RelationalDataSourceConfiguration();
+  }
+}
+```
+
+@Conditional 애너테이션을 쉽게 이해할 수 있도록 단순한게 만들기 위해 단지 클래스패스만 검사하도록 예제를 만들었지만, 실무적으로 얼마든지 복잡한 로직을 사용할 수도 있다. 일반적으로 Condition 구현체는 다음 두 가지 방식으로 구현한다.
+
+- 특정 라이브러리가 클래스패스에 존재하는지 확인한다.
+- application.properties 파일에 특정 프로퍼티가 정의돼 있는지 확인한다.
+
+연습 삼아서 H2ConsoleAutoConfiguration, JpaRepositoriesAutoConfiguration 클래스를 살펴보는 것도 좋다.
+
+### 스프링 부트 개발자 도구
+
+```xml
+<!--	스프링 부트 개발자 도구 추가	-->
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-devtools</artifactId>
+  <optional>true</optional>
+</dependency>
+```
+
+`<optional>true</optional>` 설정을 하면 개발자 도구가 프로젝트에 의존하는 다른 모듈에 영향을 미치는 것을 막을 수 있다. 이제 개발자 도구에 포함된 다양한 기능을 알아보자.
+
+- 프로퍼티 기본값: spring-boot-devtools JAR 파일의 org.springframework.boot.devtools.env 패키지에 있는 DevToolsPropertyDefaultsPostProcessor 클래스를 사용해서 기본적으로 캐시 기능을 모두 비활성화 
+- 자동 재시작: 클래스패스에 변경 사항이 있을 때마다 자동으로 애플리케이션을 재시작해준다. 스프링 부트는 두 개의 클래스로더를 사용해서 자동 재시작 기능을 구현한다. 하나는 기본 클래스로더라고 부르며, 서드파티 라이브러리처럼 변경되는 일이 별로 없는 클래스를 로딩한다. 다른 하나는 리스타트 클래스로더라고 부르며, 개발자가 작성하는 변경이 잦은 클래스를 로딩한다.
+- 라이브 리로드: 웹 페이지를 구성하는 리소스가 변경됐을 때 브라우저 새로고침을 유발하는 내장된 라이브 리로드 서버가 포함
+
+### 커스텀 실패 분석기 생성
+
+애플리케이션에서 발생한 실패/예외를 감지하고 해당 이슈를 이해하는 데 도움이 되는 정보를 제공해준다. 실패 분석기는 크게 두 가지 관점에서 유용하다.
+
+- 실제 발생한 에러에 대한 상세한 메시지를 제공해서 문제의 근본 원인과 해결책을 결정할 수 있도록 도와준다.
+- 애플리케이션 시작 시점에 검증을 수행해서 발생할 수 있는 에러를 가능한 한 일찍 파악할 수 있다. 예를 들어 외부 서비스가 정상 동작하지 않는다면 핵심 데이터를 가져올 수 없고 애플리케이션도 예상대로 동작하지 못할것이므로, 아예 애플리케이션을 시작하지 않는 쪽을 선택할 수 있다.
+
+### 스프링 부트 액추에이터
+
+스프링 부트 애플리케이션 모니터링과 관리에 필요한 기능을 제공한다. spring-boot-starter-actuator에는 spring-boot-actuator-autoconfigure와 micrometer-core 의존 관계가 포함돼 있다. spring-boot-actuator-autoconfigure는 스프링 부트 액추에이터의 핵심 기능과 자동 구성 설정이 포함돼 있고, micrometer-core에는 다양한 측정지표를 수집할 수 있는 [마이크로미터](https://micrometer.io) 지원 기능이 포함돼 있다.
+
+애플리케이션을 시작하고 브라우저에서 http://localhost:8081/actuator/health 접속하면 `{"status":"UP"}` 을 확인할 수 있다.
+
+#### 스프링 부트 액추에이터 엔드포인트 이해
+
+액추에이터 엔드포인트는 웹(HTTP) 또는 JMX(Java Management Extensions)를 통해 호출할 수 있다. 기본적으로 health와 info 엔드포인트만 HTTP를 통해 접근할 수 있도록 노출되어 있고, 나머지 엔드포인트는 HTTP에 노출되지 않는다. 하지만 JMX는 HTTP보다 보안성이 높으므로 스프링 부트가 제공하는 모든 액추에이터 엔드포인트가 기본적으로 노출되도록 설정돼 있다.
+
+#### 스프링 부트 액추에이터 엔드포인트 관리
+
+필요한 엔드포인트만을 쉼표로 연결해서 지정할 수도 있다.
+
+```yml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bean, threaddump
+```
+
+액추에이터 컨텍스트 루트인 `/actuator`는 다른 이름으로 변경할 수 있다. 
+
+```yml
+management:
+  endpoints:
+    web:
+      base-path: sbip
+```
+
+액추에이터 컨텍스트 루트 이름뿐만 아니라 포트 번호도 변경할 수 있다. 
+
+```yml
+management:
+  server:
+    port: 8081
+```
+
+#### Health 엔드포인트 탐구 
+
+health 엔드포인트에 접근하면 애플리케이션과 애플리케이션에서 사용하는 여러 컴포넌트의 상태를 전반적으로 파악할 수 있다.
+
+스프링 부트는 애플리케이션 컴포넌트별로 다양한 HealthIndicator 구현체를 제공한다. 이 중 DiskSpaceHealthIndicator와 PingHealthIndicator, DataSourceHealthIndicator 같은 일부 구현체는 항상 기본으로 포함된다.
+
+디스크 사용 현황과 핑(ping) 상태도 추가해서 확인하는 방법을 알아보자.
+
+```yml
+management:
+  endpoint:
+    health:
+      show-details: always
+```
+
+health 엔드포인트에서 더 다양한 애플리케이션 상태 상세 정보를 보여주도록 변경할 수 있다.
+- always: 상태 상세 정보를 항상 표시
+- never: 기본값이며 상태 상세 정보를 표시하지 않음
+- when-authorized: 애플리케이션에서 인증되고 application.properties 파일의 management.endpoint.health.roles로 지정한 역할을 가지고 있는 사용자가 접근할 때만 상태 상세 정보를 표시한다.
+
+```json
+{
+  "status": "UP",
+  "components": {
+    "db": {
+      "status": "UP",
+      "details": {
+        "database": "H2",
+        "validationQuery": "isValid()"
+      }
+    },
+    "diskSpace": {
+      "status": "UP",
+      "details": {
+        "total": 294384795648,
+        "free": 218491789312,
+        "threshold": 1048570,
+        "path": "~/project/maven.project/.",
+        "exists": true
+      }
+    },
+    "ping": {
+      "status": "UP"
+    }
+  }
+}
+```
+
+#### 커스텀 스프링 부트 HealthIndicator 작성
+
+스프링 부트에 내장된 HealthIndicator는 애플리케이션에 특화된 컴포넌트에 대한 상태 정보를 보여주지는 않는다. 하지만 스프링 부트는 HealthIndicator 인터페이스를 통해 health 엔드포인트 기능을 확장할 수 있도록 열어 두었다. 스프링 부트는 개발자가 구현한 HealthIndicator 구현체도 스프링 컴포넌트로 간주하여 스프링 부트 컴포넌트 스캐닝 시 감지할 수 있고 자동으로 health 엔드포인트에 연동해준다.
+
+[커스텀 스프링 부트 액추에이터 HealthIndicator 정의](https://github.com/pinstinct/spring-boot-in-practice/commit/7292f8e681b7be7c55566d34c66ffecfb9673e98)
+
+### 커스텀 스프링 부트 액추에이터 엔드포인트 생성
+
+[커스텀 스프링 부트 액추에이터 생성](https://github.com/pinstinct/spring-boot-in-practice/commit/e33469ffe4755f4d24973b69868fce20fd80936c)
+
+#### 스프링 부트 액추에이터 매트릭
+
+스프링 부트는 내부적으로 마이크로미터 프레임워크를 사용해서 측정지표를 설정한다. 또한 카운터, 타이머, 게이지, 분포 요약 정보 같은 커스텀 측정지표도 정의할 수 있다.
+
+마이크로미터는 다양한 유형의 측정지표를 벤더 중립적인 방법으로 수집할 수 있는 파사드(facade)다. 그래서 프로메테우스, 그라파이트, 뉴 렐릭 등 다양한 모니터링 시스템 구현체 중에서 원하는 구현체를 선택해 플로그인 방식으로 사용할 수 있다. 
+
+마이크로미터는 벤더 중립적인 측정지표 수집 API와 프로메테우스 같은 모니터링 프레임워크 구현체를 포함하고 있다. 프로메테우스 말고 다른 모니터링 시스템을 사용하려면 micrometer-registry-{monitoring_system} 의존 관계를 추가하면 스프링 부트가 자동 구성으로 해당 모니터링 시스템을 사용할 수 있게 해준다.
+
+스프링 부트는 MeterRegistry를 사용해서 자동 구성으로 여러 개의 레지스트리 구현체를 추가할 수 있다. 그래서 한 개 이상의 모니터링 시스템에 측정지표를 내보내서 사용할 수 있다. 또한 MeterRegistryCustomizer를 사용해서 레지스트리 커스터마이징도 가능하다. 예를 들어 측정지표를 프로메테우스와 뉴 렐릭으로 보내고 두 개의 레지스트리에 공통으로 태그 셋을 설정해서 사용할 수 있다. 여기에서 말하는 태그는 식별자로 사용된다. 예를 들어 다수의 애플리케이션이 측정 지표를 내보낼 때 애플리케이션 이름을 식별하기 위해 태그를 사용할 수 있다.
+
+```java
+@Bean
+MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
+  return registry -> registry.config().commonTags("application", "course-tracker");
+}
+```
+
+위에서 추가한 애플리케이션 태그 정보가 포함(http://localhost:8081/actuator/metrics/jvm.buffer.memory.used?tag=application:course-tracker)돼 있는 것을 확인할 수 있다. 이 태그를 이용해서 측정지표를 필터링하면 특정 애플리케이션에 대한 측정지표를 얻을 수 있다. 
+
+#### 커스텀 측정지표 생성 
+
+개발자가 어플리케이션을 모니터링하는 데 필요한 애플리케이션 특화된 데이터를 보여주는 커스텀 측정지표를 정의하고 수집해서 확인할 수 있는 기능을 제공한다.
+
+[커스텀 측정지표 생성](https://github.com/pinstinct/spring-boot-in-practice/commit/08a3c5d7f82c489a5708f3603660a96d910db262)
+
+#### 프로메테우스와 그라파나를 사용한 측정지표 대시보드
 

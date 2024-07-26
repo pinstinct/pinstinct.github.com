@@ -210,19 +210,19 @@ CommandLineRunner는 다음과 같이 여러 가지 방법으로 사용할 수 �
     ```
   - CommandLineRunner 구현체에 @Component를 붙여서 스프링 컴포넌트로 정의한다.
     - 위에 2가지 방법은 CommandLineRunner 구현체를 스프링 부트 메인 클래스에 작성했지만, 이 방법은 별도의 클래스에 작성할 수도 있다.
-    ```java
-    @Order(1)  // CommandLineRunner 구현체가 여러 개 있을 때, 실행 순서 지정
-    @Component
-    public class MyCommandLineRunner implements CommandLineRunner {
+      ```java
+      @Order(1)  // CommandLineRunner 구현체가 여러 개 있을 때, 실행 순서 지정
+      @Component
+      public class MyCommandLineRunner implements CommandLineRunner {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+      protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(String... args) throws Exception {
-        logger.info("MyCommandLineRunner executed as a Spring Component");
-    }
-    }
-    ```
+      @Override
+      public void run(String... args) throws Exception {
+          logger.info("MyCommandLineRunner executed as a Spring Component");
+      }
+      }
+      ```
 
 CommandLineRunner는 애플리케이션 초기화를 위해 여러 작업을 수행해야 할 때 편리하게 사용할 수 있는 유용한 기능이다. CommandLineRunner 안에서는 args 파라미터에도 접근할 수 있으므로 외부에서 파라미터값을 다르게 지정하면서 원하는 대로 CommandLineRunner 구현체를 제어할 수 있다.
 
@@ -780,4 +780,170 @@ MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
 [커스텀 측정지표 생성](https://github.com/pinstinct/spring-boot-in-practice/commit/08a3c5d7f82c489a5708f3603660a96d910db262)
 
 #### 프로메테우스와 그라파나를 사용한 측정지표 대시보드
+
+프로메테우스는 사운드클라우드에서 처음 만들어진 오픈소스화된 모니터링 시스템이자 경고 알림 도구다. 그라파나는 수집한 여러 가지 측정지표를 다양한 그래프, 시계열 차트, 게이지 테이블 등을 이용해서 대시보드에 그려주는 시각화 도구다.
+
+[프로메테우스와 그라파나](https://github.com/pinstinct/spring-boot-in-practice/commit/979b03a9f288e98dc25f1f09c8a393bfaecb1b86)
+
+## Chapter5. 스프링 부트 애플리케이션 보안
+
+### 스프링 시큐리티 소개
+
+스프링 부트는 spring-boot-starter-security 의존 관계를 추가해서 손쉽게 스프링 시큐리티를 적용할 수 있다. 스프링 시큐리티가 제공해주는 기본적인 보안 기능이 무엇인지 대략적으로 살펴보자.
+
+- 애플리케이션 사용자 인증
+- 별도의 로그인 페이지가 없을 때 사용할 수 있는 기본적은 로그인 페이지
+- 폼(form) 기반 로그인에 사용할 수 있는 기본 계정
+- 패스워드 암호화에 사용할 수 있는 여러 가지 인코더
+- 사용자 인증 성공 후 세션 ID를 교체해서 세션 고정 공격 방식
+- HTTP 응답 코드에 랜덤 문자열 토큰을 포함해서 사이트 간 요청 위조(CSRF) 공격 방지
+  - 세션 인증 정보와 CSRF 토큰을 사용해서 접근해야 함 
+- 공통적으로 자주 발생하는 보안 공격을 방어할 수 있는 여러 가지 HTTP 응답 헤더 제공
+  - Cache-Control: 브라우저 캐시를 완전하게 비활성화
+  - X-Content-Type-Options: 브라우저의 콘텐트 타입 추측을 비활성화하고 Content-Type 헤더로 지정된 콘텐트 타입으로만 사용하도록 강제
+  - Strict-Transport-Security: 응답 헤더에 포함되면 이후 해당 도메인에 대해서는 브라우저가 자동으로 HTTPS를 통해 연결하도록 강제하는 HSTS 활성화 
+  - X-Frame-Options: 값을 DENY로 설정하면 웹 페이지 콘텐트가 frame, iframe, embed에서 표시되지 않도록 강제해서 클릭재킹 공격 방지
+  - X-XSS-Protection: 값을 `1; mode=block`으로 설정하면 브라우저 XSS 필터링을 활성화하고 XSS 공격이 감지되면 해당 웹페이지를 로딩하지 않도록 강제
+
+### 스프링 부트와 스프링 시큐리티 
+
+#### 스프링 부트 애플리케이션에서 스프링 시큐리티 활성화 
+
+spring-boot-starter-security 의존 관계를 추가한 후 애플리케이션을 실행하고 `/index`에 접근하면 놀랍게도 만들지도 않은 로그인 화면이 표시되는 것을 확인할 수 있다. 
+
+로그인에 필요한 계정 이름은 user이고 비밀번호는 스프링 부트 애플리케이션 시작 시 로그에 표시되며 애플리케이션이 시작될 때마다 다른 값이 표시된다. 또한, `/logout` 엔드 포인트를 기본으로 제공해준다.
+
+[스프링 시큐리티 활성화](https://github.com/pinstinct/spring-boot-in-practice/commit/150f546151595e1a5b8fcf3268bfa76f0a3964ce)
+
+spring-boot-starter-security 의존 관계를 자세히 들여다보면 spring-security-config, spring-security-web 같은 라이브러리에 의존하고 있는 것을 알 수 있는데, 이 두 개의 라이브러리에 스프링 시큐리티 기능이 포함돼 있다.
+
+일반적인 웹 어플리케이션에서 사용되는 인증 과정을 살펴보자.
+
+![](/image/web-application-auth-sequence.png)
+
+#### 필터, 필터체인과 스프링 시큐리티
+
+일반적인 자바 웹 애플리케이션에서 클라이언트는 HTTP나 HTTPS 프로토콜을 사용해서 서버의 자원에 접근한다. 클라이언트의 요청은 서버의 서블릿에서 처리된다. 서블릿은 HTTP 요청을 받아 처리한 후 HTTP 응답을 클라이언트에게 반환한다. 스프링 웹 애플리케이션에서는 DispatcherServlet이 서블릿의 역할을 담당하고 애플리케이션으로 들어오는 모든 요청을 처리한다.
+
+서블릿 명세에 있는 요청-응답 처리 과정에서 중심축을 담당하는 중요한 역할을 하는 주요 컴포넌트는 필터(fitler)다. 필터는 서블릿의 앞 단에 위치해서 요청-응답을 가로채서 변경할 수 있다. 한 개 이상의 필터는 필터체인으로 구성할 수 있다. 필터와 필터체인은 모두 javax.servlet 패키지에 포함돼 있는 인터페이스다.
+
+스프링 웹 애플리케이션으로 들어오는 모든 요청을 하나의 특별한 서블릿인 DispatcherServlet 혼자서 처리하는 것과 마찬가지로 스프링 시큐리티는 하나의 특별한 필터인 DelegatingFilterProxy에 의해 활성화된다.
+
+```java
+// Filter 인터페이스
+public interface Filter {
+
+  public default void init(FilterConfig filterConfig) throws ServletException {}
+
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException;
+
+  public default void destory() {}
+}
+```
+
+Filter 인터페이스에는 3개의 메서드가 있으므로 구현체는 3개의 메서드를 구현해야 한다. 필터가 수행하는 실질적인 로직은 doFilter 메서드에 구현해야 하며 Filter의 라이프 사이클은 다음과 같다.
+
+![](/image/spring-security-filter-life-cycle.png)
+
+- init(): 서블릿 컨테이너가 필터를 등록하는 초기화 과정에서 호출된다.
+- doFilter(): 필터의 실질적인 작업을 수행하는 메서드로서 요청, 응답, FilterChain 객체에 접근할 수 있다.
+- destory(): 서블릿 컨테이너가 필터를 제거할 때 호출된다.
+
+FilterChain도 서블릿 컨테이너에 의해 제공되는 컴포넌트인데 여러 필터를 연쇄적으로 거쳐 흘러가게 만드는 역할을 한다.필터는 자신의 작업이 완료되면 FilterChain을 호출해서 요청이 다음 필터를 통과하게 만든다. 요청이 체인상에 있는 마지막 필터를 통과하면 서블릿 같은 실제 리소스에 접근하게 된다.
+
+스프링 시큐리티는 다양한 보안 관련 기능을 구현하기 위해 필터를 굉장히 많이 사용하며 스프링 시큐리티의 핵심은 필터에 기반을 두고 있다.
+
+이제 스프링 시큐리티의 두 가지 주요 필터인 DelegatingFilterProxy와 FilterChainProxy에 대해 알아보자. 이 두 필터는 HTTP 요청이 스프링 시큐리티 인프라스트럭처를 통과하게 만드는 진입점 역할을 한다.
+
+#### 스프링 시큐리티 아키텍처 
+
+Filter는 서블릿 명세에서 아주 쓸모가 많은 컴포넌트다. Filter 인스턴스는 서블릿 컨테이너 컴포넌트다. 생성, 초기화, 소멸에 이르는 필터의 라이프 사이클은 서블릿 컨테이너가 관리한다. 서블릿 명세에는 당연하게도 Filter와 스프링의 연동에 대한 어떤 요건도 포함되어 있지 않다.
+
+스프링 시큐리티는 DelegatingFilterProxy를 사용해서 서블릿 필터와 스프링 사이의 간극을 채운다. DelegatingFilterProxy는 서블릿 필터이며 서블릿 컨테이너에 등록되고 라이프 사이클 역시 서블릿 컨테이너가 관리한다. 서블릿 컨테이너로 관리하는 Filter 구현체 혼자서는 스프링 프레임워크의 기능을 활용할 수 없다. 그래서 별도의 Filter 구현체를 하나 더 정의해서 스프링으로 관리하는 스프링 빈으로 만든다. 이 스프링 빈은 DelegatingFilterProxy 안에서 대리인 역할을 하는 delegate로 설정된다. DelegatingFilterProxy는 서블릿 필터로서 런타임에 가로챈 요청을 delegate로 설정된 스프링 빈에 위임해서 처리한다.
+
+FilterChainProxy가 앞서 말한 대로 스프링 빈에 등록되고 DelegatingFilterProxy의 대리인 역할을 하는 Filter 인터페이스 구현체다. FilterChainProxy는 하나 이상의 SecurityFilterChain을 가질 수 있다. DelegatingFilterProxy가 필터로서 가로챈 요청을 FilterChainProxy에 위임하면 FilterChainProxy는 자신이 가지고 있는 SecurityFilterChain에 요청을 흘려보내서 SecurityFilterChain에 있는 필터를 통과하게 만든다. 
+
+지금까지 설명한 DelegatingFilterProxy, FilterChainProxy, SecurityFilterChain 내용을 그림으로 정리하면 아래와 같다.
+
+![](/image/securityfilterchain.png)
+
+> 클라이언트 요청 > 서버의 (필터 > )서블릿에서 처리 > 클라이언트에게 응답 반환
+
+- 필터는 **서블릿** 앞단에서 요청-응답을 가로채 변경 가능 
+  - init, doFilter, destory 메서드
+- DelegatingFilterProxy: 스프링 시큐리티 활성화
+  - **서블릿** 필터, 서블릿 컨테이너가 관리
+  - 서블릿 필터로서 런타임에 가로챈 delegate로 설정된 빈에 위임해서 처리
+- FilterChainProxy: Filter 구현체를 정의, 스프링으로 관리하는 스프링 빈
+  - DelegatingFilterProxy 대리인 역할을 하는 Filter 구현체 
+  - 하나 이상의 SecurityFilterChain을 가짐
+
+SecurityFilterChain 인터페이스는 matches()와 getFilters() 메서드를 가지고 있다. matches() 메서드는 SecurityFilterChain 구현체가 요청을 처리하는 데 적합한지를 판별한다. 스프링 시큐리티는 matches() 메서드에 활용할 수 있는 RequestMatcher 인터페이스와 여러 구현체를 제공한다. 예를 들어 AnyReqestMatcher를 사용하면 모든 HTTP 요청이 해당 SecurityFilterChain 구현체를 통과한다. 스프링 시큐리티는 URL 기반으로 판별할 수 있도록 AntPathRequestMatcher도 제공한다.
+
+SecurityFilterChain의 matches() 메서드가 true를 반환하면 요청은 해당 SecurityFilterChain을 거치게 되는데, 이때 getFilters() 메서드가 호출되면서 요청이 SecurityFilterChain 구현체의 필터 목록에 있는 모든 필터를 거친다.
+
+#### 여러 개의 SecurityFilterChain 구성
+
+애플리케이션에 여러 개의 SecurityFilterChain을 구성하려면 체인의 순서가 보장돼야 한다. 스프링의 @Order 애너테이션을 사용해서 여러 SecurityFilterChain 사이의 순서를 지정할 수 있다. 더 구체적인 URL로 들어오는 요청을 처리한 SecurityFilterChain이 더 높은 우선순위를 가져야 한다. 예를 들어 `/admin`으로 들어오는 요청을 처리하는 필터체인 A와 `/*`로 들어오는 요청을 처리하는 필터체인 B가 있을 때, A의 우선순위가 B보다 높아야 /admin으로 들어오는 요청이 A 필터체인을 통과할 수 있다.
+
+#### 사용자 인증
+
+인증에 사용되는 주요 개념과 클래스를 먼저 살펴보자.
+
+![](/image/securitycontextholder.png)
+
+- SecurityContextHolder: SecurityContext 인스턴스를 현재 실행 중인 스레드에 연동한다. SecurityContext 인스턴스에는 사용자 이름이나 권한 등 사용자 식별에 필요한 상세 정보가 담겨 있다. SecurityContextPersistenceFilter가 SecurityContext 인스턴스를 관리한다. SecurityContextPersistenceFilter는 SecurityContextRepository를 통해 SecurityContext 인스턴스를 획득한다. 웹 어플리케이션에서는 HttpSessionSecurityContextRepository 구현체가 HTTP 세션에 담긴 정보를 SecurityContext에 로딩한다. 인증 전에는 비어 있는 SecurityContext가 SecurityContextHolder에 추가된다. 정리하면 SecurityContextHolder에 SecurityContext가 포함되고, SecurityContext에 Authentication이 포함된다.
+
+- AuthenticationFilters: 사용자 정보를 인증하는 데 사용되는 인증 필터로 스프링 시큐리티는 여러 가지 인증 필터를 제공한다. 인증 필터가 사용자 정보를 인증하면 SecurityContext에 인증 토큰을 저장하며, 인증 토큰은 필터 체인상에 있는 다른 필터에서 사용할 수 있다.
+
+- ExceptionTranslationFilter: 인증 처리 과정에서 발생한 예외를 처리하는 데 핵심적인 역할을 담당한다. 인증에 실패해서 AuthenticationException이 발생하면 ExceptionTranslationFilter는 AuthenticationEntryPoint로 리다이렉트해서 다시 인증 과정이 진행되게 한다. 스프링 시큐리티는 인증 방식에 따라 여러 가지 AuthenticationEntryPoint를 제공한다. 인증에는 성공했지만 요청한 자원에 접근할 수 있는 권한이 없어서 AccessDeniedException이 발생하면, ExceptionTranslationFilter는 AccessDeniedHandler로 요청을 보내서 예외를 처리한다. 
+
+- UserDetailsService: 사용자별 데이터를 스프링 시큐리티의 UserDetails 객체로 매핑해주는 역할을 담당한다. 스프링 시큐리티에서 제공해주는 구현체를 사용할 수도 있고, 직접 구현할 수도 있다.
+
+- AuthenticationProvider: 실제 인증 처리를 담당하며 인증 요청 객체를 받아서 인증 과정을 수행하고 인증 정보가 담긴 Authentication 객체를 반환한다. 인증에 실패하면 AuthenticationException을 던진다.
+
+
+스프링 시큐리티로 구현된 인증 과정을 자세히 살펴보자.
+
+![](/image/abstractauthenticationprocessingfilter.png)
+
+1. 요청이 처음 들어오면 인증 필터를 거친다. 서버에 설정된 보안 전략에 따라 적절한 인증 필터가 요청을 처리한다. 예를 들어 HTTP 기본 인증을 사용하도록 설정돼 있다면 BasicAuthenticationFilter가 요청을 처리한다.
+2. Authentication: 인증 필터는 요청에 포함된 정보를 토대로 인증 토큰을 생성한다. 인증 토큰을 인자로 전달하면서 AuthenticationManager의 authenticate() 메서드를 호출한다.
+3. AuthenticationManager: 실제 인증 처리 서비스를 제공하는 AuthenticationProvider 인스턴스 목록을 가지고 있다. AuthenticationProvider 인터페이스에는 supports(), authenticate() 이렇게 두 개의 메서드가 있는데, supports() 메서드는 인증 토큰을 인자로 받아서 AuthenticationProvider 인스턴스가 이 인증을 처리할지를 판별해서 boolean 값을 반환한다. supports() 메서드가 true를 반환하면 authenticate() 메서드가 호출되면서 인자로 받은 인증 토큰으로 인증 작업을 수행한다.
+4. AuthenticationProvider: authenticate() 메서드는 인자로 받은 인증 토큰에서 username 값을 추출해서 UserDetailsService 구현체의 loadUserByUsername() 메서드에 인자로 전달하면서 호출한다.
+5. UserDetailsService: loadUserByUsername()은 인자로 받은 username으로 사용자 정보 저장소를 조회해서 사용자 권한, 비밀번호 등 계정 관련된 정보를 UserDetails에 담아 AuthenticationProvider에게 반환한다.
+6. AuthenticationProvider: 반환받은 UserDetails에 담겨 있는 정보를 토대로 인증 작업을 수행하고 인증이 성공하면 Authentication을 AuthenticationManager에게 반환한다.
+7. AuthenticationManager는 반환받은 Authentication에서 비밀번호 등 비밀 정보를 삭제하고 Authentication을 인증 필터에 반환한다.
+8. 인증 필터는 반환받은 Authentication을 SecurityContextHolder에 저장하고 응답을 반환한다.
+
+#### UserDetailsService
+
+UserDetailsService 인터페이스는 애플리케이션에서 따라 다르게 저장되는 사용자 상세 정보를 스프링의 UserDetails 구현체로 변환하는 핵심적인 역할을 담당한다. UserDetails 인터페이스는 스프링 애플리케이션에서 애플리케이션 사용자를 나타내며 사용자 계정 관련 다양한 정보를 저장한다. UserDetailsService에는 유일한 메서드인 loadUserByUsername(String username) 메스드가 있는데 이 메서드는 인자로 받은 username을 기준으로 애플리케이션이 사용하는 정보 저장소에서 사용자 정보를 저장한다. 스프링 시큐리티는 InMemoryUserDetailsManager, JdbcUserDetailsManager 같은 여러 가지 UserDetailsService 구현체를 제공한다. 물론 loadUserByUsername() 메서드를 재정의하기만 하면 커스텀 UserDetailsService 구현체를 사용할 수도 있다.
+
+#### 스프링 시큐리티 자동 구성
+
+스프링 시큐리티를 이해하기 위해 마지막으로 남은 부분은 이런 여러 컴포넌트가 스프링 부트 애플리케이션에서 어떻게 설정되고 협업하게 되는지를 이해하는 것이다. 이번에도 스프링 부트 자동구성이 등장한다. 
+
+스프링 부트는 SecurityAutoConfiguration, UserDetailsServiceAutoConfiguration, SecurityFilterAutoConfiguration 이렇게 세 개의 설정 클래스를 사용해서 스프링 시큐리티 자동 구성을 수행한다.
+- SecurityAutoConfiguration
+  - 스프링 시큐리티 자동 구성에서 중심점 같은 역할 담당
+  - 스프링 시큐리티 라이브러리가 클래스패스에 있지만 개발자가 커스텀 시큐리티 설정을 추가하지 않을 때, 사용되며, 폼 로그인 기능과 HTTP 기본 인증 기능을 포함하는 SecurityFilterChain 빈을 생성
+  - @Import를 사용해서 아래의 클래스들을 사용
+    - SpringBootWebSecurityConfiguration
+    - WebSecurityEnablerConfiguration
+      - 클래스에 별다른 내용 없이 여러 가지 애너테이션만 붙어 있는데, 이 중에서 중요한 것은 @EnableWebSecurity 애너테이션
+      - @EnableWebSecurity 애너테이션은 WebSecurityConfiguration, HttpSecurityConfiguration 클래스를 import 하고 @EnableGlobalAuthentication 애너테이션을 포함
+        - WebSecurityConfiguration: 이미지, CSS, JS 파일 같은 웹 리소스에 대한 보안 설정을 담당하는 WebSecurity 빈을 생성
+        - HttpSecurityConfiguration: HTTP 요청에 대한 보안 설정을 담당하는 WebSecurity 빈을 생성
+        - @EnableWebSecurity: 모든 SecurityFilterChain에 전역적으로 적용되는 AuthenticationManager를 AuthenticationManagerBuiler 인스턴스를 사용해서 설정, 따라서 스프링 시큐리티 설정을 할 때 설정 클래스에 해당 애너태이션을 붙여야 스프링 시큐리티 기능이 활성화  
+          - 개발자가 웹 애플리케이션 환경에 맞게 스프링 시큐리티 설정 파일을 작성하고 해당 어노테이션을 붙이면, WebSecurityEnablerConfiguration 클래스는 개발자가 작성한 커스텀 설정 파일에 의해 무시
+          - 기본 스프링 시큐리티 대신 직접 스프링 시큐리티 설정을 정의하려면 WebSecurityConfigurerAdapter를 상속받는 클래스를 정의하거나 WebSecurityConfiguere 인터페이스를 직접 구현하면 된다.
+    - SecurityDataConfiguration: 스프링 시큐리티와 스프링 데이터를 연동하는데 사용 
+- UserDetailsServiceAutoConfiguration: 애플리케이션에 UserDetailsService 구현체가 빈으로 등록돼 있지 않으면 InMemoryUserDetailsManager를 빈으로 등록해준다. InMemoryUserDetailsManager에는 사용자 이름이 user이고 비밀번호가 랜덤 UUID인 기본 계정이 포함된다. 이 기능도 개발자가 직접 UserDetailsService의 구현체를 만들어 빈으로 등록하면 비활성화된다.
+- SecurityFilterAutoConfiguration: DelegatingFilterProxyRegistrationBean 빈 생성. DelegatingFilterProxyRegistrationBean은 DelegatingFilterProxy 필터를 생성하고 서블릿 컨테이너에 등록하는 역할 담당
+
+### 스프링 시큐리티 적용
+
+- [스프링 시큐리티 SecurityConfiguration 클래스 도입 (/login 외의 URL은 인증 필요)](https://github.com/pinstinct/spring-boot-in-practice/commit/20b08529b1228e99c32b26fd16c4e03dbfea172b)
+
 

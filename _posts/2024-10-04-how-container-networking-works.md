@@ -8,6 +8,8 @@ excerpt: 리눅스 환경에서 실습을 통해 도커 네트워크 동작 방�
 
 [How Container Networking Works: a Docker Bridge Network From Scratch](https://labs.iximiuz.com/tutorials/container-networking-from-scratch) 포스트를 읽고 정리한 내용입니다.
 
+전체 실습 구성은 [Repository](https://github.com/pinstinct/container-network-study)에 있습니다.
+
 ## 컨테이너 네트워킹 작동 방식: 처음부터 시작하는 Docker Bridge 네트워크
 
 표준 리눅스 도구를 사용해 학습한다. 컨테이너 네트워킹은 기본적은 리눅스 기능의 조합에서 나온다.

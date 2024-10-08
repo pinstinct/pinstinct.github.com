@@ -30,7 +30,7 @@ excerpt: 책을 읽고 정리한 내용입니다.
   - 스트림이란 한 번에 한 개씩 만들어지는 연속적인 데이터 항목들의 모임이다. 이론적으로 프로그램은 입력 스트림에서 데이터를 한 개씩 읽어 들이며 마찬가지로 출력 스트림으로 데이터를 한 개씩 기록한다. 즉, 어떤 프로그램의 출력 스트림은 다른 프로그램의 입력 스트림이 될 수 있다. 
 - 동작 파라미터화(behavior parameterization)로 메서드에 코드 전달하기
   - 자바 8에서는 메서드를 다른 메서드의 인수로 넘겨주는 기능을 제공
-  - 동적 파라미터화가 중요한 이유는 스트림 API는 연산의 동작을 파라미터화할 수 있는 코드를 전달한다는 사상에 기초하기 때문이다.
+  - 동작 파라미터화가 중요한 이유는 스트림 API는 연산의 동작을 파라미터화할 수 있는 코드를 전달한다는 사상에 기초하기 때문이다.
 - 병렬성과 공유 가변 데이터(shared mutable data)
   - 스트림 메서드로 전달하는 코드는 다른 코드와 동시에 실행하더라도 안전하게 실행될 수 있어야 한다.
   - 안전하게 실행할 수 있는 코드를 만들려면 공유된 가변 데이터에 접근 하지 않아야 한다.
@@ -79,87 +79,146 @@ excerpt: 책을 읽고 정리한 내용입니다.
 
 ### Chapter2. 동작 파라미터화 코드 전달하기
 
-- 동적 파라미터화: 아직은 어떻게 실행할 것인지 결정하지 않은 코드 블록을 의미
+- 동작 파라미터화: 아직은 어떻게 실행할 것인지 결정하지 않은 코드 블록을 의미한다. 이 코드 블록은 나중에 프로그램에서 호출한다. 즉, 코드 블록의 실행은 나중으로 미뤄진다. 변화하는 요구사항에 유연하게 대응할 수 있다.
+- 동작 파라미터화를 추가하려면 쓸데없는 코드가 늘어난다. 자바 8은 람다 표현식으로 이 문제를 해결한다.
+- 예를 들어 컬렉션을 처리할 때 다음과 같은 메서드를 구현한다고 가정하자.
+  - 리스트의 모든 요소에 대해서 '어떤 동작'을 수행할 수 있음
+  - 리스트 관련 작업을 끝낸 다음에 '어떤 다른 동작'을 수행할 수 있음
+  - 에러가 발생하면 '정해진 어떤 다른 동작'을 수행할 수 있음
+
+#### 변화하는 요구사항에 대응하기
+
+- 예제: 녹색 사과 필터링 --> 색을 파라미터화 --> 무게를 파라미터화 --> 가능한 모든 속성을 필터링
+
+#### 동작 파라미터화
+
+- 위의 예제와 같이 파라미터를 추가하는 방법이 아닌 변화하는 요구사항에 좀 더 유연하게 대응할 수 있는 방법이 절실하다.
+  - 사과의 어떤 속성에 기초해서 불리언값을 반환(예를 들어 사과가 녹색인가? 150그램 이상인가?)하는 방법이 있다.
+  - 참 또는 거짓을 반환하는 함수를 프레디케이트라고 한다. 
 - 전략 패턴: 각 알고리즘(전략이락 불리는)을 캡슐화하는 알고리즘 패밀리를 정의해둔 다음에 런타임에 알고리즘을 선택하는 기법이다.
 
 ```java
-interface ApplePredicate {  // 선택 조건을 결정하는 인터페이스 정의(알고리즘 패밀리)
+interface ApplePredicate {  // 사과 선택 전략을 캡슐화(알고리즘 패밀리)
 
-boolean test(Apple a);
+  boolean test(Apple a);
 
 }
 
 // 다양한 전략들
 static class AppleWeightPredicate implements ApplePredicate {
 
-@Override
-public boolean test(Apple apple) {
-    return apple.getWeight() > 150;
-}
-
+  @Override
+  public boolean test(Apple apple) {
+      return apple.getWeight() > 150;
+  }
 }
 
 static class AppleColorPredicate implements ApplePredicate {
 
-@Override
-public boolean test(Apple apple) {
-    return apple.getColor() == Color.GREEN;
-}
-
+  @Override
+  public boolean test(Apple apple) {
+      return apple.getColor() == Color.GREEN;
+  }
 }
 ```
 
-- 동작 파라미터화를 통해 메서드가 다양한 동작(또는 전략)을 받아서 내부적으로 다양한 동작을 수행할 수 있다.
-- 컬렉션 탐색 로직과 각 항목에 적용할 동작을 분리할 수 있다는 것이 동작 파라미터화의 강점이다.
+- 프레디케이트 객체를 받아 사과의 조건을 검사하도록 메소드를 수정한다. 이렇게 동작 파라미터화, 즉 메서드가 다양한 동작(또는 전략)을 받아서 내부적으로 다양한 동작을 수행할 수 있다.
 
 ```java
 // ApplePredicate 객체를 인수로 받아 조건을 검사
 public static List<Apple> filter(List<Apple> inventory, ApplePredicate p) {
-List<Apple> result = new ArrayList<>();
-for (Apple apple : inventory) {
-    if (p.test(apple)) {
-    result.add(apple);
-    }
-}
-return result;
+  List<Apple> result = new ArrayList<>();
+  for (Apple apple : inventory) {
+      if (p.test(apple)) {
+        result.add(apple);
+      }
+  }
+  return result;
 }
 
 List<Apple> heavyApples = filter(inventory, new AppleWeightPredicate());
 System.out.println(heavyApples);
 ```
 
-- 복잡한 과정 간소화를 위해 람다 표현식 사용
+- 한 개의 파라미터, 다양한 동작: 컬렉션 탐색 로직과 각 항목에 적용할 동작을 분리할 수 있다는 것이 동작 파라미터화의 강점이다.
+- 한 메서드가 다른 동작을 수행하도록 재활용할 수 있다. 따라서 유연한 API를 만들 때 동작 파라미터화가 중요한 역할을 한다.
+- 지금까지 동작을 추상화해서 변화하는 요구사항에 대응할 수 있는 코드를 구현하는 방법을 살펴봤다.
+
+#### 복잡한 과정 간소화
+
+- 새로운 동작을 전달하려면 ApplePredicate 인터페이스를 구현하는 여러 클래스를 정의한 다음에 인스턴스화해야 한다.
+- 자바는 클래스의 선언과 인스턴스화를 동시에 수행할 수 있도록 익명 클래스라는 기법을 제공한다. 익명 클래스를 이용하면 클래스 선언과 인스턴스화를 동시에 할 수 있다. 즉, 즉석에서 필요한 구현을 만들어서 사용할 수 있다.
+  - 하지만, 익명클래스는 많은 공간을 차지한다. 코드의 장황함(verbosity)은 나쁜 특성이다. 장황한 코드는 구현하고 유지보수하는 데 시간이 오래 걸릴 뿐 아니라 읽는 즐거움을 빼앗는 요소이다.
+- 람다 표현식 사용
 
 ```java
 // 람다 표현식 사용
 List<Apple> heavyApples2 = filterApples(inventory, (Apple a) -> a.getWeight() > 150);
-
-public static List<Apple> filterApples(List<Apple> inventory, Predicate<Apple> p) {
-List<Apple> result = new ArrayList<>();
-for (Apple apple : inventory) {
-    if (p.test(apple)) {
-    result.add(apple);
-    }
-}
-return result;
-}
 ```
 
 - 리스트 형식으로 추상화 
 
 ```java
-public static <T> List<T> filter(List<T> list, Predicate<T> p) {
-    List<T> result = new ArrayList<>();
-    for (T e: list) {
-      if (p.test(e)) {
-        result.add(e);
-      }
-    }
-    return result;
+// 리스트 형식으로 추상화
+interface Predicate<T> {
+  boolean test(T t);
 }
 
-List<Apple> redApples = filter(inventory, (Apple apple) -> Color.RED.equals(apple.getColor()));
-List<Integer> evenNumbers = filter(List.of(1, 2, 3, 4, 5), (Integer i) -> i % 2 == 0);
+// 이제 바나나, 오렌지, 정수, 문자열 등의 리스트에 필터 메서드를 사용할 수 있다.
+static <T> List<T> filter(List<T> list, Predicate<T> p) {
+  List<T> result = new ArrayList<>();
+  for (T e : list) {
+    if (p.test(e)) {
+      result.add(e);
+    }
+  }
+  return result;
+}
+
+List<Apple> redApples = filter(inventory, apple -> RED.equals(apple.getColor()));
+System.out.println(redApples);
+
+List<Integer> evenNumbers = filter(Arrays.asList(1, 2, 3, 4, 5), number -> number % 2 == 0);
+System.out.println(evenNumbers);
+```
+
+#### 실전 에제
+
+- 자바 API의 많은 메서드는 정렬, 스레드, GUI 처리 등을 포함한 다양한 동작으로 파라미터화 할 수 있다.
+- Comparator로 정렬하기
+  - 자바 8의 List에는 sort 메서드가 포함되어 있다. 물론 Collections.sort도 존재한다. 다음과 같은 인터페이스를 갖는 `java.util.Comparator` 객체를 이용해서 sort의 동작을 파라미터화 할 수 있다.
+- Runnalbe로 코드 블록 실행하기
+
+```java
+// Runnable로 코드 블록 실행하기
+Thread thread = new Thread(new Runnable() {
+
+  @Override
+  public void run() {
+    System.out.println("Hello world");
+  }
+});
+thread.start();
+
+// Runnable로 코드 블록 실행하기 with 람다
+Thread thread = new Thread(() -> System.out.println("Hello world"));
+thread.start();
+```
+
+- Callable을 결과로 반환하기: Callable 인터페이스를 이용해 결과를 반환하는 태스크를 만든다.
+
+```java
+ExecutorService executorService = Executors.newCachedThreadPool();
+Future<String> threadName = executorService.submit(new Callable<String>() {
+  @Override
+  public String call() throws Exception {
+    return Thread.currentThread().getName();
+  }
+});
+  
+// 람다
+ExecutorService executorService = Executors.newCachedThreadPool();
+Future<String> threadName = executorService.submit(() -> Thread.currentThread().getName());
 ```
 
 ### Chapter3. 람다 표현식 

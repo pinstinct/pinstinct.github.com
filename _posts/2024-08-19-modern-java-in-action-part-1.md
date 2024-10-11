@@ -8,6 +8,8 @@ excerpt: 책을 읽고 정리한 내용입니다.
 
 [모던 자바 인 액션](https://www.yes24.com/Product/Goods/77125987) 책을 읽고 정리한 내용입니다.
 
+> [Repository](https://github.com/pinstinct/java-in-action)
+
 ## Part1 기초
 
 ### Chapter1. 자바 8, 9, 10, 11 : 무슨 일이 일어나고 있는가?

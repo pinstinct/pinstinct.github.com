@@ -223,10 +223,273 @@ Future<String> threadName = executorService.submit(() -> Thread.currentThread().
 
 ### Chapter3. 람다 표현식 
 
+- 더 깔끔한 코드로 동작을 구현하고 전달하는 자바 8의 새로운 기능인 람다 표현식을 설명한다.
+- 또한, 람다 표현식과 함께 위력을 발휘하는 새로운 기능인 메서드 참조를 설명한다.
+
+#### 람다란 무엇인가?
+
 - 람다 표현식은 메서드로 전달할 수 있는 익명 함수를 단순화한 것이다. 람다 표현식에 이름은 없지만 파라미터 리스트, 바디, 반환 형식, 발생할 수 있는 예외 리스트를 가질 수 있다.
 - 람다의 특징
-  - 익명
+  - 익명: 이름이 없다.
   - 함수: 메서드처럼 특정 클래스에 종속되지 않으므로 함수라고 부른다.
   - 전달: 람다 표현식을 메서드 인수로 전달하거나 변수로 저장할 수 있다.
   - 간결성: 익명 클래스 처럼 많은 자질구레한 코드를 구현할 필요가 없다.
+- 람다 표현식 구성
+  - 파라미터 리스트: Comparator의 compare 메서드 파라미터(사과 두개)
+  - 화살표: 람다 파라미터와 바디를 구분
+  - 람다 바디: 람다의 반환값에 해당하는 표현식(두 사과의 무게 비교) 
+
+```java
+// 람다 파라미터 -> 람다 바디
+(Apple a1, Apple a2) -> a1.getWeight().compareTo(a2.getWeight());
+```
+
+- 람다 문법
+
+```java
+// 표현식 스타일(expresssion style)
+(parameters) -> expression
+
+// 블록 스타일(block style)
+(parameters) -> { statements; }
+```
+
+#### 어디에, 어떻게 람다를 사용할까?
+
+- 함수형 인터페이스라는 문맥에서 람다 표현식을 사용할 수 있다.
+- 함수형 인터페이스
+  - 정확히 **하나의 추상 메서드**를 지정하는 인터페이스다. 지금까지 살펴본 자바 API의 함수형 인터페이스로 Comparator, Runnable 등이 있다.
+  - 람다 표현식으로 함수형 인터페이스의 추상 메서드 구현을 직접 전달할 수 있으므로 **전체 표현식을 함수형 인터페이스의 인스턴스로 취급**할 수 있다.
+  - `@FunctionalInterface`: 함수형 인터페이스임을 가리키는 어노테이션
+- 함수 디스크립터(function descriptor)
+  - 함수형 인터페이스의 추상 메서드 시그니처는 람다 표현식의 시그니처를 가르킨다. 람다 표현식의 시그니처를 서술하는 메서드를 함수 디스크립터라고 부른다.
+- 람다 표현식은 변수에 할당하거나 함수형 인터페이스를 인수로 받는 메서드로 전달할 수 있으며, 함수형 인터페이스의 추상 메서드와 같은 시그니처를 갖는다는 사실을 기억하자.
+
+#### 람다 활용 : 실행 어라운드 패턴 
+
+- 람다와 동작 파라미터화로 유연하고 간결한 코드를 구현하는 데 도움을 주는 실용적인 예제
+  - 자원 처리(예: 데이터베이스의 파일 처리)에 사용하는 순환 패턴(Circular Reference)은 자원을 열고, 처리한 다음에 자원을 닫는 순서로 이루어진다. 즉, 실제 자원을 처리하는 코드를 설정과 정리 두 과정이 둘러싸는 형태를 갖는다. 이런 형식의 코드를 **실행 어라운드 패턴**(execute around pattern)이라고 부른다.
+
+```java
+public class ExecuteAroundPattern {
+
+  static String processFile() throws IOException {
+    File file = new File(
+        ExecuteAroundPattern.class.getClassLoader().getResource("data.txt").getFile());
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+      return br.readLine();  // 실제 필요한 작업을 하는 코드 (한 줄만 읽기)
+    }
+  }
+}
+```
+
+- 1단계: 동작 파라미터화
+  - 현재 코드는 한 번에 한 줄만 읽을 수 있다. 한 번에 두 줄을 읽거나 다른 요구 사항이 생기면 어떻게 해야 할까? 동작을 파라미터화하는 것이다.
+  - 예제에서는 BufferedReader를 인수로 받아서 String을 반환하는 람다가 필요하다.
+- 2단계: 함수형 인터페이스를 이용해서 동작 전달
+  - 함수형 인터페이스 자리에 람다를 사용할 수 있다.
+  - 따라서 BufferedReader를 --> String과 IOException을 던질 수 있는 시그니처와 일치하는 함수형 인터페이스를 만든다.
+
+```java
+@FunctionalInterface
+public interface BufferedReaderProcessor {
+
+  // BufferedReader -> String & IOException 던질 수 있는 시그니처
+  String process(BufferedReader b) throws IOException;
+}
+
+public class ExecuteAroundPattern {
+
+  // 함수형 인터페이스 자리에 람다 사용 할 수 있도록 수정
+  static String processFile(BufferedReaderProcessor p) throws IOException {
+    File file = new File(
+        ExecuteAroundPattern.class.getClassLoader().getResource("data.txt").getFile());
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+      return p.process(br);  
+    }
+  }
+}
+```
+  - 3단계: 람다 전달
+
+```java
+String oneLine = processFile((BufferedReader br) -> br.readLine());  // 한 번에 한 줄
+
+String twoLines = processFile((BufferedReader br) -> br.readLine() + br.readLine());  // 한 번에 두 줄
+```
+
+#### 함수형 인터페이스 사용
+
+- 함수형 인터페이스는 오직 하나의 추상 메서드를 지정한다. 함수형 인터페이스의 추상 메서드는 람다 표현식의 시그니처를 묘사한다. 함수형 인터페이스의 추상 메서드 시그니처를 **함수 디스크립터**라고 한다.
+- 다양한 람다 표현식을 사용하려면 공통의 디스크립터를 기술하는 함수형 인터페이스 집합이 필요하다. 자바 API는 Comparable, Runnable, Callable 등의 다양한 함수형 인터페이스를 포함하고 있다. 자바 8 라이브러리 설계자들은 `java.util.function` 패키지에 여러 가지 새로운 함수형 인터페이스를 제공한다.
+- Predicate
+  - `java.util.function.Predicate<T>` 인터페이스는 `test`라는 추상 메서드를 정의하며 제네릭 형식 T의 객체를 인수로 받아 불리언을 반환한다.
+
+```java
+public static <T> List<T> filter(List<T> list, Predicate<T> p) {
+  List<T> result = new ArrayList<>();
+  for (T t: list) {
+    if (p.test(t)) {
+      result.add(t);
+    }
+  }
+  return result;
+}
+
+Predicate<String> nonEmptyStringPredicate = (String s) -> !s.isEmpty();
+List<String> nonEmpty = filter(new ArrayList<>(), nonEmptyStringPredicate);
+```
+
+- Consumer
+  - `java.util.function.Consumer<T>` 인터페이스는 제너릭 형식 T 객체를 받아서 void를 반환하는 `accept`라는 추상 메서드를 정의한다.
+  - T 형식의 객체를 인수로 받아서 어떤 동작을 수행하고 싶을 때 Consumer 인터페이스를 사용할 수 있다.
+
+```java
+public static <T> void forEach(List<T> list, Consumer<T> c) {
+  for (T t : list) {
+    c.accept(t);
+  }
+}
+
+forEach(Arrays.asList(1, 2, 3, 4, 5), (Integer i) -> System.out.println(i));
+```
+
+- Function
+  - `java.util.function.Function<T, R>` 인터페이스는 제네릭 형식 T를 인수로 받아서 제네릭 형식 R 객체를 반환하는 추상 메서드 `apply`를 정의한다.
+  - 입력을 출력으로 매핑하는 람다를 정의할 때 Function 인터페이스를 활용할 수 있다.
+
+```java
+public static <T, R> List<R> map(List<T> list, Function<T, R> f) {
+  List<R> result = new ArrayList<>();
+  for (T t : list) {
+    result.add(f.apply(t));
+  }
+  return result;
+}
+
+List<Integer> result = map(Arrays.asList("lambdas", "in", "action"), (String s) -> s.length());
+```
+
+- 기본형 특화
+  - 자바의 모든 형식은 참조형(reference type: Byte, Integer, Object, List, ...) 아니면 기본형(primitive type: int, double, byte, char)에 해당한다. 제너릭 파라미터(예를 들면 Cusumer<T>의 T)에는 참조형만 사용할 수 있다.
+  - 박싱(boxing): 기본형을 참조형으로 변환
+  - 언방식(unboxing): 참조형을 기본형으로 변환
+  - 오토박싱(autoboxing): 박싱과 언박싱이 자동으로 이루어지는 기능
+  - 하지만 이런 변환 과정은 비용이 소모된다. 박싱한 값은 기본형을 감싸는 래퍼며 힙에 저장된다. 따라서 박싱한 값은 메모리를 더 소비하며 기본형을 가져올 때도 메모리를 탐색하는 과정이 필요하다.
+  - 자바 8에서는 기본형을 입출력으로 사용하는 상황에서 오토박싱 동작을 피할 수 있도록 특별한 버전의 함수형 인터페이스를 제공한다. 일반적으로 특정 형식을 입력으로 받는 함수형 인터페이스 이름 앞에는 IntPredicate, DoublePredicate, IntConsumer, LongBinaryOperator, IntFunction처럼 형식명이 붙는다.
+  - [Package java.util.function](https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/function/package-summary.html)
+
+```java
+// 1000은 기본적으로 int 타입
+
+IntPredicate evenNumbers = (int i) -> i % 2 == 0;
+System.out.println();
+boolean result = evenNumbers.test(1000);  // 1000이라는 값을 박싱하지 않음
+
+Predicate<Integer> oddNumbers = (Integer i) -> i % 2 != 0;
+boolean result2 = oddNumbers.test(1000);  // 1000이라는 값을 Integer 객체로 박싱 
+```
+
+> 자바 8에 추가된 함수형 인터페이스
+
+|함수형 인터페이스|함수 디스크립터|기본형 특화|
+|--------------|-------------|---------|
+|`Predicate<T>`|T -> boolean|IntPredicate, LongPredicate, DoublePredicate|
+|`Consumer<T>`|T -> void|IntConsumer, LongConsumer, DoubleConsumer|
+|`Function<T, R>`|T -> R|`IntFunction<R>`, IntToDoubleFunction, IntToLongFunction, `LongFunction<R>`, LongToDoubleFunction, LongToIntFunction, `DoubleFunction<R>`, DoubleToIntFunction, DoubleToLongFunction, `ToIntFunction<T>`, `ToDoubleFunction<T>`, `ToLongFunction<T>`|
+|`Supplier<T>`|() -> T|BooleanSupplier, IntSupplier, LongSupplier, DoubleSupplier|
+|`UnaryOperator<T>`|T -> T|IntUnaryOperator, LongUnaryOperator, DoubleUnaryOperator|
+|`BinaryOperator<T>`|(T, T) -> T|IntBinaryOperator, LongBinaryOperator, DoubleBinaryOperator|
+|`BiPrediate<L, R>`|(T, U) -> boolean|
+|`BiConsumer<T, U>`|(T, U) -> void|`ObjIntConsumer<T>`, `ObjLongConsumer<T>`, `ObjDoubleConsumer<T>`|
+|`BiFunction<T, U, R>`|(T, U) -> R|ToIntBiFunction<T, U>, ToLongBiFunction<T, U>, ToDoubleBiFunction<T, U>|
+
+> 람다와 함수형 인터페이스 예제
+
+|사용사례|람다 예제|대응하는 함수형 인터페이스
+|-------|--------|-------------|
+|불리언 표현|`(List<String> list) -> list.isEmpty()`|`Predicate<List<String>>`|
+|객체 생성|`() -> new Apple(10)`|`Supplier<Apple>`|
+|객체에서 소비|`(Apple a) -> System.out.println(a.getWeight())`|`Consumer<Apple>`|
+|객체에서 선택/추출|`(String s) -> s.length()`|`Function<String, Integer>` 또는 `ToIntFunction<String>`|
+|두 값 조합|`(int a, int b) -> a * b`|`IntBinaryOperator`|
+|두 객체 비교|`(Apple a1, Apple a2) -> a1.getWeight.compareTo(a2.getWeight())`|`IntBinaryOperator`, `Comparator<Apple>`, `BiFunction<Apple, Apple, Integer>`, `ToIntBiFunction<Apple, Apple>`
+
+- 형식 검사, 형식 추론, 제약
+  - 람다로 함수형 인터페이스의 인스턴스를 만들 수 있다. 람다 표현식 자체에는 람다가 어떤 함수형 인터페이스를 구현하는지 정보가 포함되어 있지 않다.
+  - 형식 검사: 람다가 사용되는 콘텍스트(context)를 이용해서 람다의 형식(type)을 추론할 수 있다. 어떤 콘텍스트에서 기대되는 람다 표현식의 형식을 대상 형식(target type)이라고 부른다.
+  - 형식 추론: 자바 컴파일러는 람다 표현식이 사용된 콘텍스트를 이용해서 람다 표현식과 관련된 함수형 인터페이스를 추론한다. 즉 대상 형식을 이용해서 함수 디스크립터를 알 수 있으므로 컴파일러는 람다의 시그니처도 추론할 수 있다. 결과적으로 컴파일러는 람다 표현식의 파라미터 형식에 접근할 수 있으므로 람다 문법에서 이를 생랼할 수 있다.
+
+```java
+// 형식을 추론하지 않음
+Comparator<Apple> c = (Apple a1, Apple a2) -> a1.getWeight().compareTo(a2.getWeight());
+
+// 형식을 추론함
+Comparator<Apple> c = (a1, a2) -> a1.getWeight().compareTo(a2.getWeight());
+```
+  
+  - 지역 변수 사용: 지금까지 살펴본 모든 람다 표현식은 인수를 자신의 바디 안에서만 사용했다. 하지만 람다 표현식에서는 익명 함수가 하는 것처럼 자유 변수(free variable, 파라미터로 넘겨진 변수가 아닌 외부에서 정의된 변수)를 활용할 수 있다. 이와 같은 동작을 람다 캡쳐링(capturing lambda)이라고 부른다.
+    - 명시적으로 final로 선언되어 있어야 하거나 실질적으로 final로 선언된 변수와 똑같이 사용되어야 한다. 즉, 람다 표현식은 한 번만 할당할 수 있는 지역 변수를 캡쳐할 수 있다.
+  - 지역 변수 제약
+    - 내부적으로 인스턴스 변수는 힙에 저장되는 반면 지역 변수는 스택에 위치한다.
+    - 자바 구현에서는 원래 변수에 접근을 허용하는 것이 아니라 자유 지역 변수의 복사본을 제공한다. 따라서 복사본의 값이 바뀌지 않아야 하므로 지역 변수에는 한 번만 값을 할당해야 한다는 제약이 생긴 것이다.
+    
+#### 메소드 참조
+
+- 특정 람다 표현식을 축약한 것
+- 하나의 메서드를 참조하는 람다를 편리하게 표현할 수 있는 문법 
+
+```java
+// 위, 아래 동일한 코드 (메서드 참조 여부 차이)
+inventory.sort((a1, a2) -> a1.getWeight().compareTo(a2.getWeight()));
+inventory.sort(Comparator.comparing(Apple::getWeight));
+
+Function<Apple, Integer> function = (Apple apple) -> apple.getWeight();
+Function<Apple, Integer> getWeight = Apple::getWeight;
+
+Thread.dumpStack();
+Runnable stack = Thread::dumpStack;
+
+BiFunction<String, Integer, String> function1 = (String str, Integer i) -> str.substring(i);
+BiFunction<String, Integer, String> function2 = String::substring;
+```
+
+- 생성자 참조: `ClassName::new`처럼 클래스명과 new 키워드를 이용한다.
+
+```java
+Supplier<Apple> s = () -> new Apple();
+Apple a2 = s.get();
+
+Supplier<Apple> supplier = Apple::new;
+Apple a1 = supplier.get();
+
+BiFunction<Integer, Colors, Apple> f = (weight, color) -> new Apple(weight, color);
+Apple a4 = f.apply(20, RED);
+
+BiFunction<Integer, Colors, Apple> function = Apple::new;
+Apple a3 = function.apply(10, GREEN);
+```
+
+#### 람다 표현식을 조합할 수 있는 유용한 메서드
+
+- 자바 8 API의 몇몇 함수형 인터페이스는 다양한 유틸리티 메서드를 포함한다. 예를 들어 Comparator, Function, Predicate 같은 함수형 인터페이스는 람다 표현식을 조합할 수 있도록 유틸리티 메서드를 제공한다.
+  - 예를 들어 두 프레디케이트를 조합해서 두 프레디케이트의 or 연산을 수행하는 커다란 프레디케이트를 만들 수 있다. 또한 한 함수의 결과가 다른 함수의 입력이 되도록 두 함수를 조합할 수 있다.
+  - 함수형 인터페이스는 디폴트 메소드(default method)를 이용해 유틸리티 메서드를 제공한다.
+- Comparator 조합: revresed, thenComparing
+- Predicate 조합: negate(반전), and, or
+- Function 조합: andThen, compose
+
+```java
+Function<Integer, Integer> f = x -> x + 1;
+Function<Integer, Integer> g = x -> x * 2;
+// g(f(x))
+Function<Integer, Integer> h = f.andThen(g);
+int result = h.apply(1);
+System.out.println(result);  // 4 출력
+
+// f(g(x))
+Function<Integer, Integer> h = f.compose(g);
+int result = h.apply(1);
+System.out.println(result);  // 3 출력
+```
 

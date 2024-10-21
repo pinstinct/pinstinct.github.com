@@ -100,7 +100,64 @@ friendsToMovies.computeIfAbsent("Raphael", name -> new ArrayList<>())
     .add("Star wars");
 ```
 
+- 삭제 패턴
+
+```java
+favoriteMovies.remove(key, value);
+```
+
 - 교체 패턴
     - replaceAll: BiFunction을 적용한 결과로 각 항목의 값을 교체한다.
     - repalce: 키가 존재하면 맵의 값을 바꾼다. 키가 특정 값으로 매핑되었을 때만 값을 교체하는 오버로드 버전도 있다.
     
+```java
+favoriteMovies.replaceAll((friend, movie) -> movie.toUpperCase());
+```
+
+- 합침: 두 개의 맵에 값을 합치거나 수정한다.
+    - putAll: 중복된 키가 없는 경우
+    - merge: 중복된 키를 어떻게 합칠지 결정하는 BiFunction을 인수로 받는다. 널값과 관련된 상황도 처리한다.
+
+```java
+// 중복된 키가 없는 경우
+Map<String, String> everyone = new HashMap<>(family);
+everyone.putAll(friends);
+
+// 중복된 키가 있는 경우
+Map<String, String> everyone = new HashMap<>(family);
+friends.forEach((k, v) -> everyone.merge(k, v,
+    (movie1, movie2) -> movie1 + " & " + movie2));  // 중복된 키가 있으면 두 값을 연결
+
+// merge를 이용한 초기화 검사
+Map<String, Long> moviesToCount = new HashMap<>();
+String movieName = "JamesBond";
+moviesToCount.merge(movieName, 1L, (key, count) -> count + 1L);  // merge(key, 초기화 값, BiFunction)
+```
+
+#### 개선된 ConcurrentHashMap
+
+- ConcurrentHashMap 클래스는 동시성 친화적이며 최신 기술을 반영한 HashMap 버전이다. ConcurrentHashMap은 내부 자료구조의 특정 부분만 잠궈 동시 추가, 갱신 작업을 허용한다. 따라서 동기화된 Hashtable 버전에 비해 읽기 쓰기 연산 성능이 월등하다. 참고로, 표준 HashMap은 비동기로 동작한다.
+- 리듀스와 검색
+    - 스트림과 비슷한 종류의 세 가지 새로운 연산 지원
+        - `forEach`: 각 (키, 값) 쌍에 주어진 액션을 실행
+        - `reduce`: 모든 (키, 값) 쌍을 제공된 리듀스 함수를 이용해 결과로 합침
+        - `search`: 널이 아닌 값을 반환할 때까지 (키, 값) 쌍에 함수를 적용
+    - 다음과 같은 네 가지 연산 형태 지원
+        - 키, 값으로 연산: forEach, reduce, search
+        - 키로 연산: forEachKey, recudeKeys, searchKeys
+        - 값으로 연산: forEachValue, reduceValues, serchValues
+        - Map.Entry 객체로 연산: forEachEntry, reduceEntries, searchEntries
+    - 이들 연산에 제공한 함수는 계산이 진행되는 동안 바뀔 수 있는 객체, 값, 순서 등에 의존하지 않아야 한다.
+    - 또한 이들 연산에 병렬성 기준값(threshold)을 지정해야 한다. 맵의 크기가 주어진 기준값보다 작으면 순차적으로 연산을 실행한다. 기준값을 1로 지정하면 공통 스레드 풀을 이용해 병렬성을 극대화한다.
+    - int, long, double 등의 기본값에는 전용 each reduce 연산이 제공되므로, reduceValuesToInt, reduceKeysToLong 등을 이용하면 박싱 작업을 할 필요가 없다.
+
+```java
+ConcurrentHashMap<String, Long> map = new ConcurrentHashMap<>();
+long parallelismThreshold = 1;
+Optional<Long> maxValue = Optional.ofNullable(map.reduceValues(parallelismThreshold, Long::max));
+```
+
+- 계수
+    - `mappingCount`: 맵의 매핑 개수를 반환한다. 기존의 `size` 메서드 대신 int를 반환하는 `mappingCount`를 사용하는 것이 좋다.
+- 집합뷰
+    - `keySet`: ConcurrentHashMap을 집합 뷰로 반환하는 메서드.

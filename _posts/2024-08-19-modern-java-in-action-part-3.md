@@ -343,6 +343,10 @@ public class ProductFactoryLambda {
 Product p = ProductFactoryLambda.createProduct("loan");
 ```
 
+#### 람다 테스팅
+
+- 람다 표현식도 단위 테스트를 수행할 수 있다. 하지만 람다 표현식 자체를 테스트하는 것보다는 람다 표현식이 사용되는 메서드의 동작을 테스트하는 것이 바람직하다.
+
 #### 디버깅
 
 - 정보 로깅

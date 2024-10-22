@@ -161,3 +161,202 @@ Optional<Long> maxValue = Optional.ofNullable(map.reduceValues(parallelismThresh
     - `mappingCount`: 맵의 매핑 개수를 반환한다. 기존의 `size` 메서드 대신 int를 반환하는 `mappingCount`를 사용하는 것이 좋다.
 - 집합뷰
     - `keySet`: ConcurrentHashMap을 집합 뷰로 반환하는 메서드.
+
+
+### Chapter9. 리팩터링, 테스팅, 디버깅
+
+- 람다 표현식으로 전략(strategy), 템플릿 메서드(template method), 옵저버(observer), 의무 체인(chain of responsibility), 팩토리(factory) 등의 객체지향 디자인 패턴을 어떻게 간소화할 수 있는지 살펴본다.
+
+#### 가독성과 유연성을 개선하는 리팩터링
+
+- 람다, 메서드 참조, 스트림 등의 기능을 이용해서 더 가독성이 좋고 유연한 코드로 **리팩터링**하는 방법을 설명한다.
+- 코드 가독성 개선
+    - 코드 가독성이 좋다는 것은 '어떤 코드를 다른 사람도 쉽게 이해할 수 있음'을 의미한다.
+    - 코드 가독성을 높이려면 코드의 문서화를 잘하고, 표준 코딩 규칙을 준수하는 등의 노력을 기울여야 한다.
+- 람다, 메서드 참조, 스트림을 활용해서 코드 가독성을 개선할 수 있는 간단한 세 가지 리팩토링 예제
+    - 익명 클래스를 람다 표현식으로 리팩터링하기: 하나의 추상 메서드를 구현하는 익명 클래스는 람다 표현식으로 리팩터링 할 수 있다.
+    - 람다 표현식을 메서드 참조로 리팩터링하기
+    - 명령형 데이터 처리를 스트림으로 리팩터링하기: 반복자를 이용한 기존의 모든 컬렉션 처리 코드를 스트림 API로 변경한다. 
+- 코드 유연성 개선: 람다 표현식을 이용하면 동작 파라미터화를 쉽게 구현할 수 있다.
+    - 함수형 인터페이스 적용: 람다 표현식을 이용하려면 함수형 인터페이스가 필요하다.
+    - 조건부 연기 실행(conditional defeered execution)
+        - 객체 상태를 자주 확인하거나, 객체의 일부 메서드를 호출하는 상황이라면 내부적으로 객체의 상태를 확인한 다음에 메서드를 호출하도록 새로운 메서드를 구현하는 것이 좋다. 그러면 코드 가독성이 좋아질 뿐 아니라 캡슐화도 강화된다.
+
+    ```java
+    Logger logger = Logger.getLogger("tester");
+    // 람다를 이용하면, 특정 조건(FINER)에서만 메시지가 생성될 수 있도록 메시지 생성 과정을 연기(defer)한다.
+    logger.log(Level.FINER, () -> "Problem: " + generateDiagnostic());
+    ```
+
+    - 실행 어라운드(execute around): 매번 같은 준비, 종료 과정을 반복적으로 수행하는 코드가 있다면 이를 람다로 변환할 수 있다. 준비, 종료 과정을 처리하는 로직을 재사용함으로써 코드 중복을 줄일 수 있다.
+
+#### 람다로 객체지향 디자인 패턴 리팩터링하기
+
+- 디자인 패턴(design pattern): 공통적인 소프트웨어 문제를 설계할 때 재사용할 수 있는, 검증된 청사진을 제공한다.
+    - 예를 들어 구조체와 동작하는 알고리즘을 서로 분리하고 싶을 때 방문자 디자인 패턴(visitor design pattern)을 사용할 수 있다. 또 다른 예제로 싱글턴 패턴(singleton pattern)을 이용해서 클래스 인스턴스화를 하나의 객체로 제한할 수 있다.
+- 람다를 이용하면 이전에 디자인 패턴으로 해결하던 문제를 더 쉽고 간단하게 해결할 수 있다.
+- 전략(strategy)
+    - 전략 패턴은 한 유형의 알고리즘을 보유한 상태에서 런타임에 적절한 알고리즘을 선택하는 기법이다.
+    - 전략 패턴은 세 부분으로 구성
+        - 알고리즘을 나타내는 인터페이스(Strategy 인터페이스)
+        - 다양한 알고리즘을 나타내는 한 개 이상의 인터페이스 구현(ConcreateStrategyA, ConcreateStrategyB, ... 같은 구체적인 구현 클래스)
+        - 전략 객체를 사용하는 한 개 이상의 클라이언트
+
+    ```java
+    public interface ValidationStrategy {
+    boolean execute(String s);
+    }
+
+    public class Validator {
+
+    private final ValidationStrategy strategy;
+
+    public Validator(ValidationStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean validate(String s) {
+        return strategy.execute(s);
+    }
+    }
+
+    // 전략을 구현하는 새로운 클래스를 구현할 필요 없이 람다 표현식을 직접 전달
+    Validator numericValidator = new Validator(s -> s.matches("\\d+"));
+    boolean b1 = numericValidator.validate("aaaa");
+    assertThat(b1).isFalse();
+
+    Validator lowerCaseValidator = new Validator(s -> s.matches("[a-z]+"));
+    boolean b2 = lowerCaseValidator.validate("bbb");
+    assertThat(b2).isTrue();
+    ```
+
+- 템플릿 메서드(template method)
+    - 템플릿 메서드는 '이 알고리즘을 사용하고 싶은데 그대로는 안 되고 조금 고쳐야 하는' 상황에 적합하다.
+
+    ```java
+    public class OnlineBankingLambda {
+
+    /**
+     * 온라인 뱅킹 알고리즘이 해야 할 일
+     */
+    public void processCustomer(int id, Consumer<Customer> makeCustomerHappy) {
+        Customer c = Database.getCustomerWithId(id);
+        makeCustomerHappy.accept(c);
+    }
+
+    // 더미 Customer 클래스
+    static public class Customer {}
+
+    // 더비 Database 클래스
+    static public class Database {
+
+        static Customer getCustomerWithId(int id) {
+        return new Customer();
+        }
+    }
+    }
+
+    new OnlineBankingLambda().processCustomer(122, customer -> System.out.println(customer));
+    ```
+
+- 옵저버(observer)
+    - 어떤 이벤트가 발생했을 때 한 객체(주제, subject)가 다른 객체 리스트(옵저버, observer)에 자동으로 알림을 보내야 하는 상황에서 옵저버 디자인 패턴을 사용한다.
+
+    ```java
+    public interface Observer {
+    void notify(String tweet);
+    }
+
+    public interface Subject {
+    void registerObserver(Observer observer);
+    void notifyObservers(String tweet);
+    }
+
+    public class Feed implements Subject {
+
+    private final List<Observer> observers = new ArrayList<>();
+
+    @Override
+    public void registerObserver(Observer observer) {
+        this.observers.add(observer);
+    }
+
+    @Override
+    public void notifyObservers(String tweet) {
+        observers.forEach(observer -> observer.notify(tweet));
+    }
+    }
+
+    Feed f = new Feed();
+
+    // 옵저버를 명시적으로 인스턴스화하지 않고 람다 표현식으로 직접 전달해서 실행할 동작 지정
+    // 이 예제에서는 실행해야 할 동작이 비교적 간단하므로 람다 표현식으로 불필요한 코드를 제거하는 것이 바람직
+    f.registerObserver(tweet -> {
+    if (tweet != null && tweet.contains("money")) {
+        System.out.println("Breaking news in NY| " + tweet);
+    }
+    });
+    f.registerObserver(tweet -> {
+    if (tweet != null && tweet.contains("queen")) {
+        System.out.println("Yet more news from London..." + tweet);
+    }
+    });
+    f.notifyObservers("The queen said her favourite book is Modern Java in Action!");
+    ```
+
+- 의무 체인(chain of responsibility): 한 객체가 어떤 작업을 처리한 다음에 다른 객체로 결과를 전달하고, 다른 객체도 해야 할 작업을 처리한 다음에 또 다른 객체로 전달하는 식이다.
+
+    ```java
+    // 함수 체인과 비슷
+    UnaryOperator<String> headerProcessing = (String text) -> "From Raoul, Mario and Alan: "
+        + text;  // 첫 번째 작업 처리 객체
+    UnaryOperator<String> spellCheckerProcessing = (String text) -> text.replaceAll("labda", "lambda");  // 두 번째 작업 처리 객체
+    Function<String, String> pipeline = headerProcessing.andThen(spellCheckerProcessing);  // 동작 체인으로 두 함수를 조합
+    String result = pipeline.apply("Aren't labdas really sexy?!!");
+    ```
+
+- 팩토리(factory): 인스턴스화 로직을 클라이언트에 노출하지 않고 객체를 만들 때 팩토리 디자인 패턴을 사용한다.
+
+```java
+
+public class ProductFactoryLambda {
+
+  public static Product createProduct(String name) {  // 여러 인수를 전달하는 상황에서는 이 기법을 사용하기 어려움
+    Supplier<Product> p = map.get(name);
+    if (p != null) return p.get();
+    throw new IllegalArgumentException("No such product " + name);
+  }
+
+  static interface Product {}
+  static class Loan implements Product {}
+  static class Stock implements Product {}
+  static class Bond implements Product {}
+
+  final static Map<String, Supplier<Product>> map = new HashMap<>();
+  static {
+    map.put("loan", Loan::new);
+    map.put("stock", Stock::new);
+    map.put("bond", Bond::new);
+  }
+}
+
+Product p = ProductFactoryLambda.createProduct("loan");
+```
+
+#### 디버깅
+
+- 정보 로깅
+    - `forEach`를 호출하는 순간 전체 스트림이 소비된다.
+    - `peek`은 스트림의 각 요소를 소비한 것처럼 동작을 실행한다. 하지만 forEach처럼 실제로 스트림의 요소를 소비하지 않는다.
+
+```java
+List<Integer> result = numbers.stream()
+    .peek(x -> System.out.println("from stream: " + x))  // 소스에서 처음 소비한 요소를 출력
+    .map(x -> x + 17)
+    .peek(x -> System.out.println("after map: " + x))  // map 동작 실행 결과를 출력
+    .filter(x -> x % 2 == 0)
+    .peek(x -> System.out.println("after filter: " + x))  // filter 동작 후 선택된 숫자를 출력
+    .limit(1)
+    .peek(x -> System.out.println("after limit: " + x))  // limit 동작 후 선택된 숫자를 출력
+    .toList();
+```

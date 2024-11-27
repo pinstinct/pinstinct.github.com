@@ -206,7 +206,7 @@ Stream<Integer> stream = intStream.boxed();
 ```
 
 - 기본값(OptionalInt): OptionalInt, OptionalDouble, OptionalLong 세 가지 기본형 특화 스트림 버전도 제공한다. 이것을 이용해서 최대값이 없는 상황에서 사용할 기본값을 명시적으로 정의할 수 있다.
-- 숫자 범위: `range`와 `rangeClosed`라는 두 가지 정적 메서드를 제공한다. 두 메서드 모두 첫 번째 인수로 시작값을, 두 번째 인수로 종료값을 갖는다. range 메서드는 시작값과 종료값이 결과에 포함되지 않는 반면 rangeClosed는 시작값과 종료값이 결과에 포함된다는 점이 다르다.
+- 숫자 범위: `range`와 `rangeClosed`라는 두 가지 정적 메서드를 제공한다. 두 메서드 모두 첫 번째 인수로 시작값을, 두 번째 인수로 종료값을 갖는다. range 메서드는 종료값이 결과에 포함되지 않는 반면 rangeClosed는 종료값이 결과에 포함된다는 점이 다르다.
 
 ```java
 IntStream evenNumbers = IntStream.rangeClosed(1, 100).filter(n -> n % 2 == 0);

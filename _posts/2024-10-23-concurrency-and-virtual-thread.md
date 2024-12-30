@@ -68,6 +68,3 @@ excerpt: 동시성, 쓰레드에 대한 내용을 바탕으로 java virtual thre
 
 
 > ref: [백엔드 개발자들이 알아야할 동시성 6 — Coroutine](https://choi-geonu.medium.com/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%93%A4%EC%9D%B4-%EC%95%8C%EC%95%84%EC%95%BC%ED%95%A0-%EB%8F%99%EC%8B%9C%EC%84%B1-6-coroutine-9eecdbeb2d2d), [Virtual Thread의 기본 개념 이해하기](https://d2.naver.com/helloworld/1203723), [[Project Loom] Virtual Thread에 봄(Spring)은 왔는가](https://tech.kakaopay.com/post/ro-spring-virtual-thread/), [Java의 미래 Virtual Thread](https://techblog.woowahan.com/15398/)
-
-
-> [download](/image/D2Coding-Ver1.zip)

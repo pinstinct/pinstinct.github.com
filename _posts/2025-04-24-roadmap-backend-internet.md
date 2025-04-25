@@ -8,7 +8,6 @@ excerpt: https://roadmap.sh/backend를 따라 학습한 내용을 정리합니�
 
 [Backend Developer Roadmap](https://roadmap.sh/backend) 포스트를 읽고 정리한 내용입니다.
 
-> 전체 실습 구성은 [Repository](https://github.com/pinstinct/container-network-study)에 있습니다.
 
 # Internet
 
@@ -194,7 +193,7 @@ HTTP는 메시지의 형식과 전송 방식 그리고 웹 서버와 브라우�
   - 웹 애플리케이션 방화벽(WAF): 7계층 DDos 공격을 완하는데 도움을 줄 수 있는 도구이다. 인터넷과 서버 사이에 WAF를 배치하면 WAF가 리버스 프록시 역할을 수행하므로 특정 유횽의 악의적 트래픽으로부터 서버를 보호할 수 있다. 
 
 
-[리버스 프록시란?](https://www.cloudflare.com/ko-kr/learning/cdn/glossary/reverse-proxy/)
+> [리버스 프록시란?](https://www.cloudflare.com/ko-kr/learning/cdn/glossary/reverse-proxy/)
 
 - 리버스 프록시는 일반적으로 보안, 성능, 안정성을 향상시키기 위해 구현된다.
 
@@ -256,7 +255,7 @@ HTTP 기반에서 가장 일반적으로 사용되는 API는 `Fetch API`로 자�
 ### [HTTP/3 From A To Z: Core Concepts](https://www.smashingmagazine.com/2021/08/http3-core-concepts-part1/)
 
 ## What is Domain Name?
-d
+
 ### [What is a Domain Name?](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_domain_name)
 
 #### Structure of domain names
@@ -297,35 +296,23 @@ URI(Uniform Resource Locator)에는 사이트의 도메인 이름뿐 아니라 �
 
 #### Navigation
 
-##### DNS Lookup
-
-한 번도 방문한 적이 없는 사이트를 요청하면, 브라우저는 DNS 조회를 요청한다. 이는 최종적으로 이름 서버에 의해 처리되고, IP 주소로 응답한다.
-
-#### TCP Handshake
-
-IP 주소를 알고난 후에는, 브라우저는 서버와 TCP 3방향 핸드셰이크를 통해 연결을 설정한다. TCP의 3방향 핸드셰이크 기술은 "SYN-SYN-ACK" (더 정확히는 SYN, SYN-ACK, ACK)로 불린다. 이는 요청이 보내지기 전에 3개의 추가적인 메시지가 컴퓨터 사이에 주고 받아진다는 의미앋.
-
-##### TLS Negotiation
-
-HTTPS를 이용한 보안성 있는 연결을 위해서는 또 다른 "핸드셰이크"가 필요하다. 이를 위해서 자원에 대한 실제 요청 전에 클라이언트에서 서버로 3번 더 왕복해야 한다.
+- DNS Lookup: 한 번도 방문한 적이 없는 사이트를 요청하면, 브라우저는 DNS 조회를 요청한다. 이는 최종적으로 이름 서버에 의해 처리되고, IP 주소로 응답한다.
+- TCP Handshake: IP 주소를 알고난 후에는, 브라우저는 서버와 TCP 3방향 핸드셰이크를 통해 연결을 설정한다. TCP의 3방향 핸드셰이크 기술은 "SYN-SYN-ACK" (더 정확히는 SYN, SYN-ACK, ACK)로 불린다. 이는 요청이 보내지기 전에 3개의 추가적인 메시지가 컴퓨터 사이에 주고 받아진다는 의미앋.
+- TLS Negotiation: HTTPS를 이용한 보안성 있는 연결을 위해서는 또 다른 "핸드셰이크"가 필요하다. 이를 위해서 자원에 대한 실제 요청 전에 클라이언트에서 서버로 3번 더 왕복해야 한다.
 
 ![](/image/ssl.jpg)
 
-8번의 왕복이 있은 후에 브라우저는 마침내 요청을 할 수 있다.
+- 8번의 왕복이 있은 후에 브라우저는 마침내 요청을 할 수 있다.
 
 #### Response
 
 서버가 요청을 받으면, 관련 응답 헤더와 함께 HTML의 내용을 응답하게 된다.
 
-##### 혼잡 제어(Congestion control) / TCP 슬로우 스타트(TCP Slow Start)
-
-TCP 패킷은 전송 중에 세그먼트로 분할된다. TCP는 패킷의 순서를 보장하기 때문에 서버는 일정 개수의 세그먼트를 전송한 후 클라이언트로부터 ACK 패킷 형태로 승인을 받아야 한다.
-
-서버가 각 세그먼트마다 ACK을 기다린다면 클라이언트로부터 빈번한 ACK이 발생하고, 이는 저부하 네트워크 상황에서도 전송 시간을 증가시킬 수 있다.
-
-반면, 한 번에 너무 많은 세그먼트를 보내면 사용량이 많은 네트워크는 클라이언트가 세그먼트를 받을 수 없어 계속 ACK만 응답하게 되고, 서버는 세그먼트를 계속 재전송해야 하는 문제가 발생할 수 있다.
-
-전송되는 세그먼트 수의 균형을 맞추기 위해 TCP 슬로우 스타트 알고리즘을 사용하여 최대 네트워크 대역폭이 결정될 때까지 전송되는 데이터의 양을 점차적으로 늘리고 네트워크 부하가 높은 경우 전송되는 데이터의 양을 줄인다.
+- 혼잡 제어(Congestion control) / TCP 슬로우 스타트(TCP Slow Start)
+  - CP 패킷은 전송 중에 세그먼트로 분할된다. TCP는 패킷의 순서를 보장하기 때문에 서버는 일정 개수의 세그먼트를 전송한 후 클라이언트로부터 ACK 패킷 형태로 승인을 받아야 한다.
+  - 서버가 각 세그먼트마다 ACK을 기다린다면 클라이언트로부터 빈번한 ACK이 발생하고, 이는 저부하 네트워크 상황에서도 전송 시간을 증가시킬 수 있다.
+  - 반면, 한 번에 너무 많은 세그먼트를 보내면 사용량이 많은 네트워크는 클라이언트가 세그먼트를 받을 수 없어 계속 ACK만 응답하게 되고, 서버는 세그먼트를 계속 재전송해야 하는 문제가 발생할 수 있다.
+  - 전송되는 세그먼트 수의 균형을 맞추기 위해 TCP 슬로우 스타트 알고리즘을 사용하여 최대 네트워크 대역폭이 결정될 때까지 전송되는 데이터의 양을 점차적으로 늘리고 네트워크 부하가 높은 경우 전송되는 데이터의 양을 줄인다.
 
 #### Parsing(구문 분석)
 

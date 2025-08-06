@@ -102,9 +102,6 @@ vagrant reload
 ```
 
 
-> 출처: [실리콘 Mac (M1 이상)에서 vagrant 활용하기](https://devops-james.tistory.com/271)
-
-
 ## 멀티 노드 클러스터 구성
 
 #### Vagrantfile 정의 
@@ -294,4 +291,7 @@ vagrant@master:~$ sudo -i
 root@master:~# free -h
 ```
 
-> (이재홍의 언제나 최신 Kubernetes - Unit 6.2 Vagrant와 kubeadm으로 가상머신에 클러스터 구축하기)[https://pyrasis.com/jHLsAlwaysUpToDateKubernetes/Unit06/02]
+
+> 참고: [실리콘 Mac (M1 이상)에서 vagrant 활용하기](https://devops-james.tistory.com/271)
+
+> 참고: [이재홍의 언제나 최신 Kubernetes - Unit 6.2 Vagrant와 kubeadm으로 가상머신에 클러스터 구축하기](https://pyrasis.com/jHLsAlwaysUpToDateKubernetes/Unit06/02)

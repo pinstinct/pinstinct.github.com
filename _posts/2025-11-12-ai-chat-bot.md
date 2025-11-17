@@ -8,8 +8,7 @@ excerpt: AI API gateway 개발하면서 배운 것들을 정리한다.
 
 # AI API gateway
 
-회사에서 구현한 AI API gateway 목표는 "AI 모델을 호출하기 위한 단일 진입점을 HTTP 기반으로 제공"하는 것이다.
-이를 통해 AWS, Google, MS 등 주요 클라우드 벤더사의 자격 증명 처리를 게이트웨이에서 일원화함으로써, AI 기능이 필요한 다른 프로젝트들은 인증이나 인프라 구성에 신경 쓰지 않고 오직 서비스 로직 구현에만 집중할 수 있다.
+회사에서 AI API gateway를 구현하면서 배운 것들을 정리하려고 한다. 구현한 AI API gateway 목표는 "AI 모델을 호출하기 위한 단일 진입점을 HTTP 기반으로 제공"하는 것이다. 이를 통해 AWS, Google, MS 등 주요 클라우드 벤더사의 자격 증명 처리를 게이트웨이에서 일원화함으로써, AI 기능이 필요한 다른 프로젝트들은 인증이나 인프라 구성에 신경 쓰지 않고 오직 서비스 로직 구현에만 집중할 수 있다.
 
 > [생성형 AI 서비스: 게이트웨이로 쉽게 시작하기](https://techblog.woowahan.com/19915/)
 
@@ -24,8 +23,7 @@ excerpt: AI API gateway 개발하면서 배운 것들을 정리한다.
 
 ### Json 응답 구조
 
-AI API Gateway는 **Global 및 Business 예외를 포함한 모든 응답에 표준화된 응답 형식**을 제공합니다.
-이를 통해 클라이언트는 일관된 구조로 성공/실패 여부를 판별할 수 있습니다.
+AI API Gateway는 **Global 및 Business 예외를 포함한 모든 응답에 표준화된 응답 형식**을 제공한다. 이를 통해 클라이언트는 일관된 구조로 성공/실패 여부를 판별할 수 있다.
 
 ```json
 {
@@ -42,11 +40,11 @@ AI API Gateway는 **Global 및 Business 예외를 포함한 모든 응답에 표
 
 SSE는 서버가 클라이언트로 데이터를 **단반향으로 실시간 전송**할 수 있도록 하는 웹 기술이다. HTTP 프로토콜 기반으로 동작하며, `text/event-stream` MIME 타입을 사용한다.
 
-웹소켓(WebSocket)에 비해 구현이 간단하고, 양방향 통신이 필요하지 않은 실시간 스트리밍 환경에 적합하다. 이번 프로젝트에서 Chat 응답을 실시간으로 내려주기 위해 SSE를 채택했습니다.
+웹소켓(WebSocket)에 비해 구현이 간단하고, 양방향 통신이 필요하지 않은 실시간 스트리밍 환경에 적합하다. 이번 프로젝트에서 AI Chat 응답을 실시간으로 내려주기 위해 SSE를 채택했다.
 
 #### SSE 메시지 형식
 
-1. Data only messages: `data` 필드만 포함된 단순한 메시지 구조
+- Data only messages: `data` 필드만 포함된 단순한 메시지 구조
 
 ```shell
 data: some text
@@ -55,7 +53,7 @@ data: another message
 data: with two lines
 ```
 
-2. Named events: `event` 필드와 `data` 필드를 함께 사용하는 구조로, 이벤트 유형을 명시할 수 있다.
+- Named events: `event` 필드와 `data` 필드를 함께 사용하는 구조로, 이벤트 유형을 명시할 수 있다.
 
 ```shell
 event: userconnect
@@ -71,7 +69,7 @@ event: usermessage
 data: {"username": "sean", "time": "02:34:36", "text": "Bye, bobby."}
 ```
 
-3. Mixing and matching: 상황에 따라 위의 두 가지 방식을 혼합하여 사용
+- Mixing and matching: 상황에 따라 위의 두 가지 방식을 혼합하여 사용
 
 > [Using server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)
 
@@ -84,26 +82,29 @@ data: {"username": "sean", "time": "02:34:36", "text": "Bye, bobby."}
 
 
 ```python
-async for chunk in response:
-    if not hasattr(chunk, "content"):
-        continue
-    
-    content = parser.parse(chunk)
 
-    # data only messages
-    if bypass:
-        yield "".join(f"data: {line}\n" for line in content.splitlines()) + "\n"
-        continue
-    
-    # named events
-    elif not bypass:
-        usage_metadata = getattr(chunk, "usage_metadata", None)
-        response_metadata = getattr(chunk, "response_metadata", {})
+async def completions():
+    # ...
+    async for chunk in response:
+        if not hasattr(chunk, "content"):
+            continue
+        
+        content = parser.parse(chunk)
 
-        is_last = any(
-            key in response_metadata for key in ["stop_reason", "finish_reason"]
-        )
-        yield get_named_event(content, aid, usage_metadata, is_last)
+        # data only messages
+        if bypass:
+            yield "".join(f"data: {line}\n" for line in content.splitlines()) + "\n"
+            continue
+        
+        # named events
+        elif not bypass:
+            usage_metadata = getattr(chunk, "usage_metadata", None)
+            response_metadata = getattr(chunk, "response_metadata", {})
+
+            is_last = any(
+                key in response_metadata for key in ["stop_reason", "finish_reason"]
+            )
+            yield get_named_event(content, aid, usage_metadata, is_last)
 
 def get_named_event(
     content: str, aid: str, usage_metadata: Optional[dict], is_last: bool
@@ -139,7 +140,7 @@ def get_named_event(
 아래 예시는 `ContextVar`를 사용해 요청 단위로 `trace_id`를 관리하고, 이를 로깅 시스템에 자동으로 포함시키는 방식이다.
 비동기 기반 API 서버에서는 여러 요청이 동시에 처리되기 때문에, 각 요청의 trace 정보를 섞지 않고 독립적으로 유지하는 것이 중요하다.
 
-1. `ContextVar` 기반 trace_id 선언 및 로거 설정
+#### `ContextVar` 기반 trace_id 선언 및 로거 설정
 
 ```python
 import logging
@@ -209,7 +210,7 @@ logger = setup_logger()
 
 ```
 
-2. 요청 단위 Trace ID 생성 및 ContextVar 저장
+#### 요청 단위 Trace ID 생성 및 ContextVar 저장
 
 ```python
 from app.config.logging.config import trace_id_var  # 위의 파일
@@ -221,7 +222,7 @@ trace_id_var.set(trace_id)
 
 ```
 
-이렇게 설정하면, 같은 스레드나 이벤트 루프에서 여러 요청이 동시에 처리되더라도 `ContextVar`는 각 요청별 trace_id를 안전하게 유지하여 로그에 자동으로 포함시킬 수 있다.
+이렇게 설정하면, 같은 스레드나 이벤트 루프에서 여러 요청이 동시에 처리되더라도 `ContextVar`는 각 요청별 `trace_id`를 안전하게 유지하여 로그에 자동으로 포함시킬 수 있다.
 
 ## ASGI 미들웨어 구현
 

@@ -228,7 +228,6 @@ trace_id_var.set(trace_id)
 
 ### 미들웨어(middleware)
 
-
 HTTP 요청과 응답이 처리되기 전에 실행되는 함수를 말한다. 즉, HTTP 요청이 엔드포인트 함수로 전달되기 전이나, 응답이 외부로 반환되기 전에 실행된다. 예를 들면 다음과 같은 것들이다.
 
 - 요청 데이터 처리
@@ -248,15 +247,165 @@ FastAPI는 기본적으로 다음과 같은 미들웨어를 제공한다.
 
 그 외에도 다른 ASGI 미들웨어나 스탈렛이 제공하는 미들웨어를 사용할 수 있다.
 
-> 주의사항: 주입된 의존성이 `yield`를 사용한다면 미들웨어 이후에 종료코드가 실행된다. 예를 들어 데이터베이스 연결을 닫거나 자원을 정리하는 코드가 있다면, 이 코드는 미들웨어가 수행된 후 실행된다.
 
-`BackgroundTasks` 는 모든 미들웨어가 수행된 이후에 실행된다.
+### 미들웨어 주의사항
+
+- 주입된 의존성(`Dependencies`)이 `yield`를 사용한다면 미들웨어 이후에 종료코드가 실행된다. 예를 들어 데이터베이스 연결을 닫거나 자원을 정리하는 코드가 있다면, 이 코드는 미들웨어가 수행된 후 실행된다.
+- `BackgroundTasks` 는 모든 미들웨어가 수행된 이후에 실행된다.
+
+```scss
+
+        ┌───────────────────────────────────────────┐
+        │                 HTTP Request              │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │            [ASGI Middleware 1]            │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │            [ASGI Middleware 2]            │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │        FastAPI Routing & Endpoint         │
+        │     - Dependencies (yield 이전 실행)       │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │       Response 객체 생성 (Response)        │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │         [ASGI Middleware 2 종료]           │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │         [ASGI Middleware 1 종료]           │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │            Response 전송 완료              │
+        └───────────────────────────┬───────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │     Dependency cleanup (yield 이후 실행)   │
+        └───────────────────────────────────────────┘
+                                    ▼
+        ┌───────────────────────────────────────────┐
+        │            BackgroundTasks 실행            │
+        └───────────────────────────────────────────┘
 
 
-제한없는 기능 구현을 위해 ASGI 미들웨어 구현
+```
+
+
+### 고급 기능 구현을 위한 ASGI 미들웨어
+
+Starlette의 `Pure ASGI Middleware` 패턴을 사용하면, 프레임워크에 종속되지 않고 **ASGI 프로토콜 레벨에서 요청/응답 메시지를 직접 처리**할 수 있다.
+
+또한, 기능을 자유롭게 구현할 수 있어 ASGI 미들웨어를 사용했다.
 
 > [Pure ASGI Middleware](https://www.starlette.dev/middleware/#pure-asgi-middleware)
 
+
+#### 프로젝트 적용 방식
+
+아래 코드는 Access Log를 남기기 위해 직접 구현한 Pure ASGI 미들웨어 예시이다.
+
+- 특정 경로/정적 파일은 로깅 제외
+- request body 로깅
+- response body 로깅
+- trace_id 생성 및 헤더 주입
+- 수행 시간 측정 
+
+```python
+import time
+import uuid
+from urllib.parse import unquote
+
+from starlette.datastructures import MutableHeaders
+from starlette.requests import Request
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
+
+from app.config.logging.config import logger, trace_id_var
+
+
+class AccessLoggerMiddleware:
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+        self.excluded_paths = [
+            "/docs",
+            "/swagger-ui",
+            "/swagger-ui-bundle",
+            "/openapi.json",
+            "/web",
+        ]
+        self.excluded_prefixes = ["/swagger-ui"]
+        self.excluded_extensions = (".js", ".css", ".png", ".svg", ".ico", ".map")
+
+    def _is_excluded(self, path: str) -> bool:
+        return (
+            path in self.excluded_paths
+            or any(path.startswith(prefix) for prefix in self.excluded_prefixes)
+            or path.endswith(self.excluded_extensions)
+        )
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        trace_id = str(uuid.uuid4())
+        scope["trace_id"] = trace_id
+        trace_id_var.set(trace_id)
+
+        path = scope.get("path")
+        if self._is_excluded(path):
+            await self.app(scope, receive, send)
+            return
+
+        request = Request(scope)
+        start_time = time.perf_counter()
+
+        async def wrapped_receive() -> Message:
+            message = await receive()
+            if message["type"] == "http.request":
+                body = message.get("body", b"")
+                try:
+                    payload = body.decode("utf-8", errors="replace")
+                except Exception:
+                    payload = "<decode error>"
+
+                logger.info(
+                    f"Request: {request.method} {path} {unquote(str(request.query_params))} "
+                    f"Payload={payload}"
+                )
+            return message
+
+        async def wrapped_send(message: Message) -> None:
+            aid = request.scope.get("trace_id")
+            if message["type"] == "http.response.start":
+                headers = MutableHeaders(scope=message)
+                headers.append("X-Trace-ID", aid)
+
+                status_code = message.get("status", 0)
+                logger.info(f"Response: {status_code} {message.get('headers')} ")
+            elif message["type"] == "http.response.body":
+                body = message.get("body", b"") or b""
+                try:
+                    decoded_body = body.decode("utf-8", errors="replace")
+                except Exception:
+                    decoded_body = "<decode error>"
+
+                elapsed = time.perf_counter() - start_time
+                logger.info(f"Elapsed Time: {elapsed: .4f}s")
+                logger.info(f"Response Body={decoded_body}")
+            await send(message)
+
+        await self.app(scope, wrapped_receive, wrapped_send)
+
+```
 
 
 ## Langchain

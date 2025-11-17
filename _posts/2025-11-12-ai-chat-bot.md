@@ -138,7 +138,7 @@ def get_named_event(
 ### 프로젝트 적용 예시 — 요청/응답 Trace ID 추적
 
 아래 예시는 `ContextVar`를 사용해 요청 단위로 `trace_id`를 관리하고, 이를 로깅 시스템에 자동으로 포함시키는 방식이다.
-비동기 기반 API 서버에서는 여러 요청이 동시에 처리되기 때문에, 각 요청의 trace 정보를 섞지 않고 독립적으로 유지하는 것이 중요하다.
+비동기 기반 API 서버에서는 여러 요청이 동시에 처리되기 때문에, 각 요청의 정보를 섞지 않고 독립적으로 유지하는 것이 중요하다.
 
 #### `ContextVar` 기반 trace_id 선언 및 로거 설정
 
@@ -253,22 +253,26 @@ FastAPI는 기본적으로 다음과 같은 미들웨어를 제공한다.
 - 주입된 의존성(`Dependencies`)이 `yield`를 사용한다면 미들웨어 이후에 종료코드가 실행된다. 예를 들어 데이터베이스 연결을 닫거나 자원을 정리하는 코드가 있다면, 이 코드는 미들웨어가 수행된 후 실행된다.
 - `BackgroundTasks` 는 모든 미들웨어가 수행된 이후에 실행된다.
 
+> [Dependencies with yield](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/)
+
+> [Background Tasks](https://fastapi.tiangolo.com/tutorial/background-tasks/#background-tasks)
+
 ```scss
 
         ┌───────────────────────────────────────────┐
-        │                 HTTP Request               │
+        │                 HTTP Request              │
         └───────────────────────────┬───────────────┘
                                     ▼
         ┌───────────────────────────────────────────┐
-        │            [ASGI Middleware 1]             │
+        │            [ASGI Middleware 1]            │
         └───────────────────────────┬───────────────┘
                                     ▼
         ┌───────────────────────────────────────────┐
-        │            [ASGI Middleware 2]             │
+        │            [ASGI Middleware 2]            │
         └───────────────────────────┬───────────────┘
                                     ▼
         ┌───────────────────────────────────────────┐
-        │        FastAPI Routing & Endpoint          │
+        │        FastAPI Routing & Endpoint         │
         │     - Dependencies (yield 이전 실행)        │
         └───────────────────────────┬───────────────┘
                                     ▼
@@ -277,11 +281,11 @@ FastAPI는 기본적으로 다음과 같은 미들웨어를 제공한다.
         └───────────────────────────┬───────────────┘
                                     ▼
         ┌───────────────────────────────────────────┐
-        │         [ASGI Middleware 2 종료]            │
+        │         [ASGI Middleware 2 종료]           │
         └───────────────────────────┬───────────────┘
                                     ▼
         ┌───────────────────────────────────────────┐
-        │         [ASGI Middleware 1 종료]            │
+        │         [ASGI Middleware 1 종료]           │
         └───────────────────────────┬───────────────┘
                                     ▼
         ┌───────────────────────────────────────────┐
@@ -296,7 +300,6 @@ FastAPI는 기본적으로 다음과 같은 미들웨어를 제공한다.
         │            BackgroundTasks 실행            │
         └───────────────────────────────────────────┘
 
-
 ```
 
 
@@ -304,7 +307,7 @@ FastAPI는 기본적으로 다음과 같은 미들웨어를 제공한다.
 
 Starlette의 `Pure ASGI Middleware` 패턴을 사용하면, 프레임워크에 종속되지 않고 **ASGI 프로토콜 레벨에서 요청/응답 메시지를 직접 처리**할 수 있다.
 
-또한, 기능을 자유롭게 구현할 수 있어 ASGI 미들웨어를 사용했다.
+또한, body 가로채기 등 고급 기능을 자유롭게 구현할 수 있어 ASGI 미들웨어를 사용했다.
 
 > [Pure ASGI Middleware](https://www.starlette.dev/middleware/#pure-asgi-middleware)
 
@@ -411,28 +414,44 @@ class AccessLoggerMiddleware:
 
 ### Streaming 컨셉
 
+LangChain의 Streaming은 모델의 전체 응답이 생성되기 전에 토큰 단위로 결과를 순차적으로 전달받는 방식이다. 다음과 같은 장점이 있다.
+
 - 완전한 응답이 준비되기 전이라도 점진적으로 응답 출력(실시간 응답 출력)
-- 사용자의 대기 시간을 축소
+- 사용자의 체감 대기 시간 감소
+
+`stream`, `astream`을 통해 스트리밍 방식으로 모델의 토큰을 소비할 수 있다.
 
 ### Streaming APIs
 
-- stream: 동기
-- astream: 비동기
+- stream: 동기 방식으로 토큰 스트림을 제공
+- astream: 비동기 방식으로 토큰 스트림을 제공 
 
 ### 결론
 
-응답 시간 축소 및 처리량 증가를 위해 astream api를 사용해 비동기로 작동하도록 구현
+`astream` 사용 시 비동기 처리로 더 높은 처리량을 달성할 수 있다. 동시 접속자 증가 또는 응답 지연 문제를 해결하기 위해서 비동기 스트리밍(`astream`) 방식으로 전환했다.
 
-### 성능 테스트
+## 성능 테스트
 
-Locust를 이용한 라운드 트립 응답속도 테스트
+### 테스트 환경
 
-- AWS bedrock (private link를 통해 통신, 네트워크 홉 발생 X)
-- MS Azure open ai (회사 IDC 거치므로 네트워크 홉 증가)
-- 서버 EC2 instance (m7i.xlarge, k8s pod 2개)
-- 동시 접속 처리량이 10명도 안되서 langcahin stream 함수에서 astream 함수를 사용해 비동기 처리하도록 수정 
-- 하지만 cps 마다 [quotas(할당량 존재)](https://learn.microsoft.com/ko-kr/azure/ai-foundry/openai/quotas-limits?tabs=REST#gpt-4o-standard)하기 때문에 그 이상의 요청은 처리 불가
-- 최종: 분당 요청수 1900, 분당 토큰 350,0000 처리 가능 
+성능(라운드 트립 응답속도, 처리량 등)은 Locust를 사용해 측정했다.
 
+- AWS Bedrock 
+    - PrivateLink로 통신 → 네트워크 홉 없음, 안정적 지연 시간
+- MS Azure OpenAI
+    - 회사 IDC를 거쳐야 하므로 네트워크 홉 증가 → 지연 시간 다소 증가 가능
+- 서버 인프라
+    - EC2 m7i.xlarge
+    - Kubernetes POD 2개로 서비스 구성
+
+### 튜닝 포인트 
+
+테스트 결과, 동시 접속자가 10명을 넘는 지점에서 LangChain `stream` 함수는 병렬성이 부족해 병목이 발생했다. 이를 해결하기 위해 기존의 **동기 스트리밍(`stream`)에서 비동기 스트리밍(astream)으로 전환**했다.
+
+하지만 모델별로 [quotas(할당량)](https://learn.microsoft.com/ko-kr/azure/ai-foundry/openai/quotas-limits?tabs=REST#gpt-4o-standard)이 존재 하기 때문에, 비동기로 처리량을 늘려도 할당량을 초과하면 더 이상 수용되지 않는 구조다.
+
+최종적으로 시스템은 다음 수준의 처리량을 안정적으로 달성했다.
+- 분당 약 1,900 요청 처리
+- 분당 약 350,000 토큰 처리 
 
 

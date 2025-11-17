@@ -6,7 +6,7 @@ tags: [ai, python]
 excerpt: AI API gateway 개발하면서 배운 것들을 정리한다.
 ---
 
-# AI API gateway
+# AI API gateway 란
 
 회사에서 AI API gateway를 구현하면서 배운 것들을 정리하려고 한다. 구현한 AI API gateway 목표는 "AI 모델을 호출하기 위한 단일 진입점을 HTTP 기반으로 제공"하는 것이다. 이를 통해 AWS, Google, MS 등 주요 클라우드 벤더사의 자격 증명 처리를 게이트웨이에서 일원화함으로써, AI 기능이 필요한 다른 프로젝트들은 인증이나 인프라 구성에 신경 쓰지 않고 오직 서비스 로직 구현에만 집중할 수 있다.
 
@@ -53,7 +53,7 @@ data: another message
 data: with two lines
 ```
 
-- Named events: `event` 필드와 `data` 필드를 함께 사용하는 구조로, 이벤트 유형을 명시할 수 있다.
+- Named events: `event` 필드와 `data` 필드를 함께 사용하는 구조로, `event` 필드를 사용해 이벤트 유형을 명시할 수 있다.
 
 ```shell
 event: userconnect
@@ -78,7 +78,7 @@ data: {"username": "sean", "time": "02:34:36", "text": "Bye, bobby."}
 이번 프로젝트에서는 Data only messages와 Named events 두 가지 형식을 사용했다.
 
 - Data only messages: LangChain으로부터 받은 실시간 `content` 데이터를 그대로 스트리밍 전송할 때 사용
-- Named events: 표준화된 [Json 응답 구조](#Json-응답-구조)에 맞춰 최종 응답을 전달할 때 사용
+- Named events: 표준화된 [Json 응답 구조](#json-응답-구조)에 맞춰 최종 응답을 전달할 때 사용
 
 
 ```python

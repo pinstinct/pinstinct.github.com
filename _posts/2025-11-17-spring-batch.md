@@ -42,7 +42,7 @@ Reader와 Processor에서는 1건씩 다뤄지고, Writer에선 Chunk 단위로 
 
 스프링 배치는 총 6개의 메타데이터 테이블을 사용하며, 직접 생성해야 한다.
 
-- BATCH_JOB_INSTANCE: `Job Parameter`(외부에서 받을 수 있는 파라미터)에 따라 생성, 같은 Batch Job이라도 Job Parameter가 다르면 생성
+- BATCH_JOB_INSTANCE: `Job Parameter`(외부에서 받을 수 있는 파라미터)에 따라 생성, 같은 Batch Job이라도 `Job Parameter`가 다르면 생성
 - BATCH_JOB_EXECUTION: BATCH_JOB_INSTANCE 테블과 부모-자식 관계이다. 부모 BATCH_JOB_INSTANCE가 성공/실패한 모든 내역 저장 
 - BATCH_JOB_EXECUTION_PARAMS: BATCH_JOB_EXECUTION 생성될 때, 입력받은 `Job Parameter` 저장 
 - BATCH_STEP_EXECUTION
@@ -108,10 +108,10 @@ public class DeletePhotoViewHistoryJobConfig {
 
 ### Cursor vs Paging Reader
 
-ItemReader 는 Cursor, Paging 방식이 있다.
+ItemReader는 Cursor, Paging 방식이 있다.
 
 - Cursor based Reader: 데이터베이스와 커넥션을 맺은 후, Cursor 를 한칸씩 옮기면서 지속적으로 데이터를 뽑아온다.
-    - 장점: 스리밍 방식으로 메모리 사용 효율적
+    - 장점: 스트리밍 방식으로 메모리 사용 효율적
     - 단점: 하나의 DB Connection을 장시간 사용하기 때문에 배치가 끝나기 전에 커넥션이 끊어질 수 있다. (장기 배치 작업에 취약)
 - Paging based Reader
     - 장점: 페이지마다 새로운 쿼리 실행 (커넥션 점유 문제 없음)
@@ -214,7 +214,7 @@ public class BatchScheduler {
       log.error(e.toString());
     }
   }
-  
+
   private JobParameters getJobParameter() {
     Map<String, JobParameter<?>> parameterMap = new HashMap<>();
     parameterMap.put("current",

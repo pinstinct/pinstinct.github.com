@@ -25,7 +25,7 @@ Quartz는 스케줄링, Spring Batch는 데이터 배치 처리를 담당한다.
     - `next()`로 Step을 순차적으로 연결 가능
     - `on()`, `to()`, `from()`, `end()`를 활용해 조건 분기 가능(예: step A 실행 후 성공이면 step B 실패면 step C로 수행)
 - Tasklet 기반 Step: 단일 작업을 수행
-- Chunk 기반 Step: `ItemReader → ItemProcessor → ItemWriter` 흐름으로 대량 데이터를 처리
+- Chunk 기반 Step: `ItemReader - ItemProcessor - ItemWriter` 흐름으로 대량 데이터를 처리
 
 ### Chunk 기반 구성 요소
 
@@ -35,7 +35,7 @@ Chunk: 한 번에 하나씩 데이터를 읽어 Chunk라는 덩어리를 만든 
 - ItemProcessor(선택): Reader에서 읽은 데이터를 가공한다.
 - ItemWriter: 데이터를 Chunk 단위로 일괄 저장한다.
 
-Reader와 Processor에서는 1건씩 다뤄지고, Writer에선 Chunk 단위로 처리된다.
+Reader와 Processor에서는 1건씩 다루고, Writer에선 Chunk 단위로 처리한다.
 
 
 ## 메타 데이터 테이블 구조 
@@ -189,7 +189,7 @@ public class InsertCostMetricsByDailyJobWriter implements ItemWriter<CostMetric>
 
 ```
 
-## 배치 스케줄링
+## 배치 스케줄링 예시
 
 ```java
 @Slf4j
@@ -226,7 +226,7 @@ public class BatchScheduler {
 
 ```
 
-## 테스트 코드
+## 테스트 코드 예시
 
 ```java
 @SpringBootTest

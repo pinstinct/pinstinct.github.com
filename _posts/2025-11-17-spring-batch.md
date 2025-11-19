@@ -189,6 +189,43 @@ public class InsertCostMetricsByDailyJobWriter implements ItemWriter<CostMetric>
 
 ```
 
+## 배치 스케줄링
+
+```java
+@Slf4j
+@Component
+@EnableScheduling
+@RequiredArgsConstructor
+public class BatchScheduler {
+
+  private final JobLauncher jobLauncher;
+  private final JobRegistry jobRegistry;
+
+  /**
+   * 매일 1시 실행
+   */
+  @Scheduled(cron = "0 0 1 * * ?")
+  public void runInsertCostMetricsByDailyJob() {
+    try {
+      Job job = jobRegistry.getJob(JobNames.INSERT_COST_METRICS_BY_DAILY);
+      jobLauncher.run(job, getJobParameter());
+    } catch (NoSuchJobException | JobExecutionAlreadyRunningException | JobRestartException |
+             JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
+      log.error(e.toString());
+    }
+  }
+  
+  private JobParameters getJobParameter() {
+    Map<String, JobParameter<?>> parameterMap = new HashMap<>();
+    parameterMap.put("current",
+        new JobParameter<LocalDateTime>(LocalDateTime.now(), LocalDateTime.class));
+    parameterMap.put("now", new JobParameter<LocalDate>(LocalDate.now(), LocalDate.class));
+    return new JobParameters(parameterMap);
+  }
+}
+
+```
+
 ## 테스트 코드
 
 ```java

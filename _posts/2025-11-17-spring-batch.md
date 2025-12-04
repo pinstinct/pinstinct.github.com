@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Spring Batch & Test Code
-categories: java
+categories: experience
 tags: [java, spring, batch]
 excerpt: 스프링 배치 기본 개념과 테스트 코드를 정리한 글이다.
 ---

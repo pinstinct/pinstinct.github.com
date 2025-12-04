@@ -1,7 +1,7 @@
 ---
 layout: post
 title: AI API gateway 구현
-categories: ai
+categories: experience
 tags: [ai, python]
 excerpt: AI API gateway 개발하면서 배운 것들을 정리한다.
 ---

@@ -3,7 +3,7 @@ layout: post
 title: 검색품질 고도화
 categories: experience
 tags: [posgresql, fts, search]
-excerpt: like 검색으로 검색 정확도 문제가 발생해 고도화 작업을 진행한 내용을 정리합니다.
+excerpt: like 검색으로 검색 정확도 문제가 발생해 고도화 방법을 검토한 내용을 정리합니다.
 ---
 
 # 문제 상황

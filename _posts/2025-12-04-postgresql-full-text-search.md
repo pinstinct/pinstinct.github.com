@@ -177,7 +177,7 @@ where content_tsv @@ to_tsquery('보험:*');
 
 PostgreSQL은 문서를 `tsvector` 데이터 유형으로 변환하기 위한 `to_tsvector` 함수를 제공한다.
 
-```
+```sql
 to_tsvector([config reconfig, ] document text) returns tsvector
 ```
 

@@ -18,7 +18,7 @@ excerpt: like 검색으로 검색 정확도 문제가 발생해 고도화 방법
 > [PostgreSQL의 고급 검색 기능을 사용한 구직 검색 엔진 구축](https://aws.amazon.com/ko/blogs/tech/building-a-job-search-engine-with-postgresqls-advanced-search-features/)
 
 
-## 검색
+## 검색이란?
 
 ### [전체 텍스트 검색(Full-Text Search)](https://cloud.google.com/discover/what-is-full-text-search?hl=ko)
 

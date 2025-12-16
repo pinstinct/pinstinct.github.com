@@ -158,10 +158,10 @@ where to_tsvector('simple', content) @@ to_tsquery('simple', '보험:*')
 
 ```sql
 -- tsvector 컬럼 생성 
-alter table exp_answer add column content_tsv tsvector generated always as (to_tsvector('simple', content)) stored;
+alter table question add column content_tsv tsvector generated always as (to_tsvector('simple', content)) stored;
 
 -- 인덱스 생성
-create index content_tsv_idx on exp_answer using gin (content_tsv);
+create index content_tsv_idx on question using gin (content_tsv);
 
 -- FTS 검색
 select content, content_tsv

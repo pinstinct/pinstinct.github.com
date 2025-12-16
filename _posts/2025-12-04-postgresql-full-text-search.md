@@ -492,3 +492,4 @@ order by score desc
 
 - [Postgres를 검색엔진으로 활용하기](https://news.hada.io/topic?id=16468)
 - [Amazon Aurora PostgreSQL 에서 pg_bigm 모듈사용하기](https://jojoldu.tistory.com/590)
+- [AWS, Lambda 기반 Serverless 한글 형태소 분석기(MeCab) 설치편](https://grip.news/archives/1631/)

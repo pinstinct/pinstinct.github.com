@@ -266,7 +266,7 @@ ts_rank_cd([weights float4p[], ] vector tsvector, query tsquery [, normalization
 - 0 (default): 문서 길이를 무시
 - 1: 문서 길이의 로그 + 1로 나눔
 - 2: 순위를 문서 길이로 나눔
-- 4: 범위 간 평균 거리로 나눔(`ts_rank_cd`에서만 구현)
+- 4: 범위 간 평균 거리로 나눔(`ts_rank_cd`에서만 사용 가능)
 - 8: 문서의 고유 단어 수로 순위를 나눔 
 - 16: 문서의 고유 단 수의 로그 + 1로 나눔
 - 32: 그 자체로 나눈 값 + 1
@@ -328,7 +328,7 @@ ORDER BY rank DESC;
 - 빠른 검색을 위한 GIN 인덱스 사용 가능
 - 단어 어휘소 자동으로 처리 
 - 상자 밖에서 관련 순위 제공
-- 데이터 중가에 따른 효과적인 확장
+- 데이터 증가에 따른 효과적인 확장
 
 그렇다면 "왜 그냥 Elasticsearch를 사용하면 안 되는 걸까?" 
 
@@ -344,12 +344,12 @@ Elasticsearch는 훌륭한 도구이지만, 중소 규모 애플리케이션에 
 
 #### 1. Document (문서)
 
-PostgreSQL FTS에서 Document(문서)는 검색하려는 콘텐츠 단위이다. 물리적 문서와 달리 PostgreSQL 문서는 다음 요소로 구성될 수 있다.
+PostgreSQL FTS에서 문서는 검색하려는 콘텐츠 단위이다. 물리적 문서와 달리 PostgreSQL 문서는 다음 요소로 구성될 수 있다.
 
 - 단일 텍스트 column
 - 결합된 여러 columns
 - 관련 테이블들의 데이터
-- 러타임에 생성된 동적 콘텐츠
+- 런타임에 생성된 동적 콘텐츠
 
 #### 2. tsvector
 
@@ -420,23 +420,75 @@ from example;
 ```
 
 
-## 적용 예시
+## 적용 예시와 한계
+
+PostgreSQL의 Full-Text Search(FTS)는 별도의 검색 엔진 없이도 강력한 검색 기능을 제공한다. 이를 실무에 적용하기 위해 질문과 답변 테이블을 대상으로 FTS 기반 검색 쿼리를 작성해 보았다.
 
 ```sql
 select 
 	question.content , answer.content, 
-	to_tsvector(question.content) as question_v,
-	to_tsvector(answer.content) as answer_v,
+	to_tsvector('simple', question.content) as question_v,
+	to_tsvector('simple', answer.content) as answer_v,
 	ts_rank(
-		setweight(to_tsvector(question.content), 'A') ||
-		setweight(to_tsvector(answer.content), 'B'),
+		setweight(to_tsvector('simple', question.content), 'A') ||
+		setweight(to_tsvector('simple', answer.content), 'B'),
 		q
 	) as rank,
 	question.id,
 	ts_headline('simple', (question.content || answer.content), q, 'StartSel=<mark>, StopSel=</mark>, HighlightAll=true') as highlight
-from to_tsquery('암보험:*') as q, exp_question as question
+from to_tsquery('simple', '암보험:*') as q, exp_question as question
 left join exp_answer as answer on question.id = answer.id
-where (to_tsvector(question.content) || to_tsvector(answer.content)) @@ q
+where (to_tsvector('simple', question.content) || to_tsvector('simple', answer.content)) @@ q
 order by rank desc
 ;
 ```
+
+### 실무에 적용하면서 마주한 문제점
+
+위 쿼리는 기능적으로는 문제없이 동작하지만, 실제 운영 환경에서는 몇 가지 현실적인 제약이 있었다.
+
+#### 1. 인덱스를 사용하지 못해 생길 수 있는 성능 문제
+
+`to_tsvector()`를 WHERE 절에서 직접 호출하는 방식은, GIN 인덱스가 없는 경우 매 row마다 tsvector를 계산하게 된다. 데이터가 많아질수록 Full Scan이 발생하고, 검색 성능은 급격히 저하된다.
+
+#### 2. 한국어 형태소 분석의 한계
+
+PostgreSQL의 기본 text search configuration(english, simple 등)은 한국어 형태소 분석을 지원하지 않는다.
+- simple 설정은 공백 단위로만 토큰화
+- 조사, 어미 분리 불가
+- 실질적으로 완전 일치 또는 prefix 검색 수준
+
+한국어 품질을 개선하려면 외부 확장 모듈을 설치해야하지만, AWS RDS 환경에서 불가능하다.
+
+#### 3. `tsvector` 타입에 대한 회사 관리 시스템 호환 문제
+
+`tsvector` 타입은 PostgreSQL 전용 특수 타입으로 회사에서 관리하는 메타데이터 시스템에서 사용할 수 없다. 비표준타입으로 진행해야하며 협의가 필요하다.
+
+### 현실적인 대한: n-gram 기반 유사도 검색 
+
+이러한 제약을 고려했을 때, AWS RDS에서 기본적으로 지원되는 확장인 pg_trgm, pg_bigm을 활용한 n-gram 유사도 검색이 가장 현실적인 대안이다.
+
+```sql
+-- 확장 설치
+CREATE EXTENSION pg_bigm;
+
+-- gin 인덱스 생성 
+CREATE INDEX index_name ON question USING GIN("content" gin_bigm_ops);
+
+-- 유사도 기반 검색 예시
+select content, similarity(content, '안녕') as score
+from question 
+where content % '안녕'
+order by score desc
+;
+```
+
+- `%` 연산자는 pg_trgm, pg_bigm 전용 유사도 매칭 연산자
+- gin 인덱스를 사용할 수 있어 성능 확보 가능
+- 형태소 분석은 아니지만, 오타/부분일치/띄어쓰기 차이에 강함 
+
+
+## 더 읽어보면 좋은 글
+
+- [Postgres를 검색엔진으로 활용하기](https://news.hada.io/topic?id=16468)
+- [Amazon Aurora PostgreSQL 에서 pg_bigm 모듈사용하기](https://jojoldu.tistory.com/590)

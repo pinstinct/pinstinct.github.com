@@ -43,6 +43,8 @@ FTS에는 다양한 접근 방식이 있다.
 - [퍼지 검색](https://cloud.google.com/discover/what-is-fuzzy-search?hl=ko): 철차, 오타와 같은 변형을 허용하는 보다 유용한 방법
   - 주로 n-gram 유사도 검색을 사용한다. `LIKE` 보다 인덱스 활용 측면에서 효율적이다.
   - PostgreSQL에서는 `pg_trgm`, `pg_bigm`을 확장 모듈로 제공(별도 설치 필요)한다.
+    - 확장자 설치법: `CREATE EXTENSION IF NOT EXISTS pg_trgm;`
+    - 설치된 확장 모듈 확인: `select * from pg_extension;`
   
     항목 | `pg_trgm` | `pg_bigm`
     -- | -- | --

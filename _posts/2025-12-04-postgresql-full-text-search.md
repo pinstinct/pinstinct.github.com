@@ -458,7 +458,7 @@ PostgreSQL의 기본 text search configuration(english, simple 등)은 한국어
 - 조사, 어미 분리 불가
 - 실질적으로 완전 일치 또는 prefix 검색 수준
 
-한국어 품질을 개선하려면 외부 확장 모듈을 설치해야하지만, AWS RDS 환경에서 불가능하다.
+한국어 품질을 개선하려면 외부 확장 모듈을 설치해야하지만, AWS RDS 환경에서 설치하기 힘들다. 찾아본 바에 의하면 AWS Lamda 함수를 통해 우회해서 설치가 가능하다.
 
 #### 3. `tsvector` 타입에 대한 회사 관리 시스템 호환 문제
 

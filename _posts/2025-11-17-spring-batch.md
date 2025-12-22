@@ -226,6 +226,68 @@ public class BatchScheduler {
 
 ```
 
+## 외부에서 Spring Batch 실행하는 법
+
+위의 예제에서는 `@Scheduled`를 이용해 애플리케이션 내부에서 배치 Job을 실행했다. 하지만 운영 환경에서는 다음과 같은 요구가 더 많다.
+
+- 배치를 정해진 시간에만 실행하지 않고, 필요 시 수동 실행
+- 배포와 분리된 실행 제어
+- 실패 시 재실행/파라미터 변경 실행
+- 운영자가 명시적으로 샐행 버튼을 눌러 실행
+
+이 경우, Spring Boot + Spring Batch를 CLI 기반으로 실행하고, 이를 Jenkins, Crontab, Airflow 등 외부 스케줄러에서 호출하는 방식이 일반적이다.
+
+### 실행할 Job 지정하기 (`spring.batch.job.name`)
+
+여러 개의 Job이 등록된 경우, 특정 Job만 실행하도록 명시해야 한다. 지정하지 않으면 모든 Job 실행 시도를 하는데, 운영에서는 권장하지 않는다.
+
+```sh
+java -jar batch.jar --spring.batch.job.name=insertCostMetricsByDailyJob
+```
+
+### Job Parameter를 외부에서 전달하기
+
+Spring Batch의 Job은 Job Parameter가 같으면 재실행되지 않는다. 따라서 외부 실행 시 항상 파라미터를 명시적으로 전달하는 것이 중요하다.
+
+```sh
+java -jar batch.jar --spring.batch.job.name=insertCostMetricsByDailyJob date=2025-03-09
+```
+
+위 파라미터는 아래 코드로 주입된다.
+
+```java
+@Value("#{jobParameters[date]}") LocalDate date
+```
+
+### Jenkins에서 Spring Batch 실행하기
+
+#### Jenkins Job 구성 예시
+
+Build Step에서 Shell Script 실행
+
+```sh
+#!/bin/bash
+
+java -jar /app/batch/batch.jar \
+  --spring.profiles.active=prod \
+  --spring.batch.job.names=INSERT_COST_METRICS_BY_DAILY \
+  date=$(date +%Y%m%d)
+```
+
+#### Jenkins Parameter와 연동
+
+Jenkins의 Build Parameters를 활용하면 더 유연한 실행이 가능하다.
+
+```sh
+java -jar batch.jar \
+  --spring.batch.job.names=${JOB_NAME} \
+  date=${TARGET_DATE}
+```
+
+- 운영자가 UI에서 날자를 지정해 실행
+- 장애 복구 시 특정 날짜만 재처리 가능
+
+
 ## 테스트 코드 예시
 
 ```java

@@ -233,9 +233,9 @@ public class BatchScheduler {
 - 배치를 정해진 시간에만 실행하지 않고, 필요 시 수동 실행
 - 배포와 분리된 실행 제어
 - 실패 시 재실행/파라미터 변경 실행
-- 운영자가 명시적으로 샐행 버튼을 눌러 실행
+- 운영자가 명시적으로 실행 버튼을 눌러 실행
 
-이 경우, Spring Boot + Spring Batch를 CLI 기반으로 실행하고, 이를 Jenkins, Crontab, Airflow 등 외부 스케줄러에서 호출하는 방식이 일반적이다.
+Spring Boot + Spring Batch를 CLI 기반으로 실행하고, 이를 Jenkins, Crontab, Airflow 등 외부 스케줄러에서 호출하는 방식이 일반적이다.
 
 ### 실행할 Job 지정하기 (`spring.batch.job.name`)
 
@@ -270,7 +270,7 @@ Build Step에서 Shell Script 실행
 
 java -jar /app/batch/batch.jar \
   --spring.profiles.active=prod \
-  --spring.batch.job.names=INSERT_COST_METRICS_BY_DAILY \
+  --spring.batch.job.names=insertCostMetricsByDailyJob \
   date=$(date +%Y%m%d)
 ```
 
